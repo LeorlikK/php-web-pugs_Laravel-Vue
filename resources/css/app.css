@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    body {
+        background-size: auto;
+        color: #444;
+        background-position: 270px;
+        background-color: #f0f0f0;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    a.btn-a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: whitesmoke;
+    }
+}
