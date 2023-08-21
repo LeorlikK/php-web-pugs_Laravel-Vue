@@ -9,7 +9,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>Document</title>
 </head>
-<body style="background-image: url({{asset('storage/images/mops_sobaka_vysunutyj_iazyk_173403_1920x1080.jpg')}})">
+<body style="background-image: url({{asset('storage/images/static/mops_sobaka_vysunutyj_iazyk_173403_1920x1080.jpg')}})">
     <div id="app"></div>
 </body>
 </html>
