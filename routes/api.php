@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Authorization\AuthorizationController;
+use App\Http\Controllers\Peculiarities\PeculiaritiesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,14 @@ use Illuminate\Support\Facades\Route;
 Route::post('/account/registration', [AuthorizationController::class, 'registration']);
 Route::post('/account/login', [AuthorizationController::class, 'login']);
 Route::post('/account/logout', [AuthorizationController::class, 'logout']);
+
+Route::prefix('/peculiarities')->group(function (){
+    Route::get('/', [PeculiaritiesController::class, 'peculiarities']);
+    Route::get('/care', [PeculiaritiesController::class, 'care']);
+    Route::get('/nutrition', [PeculiaritiesController::class, 'nutrition']);
+    Route::get('/health', [PeculiaritiesController::class, 'health']);
+    Route::get('/paddock', [PeculiaritiesController::class, 'paddock']);
+});
 Route::middleware('auth:sanctum')->group(function (){
     Route::get('/protected', function (){
         return response()->json(['protected' => 'true']);

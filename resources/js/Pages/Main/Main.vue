@@ -1,6 +1,5 @@
 <template>
     <Disclaimer></Disclaimer>
-    <Menu></Menu>
 </template>
 
 <script>

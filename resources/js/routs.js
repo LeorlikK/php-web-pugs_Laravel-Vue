@@ -4,7 +4,14 @@ export const API_ROUTES = {
         logout: '/api/account/logout'
     },
     public: {
+        home: '/',
         login: '/api/account/login',
         registration: '/api/account/register',
+
+        peculiarities: '/api/peculiarities',
+        care: '/api/peculiarities/care',
+        nutrition: '/api/peculiarities/nutrition',
+        health: '/api/peculiarities/health',
+        paddock: '/api/peculiarities/paddock',
     }
 }

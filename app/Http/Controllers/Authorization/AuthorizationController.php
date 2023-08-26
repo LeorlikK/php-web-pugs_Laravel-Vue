@@ -36,7 +36,7 @@ class AuthorizationController extends Controller
         $request->validated();
 
         if (auth()->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])){
-            return response()->json(['authorization' => true], 200);
+            return response()->json(['email' => $request->input('email')], 200);
         };
 
         return response()->json(['errors' => ['password' => ['Неверный логин или пароль']]], 422);
