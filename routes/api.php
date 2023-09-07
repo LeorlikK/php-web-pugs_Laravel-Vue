@@ -1,24 +1,12 @@
 <?php
 
 use App\Http\Controllers\Authorization\AuthorizationController;
+use App\Http\Controllers\Comments\CommentsController;
+use App\Http\Controllers\News\NewsController;
+use App\Http\Controllers\Nurseries\NurseriesController;
 use App\Http\Controllers\Peculiarities\PeculiaritiesController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
 // leorlik@ya.ru
 // Pristxolidc2013
 Route::post('/account/registration', [AuthorizationController::class, 'registration']);
@@ -31,6 +19,16 @@ Route::prefix('/peculiarities')->group(function (){
     Route::get('/nutrition', [PeculiaritiesController::class, 'nutrition']);
     Route::get('/health', [PeculiaritiesController::class, 'health']);
     Route::get('/paddock', [PeculiaritiesController::class, 'paddock']);
+});
+Route::prefix('/nurseries')->group(function (){
+    Route::get('/{page?}', [NurseriesController::class, 'index']);
+});
+Route::prefix('/news')->group(function (){
+    Route::get('/{page?}', [NewsController::class, 'index']);
+    Route::get('/show/{news}', [NewsController::class, 'show']);
+});
+Route::prefix('/comments')->group(function (){
+    Route::get('/{news}/{parent_comment?}/{page?}', [CommentsController::class, 'index']);
 });
 Route::middleware('auth:sanctum')->group(function (){
     Route::get('/protected', function (){

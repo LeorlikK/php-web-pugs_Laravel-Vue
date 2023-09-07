@@ -6,7 +6,7 @@
                 <router-link :to="{name: 'peculiarities'}" class="mx-3  text-myBlack tracking-tight font-thin text-xl">Особенности породы</router-link>
             </li>
             <li class="before:content-['\2014'] text-myBlack font-normal  my-2">
-                <router-link :to="{name: 'home'}" class="mx-3  text-myBlack tracking-tight font-thin text-xl">Питомники</router-link>
+                <router-link :to="{name: 'nurseries', params: {page: 1}}" class="mx-3  text-myBlack tracking-tight font-thin text-xl">Питомники</router-link>
             </li>
             <li class="before:content-['\2014'] text-myBlack font-normal  my-2">
                 <router-link :to="{name: 'home'}" class="mx-3  text-myBlack tracking-tight font-thin text-xl">Новости</router-link>

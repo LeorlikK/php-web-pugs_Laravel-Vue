@@ -13,5 +13,7 @@ export const API_ROUTES = {
         nutrition: '/api/peculiarities/nutrition',
         health: '/api/peculiarities/health',
         paddock: '/api/peculiarities/paddock',
+
+        nurseries: '/api/nurseries',
     }
 }

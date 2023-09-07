@@ -5,44 +5,51 @@ const router = createRouter({
     history: createWebHistory(),
     routes:[
         {
-            path: API_ROUTES.public.home,
+            path: '/',
             name:'home',
             component: () => import('./Pages/Main/Main.vue')
         },
         {
-            path: API_ROUTES.public.login,
+            path: '/login',
             name:'login',
             component: () => import('./Pages/Auth/Login.vue')
         },
         {
-            path: API_ROUTES.public.registration,
+            path: '/registration',
             name:'registration',
             component: () => import('./Pages/Auth/Registration.vue'),
         },
         {
-            path: API_ROUTES.public.peculiarities,
+            path: '/peculiarities',
             name:'peculiarities',
             component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
+            children: [
+                {
+                    path: '/peculiarities/care',
+                    name:'care',
+                    component: () => import('./Pages/Auth/Registration.vue'),
+                },
+                {
+                    path: '/peculiarities/nutrition',
+                    name:'nutrition',
+                    component: () => import('./Pages/Auth/Registration.vue'),
+                },
+                {
+                    path: '/peculiarities/health',
+                    name:'health',
+                    component: () => import('./Pages/Auth/Registration.vue'),
+                },
+                {
+                    path: '/peculiarities/paddock',
+                    name:'paddock',
+                    component: () => import('./Pages/Auth/Registration.vue'),
+                },
+            ]
         },
         {
-            path: API_ROUTES.public.care,
-            name:'care',
-            component: () => import('./Pages/Auth/Registration.vue'),
-        },
-        {
-            path: API_ROUTES.public.nutrition,
-            name:'nutrition',
-            component: () => import('./Pages/Auth/Registration.vue'),
-        },
-        {
-            path: API_ROUTES.public.health,
-            name:'health',
-            component: () => import('./Pages/Auth/Registration.vue'),
-        },
-        {
-            path: API_ROUTES.public.paddock,
-            name:'paddock',
-            component: () => import('./Pages/Auth/Registration.vue'),
+            path: '/nurseries/:page?',
+            name:'nurseries',
+            component: () => import('./Pages/Nurseries/Nurseries.vue'),
         },
     ]
 })
