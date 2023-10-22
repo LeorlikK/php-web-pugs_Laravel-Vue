@@ -6,7 +6,7 @@ export const API_ROUTES = {
     public: {
         home: '/',
         login: '/api/account/login',
-        registration: '/api/account/register',
+        registration: '/api/account/registration',
 
         peculiarities: '/api/peculiarities',
         care: '/api/peculiarities/care',
@@ -15,5 +15,7 @@ export const API_ROUTES = {
         paddock: '/api/peculiarities/paddock',
 
         nurseries: '/api/nurseries',
+
+        news: '/api/news',
     }
 }

@@ -14,12 +14,12 @@ class NewsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(?string $page=null): AnonymousResourceCollection
+    public function index(Request $request): AnonymousResourceCollection
     {
-        $perPage = 10;
-        $page = (int) $page ?? 1;
+        $perPage = 1;
+        $page = (int) $request->input('page') ?? 1;
 
-        $news = News::query()
+        $news = News::with('user:id,login')
             ->where('publish', true)
             ->orderByDesc('created_at')
             ->paginate($perPage, '*', 'page', $page);

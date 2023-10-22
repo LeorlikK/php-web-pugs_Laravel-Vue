@@ -1,5 +1,5 @@
 <template>
-    <Disclaimer></Disclaimer>
+    <Disclaimer class="disclaimer"></Disclaimer>
 </template>
 
 <script>

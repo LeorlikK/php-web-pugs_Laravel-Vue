@@ -16,11 +16,11 @@ class NewsResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id' => $this->title,
-            'image_url' => $this->text,
-            'title' => $this->address,
-            'short' => $this->phone,
-            'created_at' => $this->created_at,
+            'user' => $this->user->login,
+            'image_url' => $this->image_url,
+            'title' => $this->title,
+            'short' => $this->short,
+            'created_at' => $this->created_at->format('Y-m-d'),
             'updated_at' => $this->updated_at,
         ];
     }

@@ -1,48 +1,48 @@
 <template>
-    <div class="flex justify-between">
-        <router-link class="w-32 h-11 bg-myCoral text-gray-700 text-myHeaderFontSize uppercase text-gray-800 btn-a" :to="{name: 'home'}">Главная</router-link>
-
-        <template v-if="auth">
-            <a @click.prevent="logout" class="w-32 h-11 bg-myCoral text-gray-700 text-myHeaderFontSize uppercase text-gray-800 btn-a">Выход</a>
+    <div>
+        <router-link class="btn btn-main" :to="{name: 'home'}">Главная</router-link>
+    </div>
+    <div>
+        <template v-if="this.$store.getters.getIsAuth">
+            <a @click.prevent="logout" class="btn btn-main">{{this.$store.getters.getLogin}}</a>
+            <div class="user-menu">
+                <ul>
+                    <li><router-link :to="{name: 'home'}">Личный кабинет</router-link></li>
+                    <li><a @click.prevent="logout">Выход</a></li>
+                </ul>
+            </div>
         </template>
         <template v-else>
-            <router-link class="w-32 h-11 bg-myCoral text-gray-700 text-myHeaderFontSize uppercase text-gray-800 btn-a" :to="{name:'login'}">Вход</router-link>
+            <router-link class="btn btn-main" :to="{name:'login'}">Вход</router-link>
         </template>
     </div>
 </template>
 
 <script>
-import {computed, ref} from "vue";
-import {forgotLocalStorage, getLocalStorage} from "@/cookiesManager";
 import axios from "axios";
 import {API_ROUTES} from "@/routs";
-import { onMounted, onUpdated } from 'vue';
+import cookiesMixin from "@/mixins/authMixin";
+import errorsLogMixin from "@/mixins/errorsLogMixin";
+import axiosAuthUser from "@/axiosAuthUser";
 
 export default {
     name: "Header",
-    setup() {
-        const auth = ref(null)
-        const checkAuthUser = () => {
-            auth.value = getLocalStorage('XSRF-TOKEN')
+    mixins: [cookiesMixin],
+    data() {
+        return {
         }
-        onMounted(() => {
-            checkAuthUser()
-        })
-        onUpdated(() => {
-            checkAuthUser()
-        })
-        const logout = () => {
-            axios.post(API_ROUTES.protected.logout)
+    },
+    methods: {
+        logout() {
+            axiosAuthUser.post(API_ROUTES.protected.logout)
                 .then(data => {
-                    forgotLocalStorage('XSRF-TOKEN')
-                    checkAuthUser()
+                    this.exit()
                 })
                 .catch(errors => {
-                    console.log(errors);
+                    this.errorsLog(errors)
                 })
         }
-        return {auth, logout}
-    }
+    },
 }
 </script>
 

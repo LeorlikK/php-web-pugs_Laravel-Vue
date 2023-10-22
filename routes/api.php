@@ -11,6 +11,7 @@ use App\Models\Video;
 use Illuminate\Support\Facades\Route;
 
 // leorlik@ya.ru
+// leorlik_2@ya.ru
 // Pristxolidc2013
 Route::post('/account/registration', [AuthorizationController::class, 'registration']);
 Route::post('/account/login', [AuthorizationController::class, 'login']);
@@ -27,7 +28,7 @@ Route::prefix('/nurseries')->group(function (){
     Route::get('/{page?}', [NurseriesController::class, 'index']);
 });
 Route::prefix('/news')->group(function (){
-    Route::get('/{page?}', [NewsController::class, 'index']);
+    Route::get('/', [NewsController::class, 'index']);
     Route::get('/show/{news}', [NewsController::class, 'show']);
 });
 Route::prefix('/comments')->group(function (){
@@ -53,6 +54,9 @@ Route::prefix('/media')->group(function (){
         Route::delete('/delete/{audio}', [Audio::class, 'destroy']);
     });
     Route::get('/{news}/{parent_comment?}/{page?}', [CommentsController::class, 'index']);
+});
+Route::prefix('/css')->group(function (){
+    Route::get('/', []);
 });
 
 Route::middleware('auth:sanctum')->group(function (){

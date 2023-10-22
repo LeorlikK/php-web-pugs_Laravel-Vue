@@ -15,7 +15,7 @@ const router = createRouter({
             component: () => import('./Pages/Auth/Login.vue')
         },
         {
-            path: '/registration',
+            path: '/api/account/registration',
             name:'registration',
             component: () => import('./Pages/Auth/Registration.vue'),
         },
@@ -50,6 +50,18 @@ const router = createRouter({
             path: '/nurseries/:page?',
             name:'nurseries',
             component: () => import('./Pages/Nurseries/Nurseries.vue'),
+        },
+        {
+            path: '/news/:page?',
+            name:'news',
+            component: () => import('./Pages/News/Index.vue'),
+            // children: [
+            //     {
+            //         path: '/peculiarities/care',
+            //         name:'care',
+            //         component: () => import('./Pages/Auth/Registration.vue'),
+            //     },
+            // ]
         },
     ]
 })
