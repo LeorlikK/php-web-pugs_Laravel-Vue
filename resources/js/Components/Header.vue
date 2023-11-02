@@ -13,7 +13,7 @@
             </div>
         </template>
         <template v-else>
-            <router-link class="btn btn-main" :to="{name:'login'}">Вход</router-link>
+            <router-link class="btn btn-main" :to="{name:'login'}">Войти</router-link>
         </template>
     </div>
 </template>
@@ -27,15 +27,16 @@ import axiosAuthUser from "@/axiosAuthUser";
 
 export default {
     name: "Header",
-    mixins: [cookiesMixin],
+    mixins: [cookiesMixin, errorsLogMixin],
     data() {
         return {
         }
     },
     methods: {
         logout() {
-            axiosAuthUser.post(API_ROUTES.protected.logout)
+            axiosAuthUser.post(API_ROUTES.public.logout)
                 .then(data => {
+                    console.log(data);
                     this.exit()
                 })
                 .catch(errors => {

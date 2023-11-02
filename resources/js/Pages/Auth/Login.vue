@@ -38,21 +38,14 @@ export default {
     },
     methods: {
         login() {
-            axiosAuthUser.get('/sanctum/csrf-cookie', {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-type': 'application/json'
-                }
-            })
+            axiosAuthUser.get('/sanctum/csrf-cookie')
                 .then(data => {
-                    axiosAuthUser.post(API_ROUTES.public.login, {email: this.email, password: this.password}, {
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-type': 'application/json',
-                        }
+                    console.log(data);
+                    axiosAuthUser.post(API_ROUTES.public.login, {
+                        email: this.email, password: this.password
                     })
                         .then(data => {
-                            console.log(data)
+                            console.log(data.data);
                             this.auth(data)
                         })
                         .catch(errors => {

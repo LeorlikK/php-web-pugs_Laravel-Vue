@@ -1,11 +1,13 @@
 export const API_ROUTES = {
     protected: {
         me: '/api/account/me',
-        logout: '/api/account/logout'
+        comments_store: '/api/comments/store',
+        comments_delete: '/api/comments/delete',
     },
     public: {
         home: '/',
         login: '/api/account/login',
+        logout: '/api/account/logout',
         registration: '/api/account/registration',
 
         peculiarities: '/api/peculiarities',
@@ -17,5 +19,8 @@ export const API_ROUTES = {
         nurseries: '/api/nurseries',
 
         news: '/api/news',
+        news_show: '/api/news/show',
+
+        comments: '/api/comments',
     }
 }

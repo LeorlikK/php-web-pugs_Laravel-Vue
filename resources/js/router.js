@@ -23,46 +23,64 @@ const router = createRouter({
             path: '/peculiarities',
             name:'peculiarities',
             component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
-            children: [
-                {
-                    path: '/peculiarities/care',
-                    name:'care',
-                    component: () => import('./Pages/Auth/Registration.vue'),
-                },
-                {
-                    path: '/peculiarities/nutrition',
-                    name:'nutrition',
-                    component: () => import('./Pages/Auth/Registration.vue'),
-                },
-                {
-                    path: '/peculiarities/health',
-                    name:'health',
-                    component: () => import('./Pages/Auth/Registration.vue'),
-                },
-                {
-                    path: '/peculiarities/paddock',
-                    name:'paddock',
-                    component: () => import('./Pages/Auth/Registration.vue'),
-                },
-            ]
+            // children: [
+            //     {
+            //         path: 'care',
+            //         name:'care',
+            //         component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
+            //     },
+            //     {
+            //         path: '/peculiarities/nutrition',
+            //         name:'nutrition',
+            //         component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
+            //     },
+            //     {
+            //         path: '/peculiarities/health',
+            //         name:'health',
+            //         component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
+            //     },
+            //     {
+            //         path: '/peculiarities/paddock',
+            //         name:'paddock',
+            //         component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
+            //     },
+            // ]
         },
         {
-            path: '/nurseries/:page?',
+            path: '/peculiarities/care',
+            name:'peculiarities_care',
+            component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
+        },
+        {
+            path: '/peculiarities/nutrition',
+            name:'peculiarities_nutrition',
+            component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
+        },
+        {
+            path: '/peculiarities/health',
+            name:'peculiarities_health',
+            component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
+        },
+        {
+            path: '/peculiarities/paddock',
+            name:'peculiarities_paddock',
+            component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
+        },
+        {
+            path: '/nurseries',
             name:'nurseries',
             component: () => import('./Pages/Nurseries/Nurseries.vue'),
         },
         {
-            path: '/news/:page?',
+            path: '/news',
             name:'news',
             component: () => import('./Pages/News/Index.vue'),
-            // children: [
-            //     {
-            //         path: '/peculiarities/care',
-            //         name:'care',
-            //         component: () => import('./Pages/Auth/Registration.vue'),
-            //     },
-            // ]
         },
+        {
+            path: '/news/show',
+            name:'news_show',
+            component: () => import('./Pages/News/Show.vue'),
+        }
     ]
 })
 

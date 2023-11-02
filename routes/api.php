@@ -8,6 +8,7 @@ use App\Http\Controllers\Nurseries\NurseriesController;
 use App\Http\Controllers\Peculiarities\PeculiaritiesController;
 use App\Models\Audio;
 use App\Models\Video;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // leorlik@ya.ru
@@ -16,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('/account/registration', [AuthorizationController::class, 'registration']);
 Route::post('/account/login', [AuthorizationController::class, 'login']);
 Route::post('/account/logout', [AuthorizationController::class, 'logout']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/account/me', [AuthorizationController::class, 'me']);
+});
 
 Route::prefix('/peculiarities')->group(function (){
     Route::get('/', [PeculiaritiesController::class, 'peculiarities']);
@@ -25,14 +29,18 @@ Route::prefix('/peculiarities')->group(function (){
     Route::get('/paddock', [PeculiaritiesController::class, 'paddock']);
 });
 Route::prefix('/nurseries')->group(function (){
-    Route::get('/{page?}', [NurseriesController::class, 'index']);
+    Route::get('/', [NurseriesController::class, 'index']);
 });
 Route::prefix('/news')->group(function (){
     Route::get('/', [NewsController::class, 'index']);
-    Route::get('/show/{news}', [NewsController::class, 'show']);
+    Route::get('/show', [NewsController::class, 'show']);
 });
 Route::prefix('/comments')->group(function (){
-    Route::get('/{news}/{parent_comment?}/{page?}', [CommentsController::class, 'index']);
+    Route::get('/{news}/{page?}/{parent_comment?}', [CommentsController::class, 'index']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/store', [CommentsController::class, 'store']);
+        Route::post('/delete/{comment}', [CommentsController::class, 'destroy']);
+    });
 });
 Route::prefix('/media')->group(function (){
     Route::prefix('/photo')->group(function (){
@@ -54,9 +62,6 @@ Route::prefix('/media')->group(function (){
         Route::delete('/delete/{audio}', [Audio::class, 'destroy']);
     });
     Route::get('/{news}/{parent_comment?}/{page?}', [CommentsController::class, 'index']);
-});
-Route::prefix('/css')->group(function (){
-    Route::get('/', []);
 });
 
 Route::middleware('auth:sanctum')->group(function (){

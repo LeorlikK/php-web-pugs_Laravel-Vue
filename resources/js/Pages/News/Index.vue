@@ -1,8 +1,13 @@
 <template>
+    <h3 class="content-title">Новости</h3>
     <div class="content">
         <div class="news">
             <div v-if="posts" v-for="post in posts">
-                <h1><a href="#">{{ post.title }}</a></h1><hr>
+                <h1>
+                    <router-link :to="{name: 'news_show', query: {id: post.id, page: pagination.current_page}}">
+                        {{post.title}}
+                    </router-link>
+                </h1><hr>
                 <div class="image">
                     <img class="image" :src="`/storage${post.image_url}`" alt="#">
                 </div><hr>
@@ -15,20 +20,20 @@
                 </div>
             </div>
         </div>
-        <Paginator
-            :current_page="pagination.current_page"
-            :last_page="pagination.last_page"
-            :total="pagination.total"
-            @changePage="changePage"
-        ></Paginator>
     </div>
-
+    <Paginator
+        :current_page="pagination.current_page"
+        :last_page="pagination.last_page"
+        :total="pagination.total"
+        @changePage="changePage"
+    ></Paginator>
 </template>
 
 <script>
 import axiosAuthUser from "@/axiosAuthUser";
 import {API_ROUTES} from "@/routs";
 import Paginator from "@/Components/Paginator.vue";
+import router from "@/router";
 
 export default {
     name: "Index",
@@ -37,19 +42,19 @@ export default {
         return {
             posts: [],
             pagination: {
-                current_page: null,
+                current_page: 1,
                 last_page: null,
                 total: null,
             },
-            page: 1
         }
     },
     methods: {
-        getPosts(){
+        getPosts(page){
+            this.pagination.current_page = page
             axiosAuthUser.get(`${API_ROUTES.public.news}`, {
                 params: {
-                    page: this.page
-                }
+                    page: String(this.pagination.current_page)
+                },
             })
                 .then(data => {
                     data = data.data
@@ -58,19 +63,19 @@ export default {
                     this.pagination.current_page = data.meta.current_page
                     this.pagination.last_page = data.meta.last_page
                     this.pagination.total = data.meta.total
-                    console.log(data)
                 })
                 .catch(errors => {
                     console.log(errors)
                 })
         },
         changePage(page) {
-            this.page = page
-            this.getPosts()
-        }
+            router.replace({ query: { page: page } })
+            router.currentRoute.value.query.page = page
+            this.getPosts(page)
+        },
     },
     mounted() {
-        this.getPosts()
+        this.getPosts(router.currentRoute.value.query.page)
     }
 }
 </script>

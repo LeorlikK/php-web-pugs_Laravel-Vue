@@ -16,7 +16,7 @@ class NewsController extends Controller
      */
     public function index(Request $request): AnonymousResourceCollection
     {
-        $perPage = 1;
+        $perPage = 5;
         $page = (int) $request->input('page') ?? 1;
 
         $news = News::with('user:id,login')
@@ -46,14 +46,17 @@ class NewsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(News $news): JsonResponse
+    public function show(Request $request): JsonResponse
     {
+        $news = News::with('user')->find($request->input('id'));
+
         if (!$news->publish) {
             return response()->json(['error' => 'Статья не опубликована'], 404);
         }
+
 //        $news->load(['comments' => function($query){
-//            $query->whereNull('parent_comment');
-//        }]);
+//            $query->whereNull('parent_comment')->with('user');
+//        }, 'user']);
 
         return response()->json($news);
     }

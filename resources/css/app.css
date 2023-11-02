@@ -1,5 +1,7 @@
+@import 'nurseries.css';
 @import 'news.css';
 @import 'login.css';
+@import 'peculiarities.css';
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -58,7 +60,9 @@ body {
     font-size: 16px;
     color: #444444FF;
     background-repeat: no-repeat;
-    background-position: 15%;
+    background-size: auto;
+    background-color: #f0f0f0;
+    background-position: 270px;
     background-attachment: fixed;
     height: 100%;
 }
@@ -108,14 +112,14 @@ header div:last-child {
 .btn {
     display: flex;
     color: #444444FF;
-    background: lightcoral;
+    background: #f08080;
     justify-content: center;
     align-items: center;
     padding: 10px 0;
     text-decoration: none;
     font-size: 1.2em;
     cursor: pointer;
-    border: 1px solid lightcoral;
+    border: 1px solid #f08080;
 }
 .btn:active {
     background-color: darkgray;
@@ -125,7 +129,9 @@ header div:last-child {
 }
 .btn-main {
     width: 120px;
-    height: 40px;
+    height: 45px;
+    z-index: 10;
+    font-weight: bolder;
 }
 .disclaimer {
     margin-top: 15px;
@@ -155,30 +161,54 @@ nav {
     margin-top: 40px;
 }
 .menu-main h3 {
-    font-size: 1.6em;
+    font-size: 1.2em;
     font-weight: 400;
-    color: #B99D61FF;
+    color: lightcoral;
+    text-transform: uppercase;
+    border-right: #B99D61FF;
 }
 .menu-main li {
-    margin-top: 10px;
+    margin-top: 20px;
 }
 .menu-main a {
     text-decoration: none;
+    font-weight: bolder;
     letter-spacing: 2px;
     text-indent: 20px;
     margin: 5px 0 100px 10px;
-    font-size: 1.1em;
+    font-size: 1em;
     color: #444444FF;
 }
 .menu-main a:before {
     content: '\2014';
+    margin-right: 10px;
 }
 .menu-main a:hover {
-    font-size: 1.15em;
     color: #B99D61FF;
 }
+.category-menu {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    height: 45px;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background-color: white;
+    margin: auto auto;
+}
+.category-menu a {
+    color: #444444FF;
+    font-weight: bolder;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 3px;
+}
+.category-menu a:hover {
+    text-decoration-color: lightcoral;
+}
 .container {
-    width: 60%;
+    width: 53%;
     margin: 60px auto;
 }
 .content {
@@ -186,39 +216,58 @@ nav {
     position: relative;
     justify-content: space-around;
     align-items: center;
-    background-color: rgba(128, 128, 128, 0.6);
+    background-color: rgba(252,252,252,.7);
+    box-shadow: 0 0 30px rgba(0,0,0,.2);
     border-radius: 10px;
-    padding: 20px;
-    width: 80%;
     min-height: 500px;
     margin: auto;
 }
+.content-title {
+    font-size: 1.7em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.comments-title {
+    margin: 50px 0 5px 10px;
+    color: lightcoral;
+    font-weight: bolder;
+    font-size: 1.2em;
+}
+.comments-content {
+    min-height: 100px;
+}
 .paginator {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
+    margin-top: 20px;
 }
 .paginator .page {
     border: 1px solid lightcoral;
     background-color: lightcoral;
     color: #F5F5F5FF;
     margin-right: 2px;
-    width: 25px;
-    height: 30px;
+    width: 32px;
+    height: 38px;
     cursor: pointer;
 }
 .paginator .page:hover {
     scale: 1.1;
 }
+.paginator .page:active {
+    background-color: darkgray;
+}
 .paginator .first-page {
-    width: 45px;
+    width: 55px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 .paginator .current-page {
     color: #444444FF;
     border-color: #F5F5F5FF;
 }
 .paginator .last-page {
-    width: 45px;
+    width: 55px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 @media screen and (min-width: 300px) and (max-width: 800px){

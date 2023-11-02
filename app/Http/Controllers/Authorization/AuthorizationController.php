@@ -42,9 +42,16 @@ class AuthorizationController extends Controller
         return response()->json(['errors' => ['password' => ['Неверный логин или пароль']]], 422);
     }
 
-    public function logout(): string
+    public function logout(): JsonResponse
     {
+        $user = auth()->user();
         auth()->logout();
-        return response()->json();
+        return response()->json(['user' => $user], 200);
+    }
+
+    public function me(): JsonResponse
+    {
+        $user = auth()->user();
+        return response()->json(['user' => $user]);
     }
 }

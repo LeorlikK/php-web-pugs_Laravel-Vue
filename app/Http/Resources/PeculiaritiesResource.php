@@ -15,8 +15,8 @@ class PeculiaritiesResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'title' => $this->title,
-            'text' => $this->text
+            'title' => $this->title ?? null,
+            'text' => $this->text ?? null
         ];
     }
 }
