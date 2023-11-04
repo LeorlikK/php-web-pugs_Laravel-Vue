@@ -16,8 +16,8 @@
                     <p>{{ text }}</p>
                 </div><hr>
                 <div class="news-footer">
-<!--                    <p>Автор: {{user.login}}</p>-->
-                    <p>Дата публикации: {{ created_at }}</p>
+                    <p class="author">Автор: {{user}}</p>
+                    <p class="date">Дата публикации: {{ created_at }}</p>
                 </div>
             </div>
         </div>
@@ -32,10 +32,11 @@ import axiosAuthUser from "@/axiosAuthUser";
 import {API_ROUTES} from "@/routs";
 import router from "@/router";
 import Comments from "@/Components/Comments/Comments.vue";
+import DeleteComment from "@/Components/Сonfirmation/Confirm.vue";
 
 export default {
     name: "Show",
-    components: {Comments},
+    components: {DeleteComment, Comments},
     data() {
         return {
             news_id: null,
@@ -56,12 +57,13 @@ export default {
                 },
             })
                 .then(data => {
-                    this.image_url = data.data.image_url
-                    this.title = data.data.title
-                    this.text = data.data.text
-                    this.user = data.data.user
-                    this.created_at = data.data.created_at
-                    this.updated_at = data.data.updated_at
+                    console.log(data.data.data)
+                    this.image_url = data.data.data.image_url
+                    this.title = data.data.data.title
+                    this.text = data.data.data.text
+                    this.user = data.data.data.user
+                    this.created_at = data.data.data.created_at
+                    this.updated_at = data.data.data.updated_at
                 })
                 .catch(errors => {
                     console.log(errors)

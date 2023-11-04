@@ -8,7 +8,6 @@ use App\Http\Controllers\Nurseries\NurseriesController;
 use App\Http\Controllers\Peculiarities\PeculiaritiesController;
 use App\Models\Audio;
 use App\Models\Video;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // leorlik@ya.ru
@@ -44,7 +43,7 @@ Route::prefix('/comments')->group(function (){
 });
 Route::prefix('/media')->group(function (){
     Route::prefix('/photo')->group(function (){
-        Route::get('/{page}', [PhotoController::class, 'index']);
+        Route::get('/{page?}', [PhotoController::class, 'index']);
         Route::post('/store', [PhotoController::class, 'store']);
         Route::patch('/update/{photo}', [PhotoController::class, 'update']);
         Route::delete('/delete/{photo}', [PhotoController::class, 'destroy']);

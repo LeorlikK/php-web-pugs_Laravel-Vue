@@ -80,6 +80,11 @@ const router = createRouter({
             path: '/news/show',
             name:'news_show',
             component: () => import('./Pages/News/Show.vue'),
+        },
+        {
+            path: '/photos',
+            name:'photos',
+            component: () => import('./Pages/Media/Photo.vue'),
         }
     ]
 })

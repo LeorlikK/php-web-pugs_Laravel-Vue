@@ -28,7 +28,7 @@
 <script>
 export default {
     name: "Comment",
-    emits: ['getCommentsChildren', 'hidden', 'changeAnswerCommentId', 'deleteComment'],
+    emits: ['getCommentsChildren', 'hidden', 'changeAnswerCommentId', 'confirmDelete'],
     props: {
         comment: {},
         answerCommentId: {}
@@ -43,10 +43,10 @@ export default {
         changeAnswerCommentId(id) {
             this.$emit('changeAnswerCommentId', id)
         },
-        deleteComment(comment, parent_comment) {
-            this.$emit('deleteComment', comment)
+        deleteComment(comment) {
+            this.$emit('confirmDelete', comment)
         }
-    }
+    },
 }
 </script>
 

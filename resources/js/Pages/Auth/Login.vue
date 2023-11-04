@@ -40,7 +40,6 @@ export default {
         login() {
             axiosAuthUser.get('/sanctum/csrf-cookie')
                 .then(data => {
-                    console.log(data);
                     axiosAuthUser.post(API_ROUTES.public.login, {
                         email: this.email, password: this.password
                     })

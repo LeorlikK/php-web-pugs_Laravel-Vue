@@ -22,5 +22,9 @@ export const API_ROUTES = {
         news_show: '/api/news/show',
 
         comments: '/api/comments',
+
+        photos: '/api/media/photo',
+        video: '/api/media/video',
+        audio: '/api/media/audio',
     }
 }

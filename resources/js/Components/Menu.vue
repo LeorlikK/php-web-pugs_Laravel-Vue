@@ -12,7 +12,7 @@
                 <router-link :to="{name: 'news', query: { page: 1 }}">Новости</router-link>
             </li>
             <li>
-                <router-link :to="{name: 'home'}">Медиа</router-link>
+                <router-link :to="{name: 'photos'}">Медиа</router-link>
             </li>
             <li>
                 <router-link :to="{name: 'home'}">Админка</router-link>

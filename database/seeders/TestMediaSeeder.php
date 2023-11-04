@@ -2,10 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Comment;
-use App\Models\News;
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Photo;
 use Illuminate\Database\Seeder;
 
 class TestMediaSeeder extends Seeder
@@ -15,6 +12,6 @@ class TestMediaSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::factory(1)->create();
+        Photo::factory(50)->create();
     }
 }

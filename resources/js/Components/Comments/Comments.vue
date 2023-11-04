@@ -3,7 +3,7 @@
     <div class="content comments-content">
         <div class="comments">
             <div v-if="this.$store.getters.getIsAuth" class="input-comment">
-                <textarea placeholder="Введите комментарий:" v-model="input"></textarea>
+                <textarea v-model="inputField" placeholder="Введите комментарий:" ></textarea>
                 <div>
                     <a @click.prevent="cancel">Отмена</a>
                     <a @click.prevent="inputComment(null)">Оставить комментарий</a>
@@ -19,11 +19,11 @@
                     @getCommentsChildren="getCommentsChildren"
                     @hidden="hidden"
                     @changeAnswerCommentId="changeAnswerCommentId"
-                    @deleteComment="deleteComment"
+                    @confirmDelete="confirmDelete"
                 ></Comment>
 
                 <div v-if="this.$store.getters.getIsAuth && comment.id === this.answerCommentId" class="input-comment input-answer">
-                    <textarea placeholder="Введите комментарий:" v-model="answerInput"></textarea>
+                    <textarea v-model="answerInput" placeholder="Введите комментарий:" id="textareaId"></textarea>
                     <div>
                         <a @click.prevent="answerCancel">Отмена</a>
                         <a @click.prevent="answerInputComment(comment)">Ответить</a>
@@ -36,12 +36,12 @@
                     :key="comment_children.id">
                     <Comment class="comments-children"
                         :comment="comment_children"
+                        @confirmDelete="confirmDelete"
                     ></Comment>
                 </template>
 
                 <div v-show="!comment.loading && comment.comments_children.length > 0">
-                    <a class="show-more"
-                       v-if="comment.children_count > 0"
+                    <a v-if="comment.children_count > 0" class="show-more btn-comment"
                        @click.prevent="getCommentsChildren(comment.comments_children.pagination?.current_page + 1, comment.id, comment)">
                         {{
                             comment.comments_children.pagination?.current_page >= comment.comments_children.pagination?.last_page
@@ -52,7 +52,7 @@
                         }}
                     </a>
                 </div>
-                <div class="comments-loading" v-show="comment.loading">
+                <div v-show="comment.loading" class="comments-loading">
                     <span class="loading-text">Loading</span>
                     <div></div>
                     <div></div>
@@ -67,6 +67,11 @@
         :total="pagination.total"
         @changePage="changePage"
     ></Paginator>
+    <Confirm
+        :text="textDeleteComment"
+        :question="question"
+        @answer="deleteComment"
+    ></Confirm>
 </template>
 
 <script>
@@ -77,11 +82,12 @@ import Comment from "@/Components/Comments/Comment.vue";
 import cookiesMixin from "@/mixins/authMixin";
 import axios from "axios";
 import errorsLogMixin from "@/mixins/errorsLogMixin";
+import Confirm from "@/Components/Сonfirmation/Confirm.vue";
 
 export default {
     name: "Comments",
     mixins: [cookiesMixin, errorsLogMixin],
-    components: { Comment, Paginator },
+    components: {Confirm, Comment, Paginator },
     props: {
         news_id: {
             type: Number,
@@ -95,9 +101,13 @@ export default {
                 last_page: null,
                 total: null,
             },
-            input: null,
+            inputField: null,
             answerInput: null,
-            answerCommentId: false
+            answerCommentId: false,
+            question: false,
+            commentDelete: null,
+
+            textDeleteComment: 'Удалить коментарий??'
         };
     },
     methods: {
@@ -119,7 +129,7 @@ export default {
                     this.pagination.total = data.meta.total;
                 })
                 .catch((errors) => {
-                    console.log(errors);
+                    this.errorsLog(errors)
                 });
         },
         getCommentsChildren(page, parent_comment, comment) {
@@ -135,17 +145,22 @@ export default {
                             last_page: data.data.meta.last_page,
                             total: data.data.meta.total,
                         };
-                        comment.comments_children.push(...data.data.data);
+                        const array = []
+                        comment.comments_children.map(com => {
+                            array.push(com.id)
+                        })
+                        const filterComment = data.data.data.filter(com => !array.includes(com.id));
+                        comment.comments_children.push(...filterComment);
                         comment.loading = false
                     })
                     .catch((errors) => {
-                        console.log(errors);
+                        this.errorsLog(errors)
                     });
             }
         },
         inputComment(parent_comment) {
             const data = {
-                text: this.input,
+                text: this.inputField,
                 news_id: this.news_id,
                 parent_comment: parent_comment
             };
@@ -172,7 +187,6 @@ export default {
             };
             axiosAuthUser.post(API_ROUTES.protected.comments_store, data)
                 .then(data => {
-                    console.log(data.data.comment)
                     const comment = data.data.comment
 
                     comment_parent.comments_children.unshift(comment)
@@ -185,7 +199,7 @@ export default {
                 });
         },
         cancel() {
-            this.input = null
+            this.inputField = null
         },
         answerCancel() {
             this.answerCommentId = null
@@ -200,16 +214,40 @@ export default {
         },
         changeAnswerCommentId(id) {
             this.answerCommentId = id
+
+            const textarea = document.getElementById('textareaId')
+            if (textarea) {
+                textarea.removeAttribute('autofocus');
+            }
         },
-        deleteComment(comment) {
-            console.log(comment)
-            axiosAuthUser.post(API_ROUTES.protected.comments_delete + `/${comment.id}`)
-                .then(data => {
-                    console.log(data)
-                })
-                .catch(errors => {
-                    this.errorsLog(errors)
-                });
+        confirmDelete(comment){
+            this.question = true
+            this.commentDelete = comment
+        },
+        deleteComment(confirm) {
+            this.question = false
+            if (confirm){
+                const comment = this.commentDelete
+                this.commentDelete = null
+                axiosAuthUser.post(API_ROUTES.protected.comments_delete + `/${comment.id}`)
+                    .then(data => {
+                        if (comment.parent_comment) {
+                            const indexParentComment = this.comments.findIndex(c => c.id === comment.parent_comment);
+                            const parent_comment = this.comments[indexParentComment]
+                            const indexChildrenComment = parent_comment.comments_children.findIndex(c => c.id === comment.id);
+                            parent_comment.comments_children.splice(indexChildrenComment, 1);
+                            this.comments[indexParentComment].children_count -= 1
+                        } else {
+                            const indexComment = this.comments.findIndex(c => c.id === comment.id);
+                            this.comments.splice(indexComment, 1);
+                        }
+                    })
+                    .catch(errors => {
+                        this.errorsLog(errors)
+                    });
+            }else {
+                this.commentDelete = null
+            }
         }
     },
     mounted() {

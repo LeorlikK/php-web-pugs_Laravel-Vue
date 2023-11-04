@@ -8,8 +8,9 @@ axiosAuthUser.interceptors.response.use(response => {
     return response
 }, reject => {
     if (reject.response.status === 401 || reject.response.status === 419){
-        authMixin.methods.exit()
         router.push({name: 'login'})
+        router.replace({name: 'login'})
+        return Promise.reject(reject);
     }else {
         return Promise.reject(reject)
     }
