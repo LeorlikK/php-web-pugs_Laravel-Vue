@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import {API_ROUTES} from "@/routs"
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory(), // process.env.BASE_URL
     routes:[
         {
             path: '/',
@@ -85,6 +85,16 @@ const router = createRouter({
             path: '/photos',
             name:'photos',
             component: () => import('./Pages/Media/Photo.vue'),
+        },
+        {
+            path: '/video',
+            name:'video',
+            component: () => import('./Pages/Media/Video.vue'),
+        },
+        {
+            path: '/audio',
+            name:'audio',
+            component: () => import('./Pages/Media/Audio.vue'),
         }
     ]
 })

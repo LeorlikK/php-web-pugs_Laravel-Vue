@@ -1,6 +1,6 @@
 import Header from "./Components/Header.vue";
 import Disclaimer from "./Components/Disclaimer.vue";
-import Menu from "./Components/Menu.vue";
+import Menu from "./Components/Menu/MainMenu.vue";
 import Paginator from "@/Components/Paginator.vue";
 
 const components = []

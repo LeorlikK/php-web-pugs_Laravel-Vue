@@ -1,17 +1,20 @@
 <template>
-    <div class="category-menu media-menu">
-        <ul>
-            <li><router-link :to="{name:'peculiarities_care'}">Photos</router-link></li>
-            <li><router-link :to="{name:'peculiarities_nutrition'}">Video</router-link></li>
-            <li><router-link :to="{name:'peculiarities_health'}">Audio</router-link></li>
-        </ul>
-    </div>
+    <MediaMenu></MediaMenu>
     <h3 class="content-title">Photos</h3>
-    <div class="content">
+    <div class="content media-content">
         <div class="media">
-            <div></div>
+            <div v-for="post in posts" class="photo">
+                <div>
+                    <img @click.prevent="changeShowImage(post.url)" class="image photo-img" :src="`/storage${post.url}`" alt="#">
+                </div>
+                <p>{{ post.name }}</p>
+            </div>
         </div>
     </div>
+    <BigSize
+        @changeShowImage="changeShowImage"
+        :showImage="showImage"
+    ></BigSize>
     <Paginator
         :current_page="pagination.current_page"
         :last_page="pagination.last_page"
@@ -24,11 +27,15 @@
 import Paginator from "@/Components/Paginator.vue";
 import {API_ROUTES} from "@/routs";
 import axiosAuthUser from "@/axiosAuthUser";
+import BigSize from "@/Media/BigSize.vue";
+import router from "@/router";
+import MediaMenu from "@/Components/Menu/MediaMenu.vue";
 export default {
     name: "Photo",
-    components: {Paginator},
+    components: {MediaMenu, BigSize, Paginator},
     data() {
         return {
+            showImage: false,
             posts: [],
             pagination: {
                 current_page: 1,
@@ -58,6 +65,14 @@ export default {
                     console.log(errors)
                 })
         },
+        changeShowImage(value) {
+            this.showImage = value
+        },
+        changePage(page) {
+            router.replace({ query: { page: page } })
+            router.currentRoute.value.query.page = page
+            this.getPosts(page)
+        }
     },
     mounted() {
         this.getPosts()

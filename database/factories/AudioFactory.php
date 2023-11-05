@@ -17,7 +17,9 @@ class AudioFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'url' => '/audio/audio_default.mp3',
+            'name' => fake()->name,
+            'size' => '100500',
         ];
     }
 }

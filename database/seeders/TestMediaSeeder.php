@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Audio;
 use App\Models\Photo;
+use App\Models\Video;
 use Illuminate\Database\Seeder;
 
 class TestMediaSeeder extends Seeder
@@ -13,5 +15,7 @@ class TestMediaSeeder extends Seeder
     public function run(): void
     {
         Photo::factory(50)->create();
+        Video::factory(50)->create();
+        Audio::factory(50)->create();
     }
 }

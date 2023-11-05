@@ -2,12 +2,12 @@
 
 use App\Http\Controllers\Authorization\AuthorizationController;
 use App\Http\Controllers\Comments\CommentsController;
+use App\Http\Controllers\Media\AudioController;
 use App\Http\Controllers\Media\PhotoController;
+use App\Http\Controllers\Media\VideoController;
 use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\Nurseries\NurseriesController;
 use App\Http\Controllers\Peculiarities\PeculiaritiesController;
-use App\Models\Audio;
-use App\Models\Video;
 use Illuminate\Support\Facades\Route;
 
 // leorlik@ya.ru
@@ -49,16 +49,16 @@ Route::prefix('/media')->group(function (){
         Route::delete('/delete/{photo}', [PhotoController::class, 'destroy']);
     });
     Route::prefix('/video')->group(function (){
-        Route::get('/{page}', [Video::class, 'index']);
-        Route::post('/store', [Video::class, 'store']);
-        Route::patch('/update/{video}', [Video::class, 'update']);
-        Route::delete('/delete/{video}', [Video::class, 'destroy']);
+        Route::get('/{page?}', [VideoController::class, 'index']);
+        Route::post('/store', [VideoController::class, 'store']);
+        Route::patch('/update/{video}', [VideoController::class, 'update']);
+        Route::delete('/delete/{video}', [VideoController::class, 'destroy']);
     });
     Route::prefix('/audio')->group(function (){
-        Route::get('/{page}', [Audio::class, 'index']);
-        Route::post('/store', [Audio::class, 'store']);
-        Route::patch('/update/{audio}', [Audio::class, 'update']);
-        Route::delete('/delete/{audio}', [Audio::class, 'destroy']);
+        Route::get('/{page?}', [AudioController::class, 'index']);
+        Route::post('/store', [AudioController::class, 'store']);
+        Route::patch('/update/{audio}', [AudioController::class, 'update']);
+        Route::delete('/delete/{audio}', [AudioController::class, 'destroy']);
     });
     Route::get('/{news}/{parent_comment?}/{page?}', [CommentsController::class, 'index']);
 });
