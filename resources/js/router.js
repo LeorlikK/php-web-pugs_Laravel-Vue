@@ -15,9 +15,14 @@ const router = createRouter({
             component: () => import('./Pages/Auth/Login.vue')
         },
         {
-            path: '/api/account/registration',
+            path: '/registration',
             name:'registration',
             component: () => import('./Pages/Auth/Registration.vue'),
+        },
+        {
+            path: '/account/personal-area',
+            name:'personal_area',
+            component: () => import('./Pages/PersonalArea/PersonalArea.vue'),
         },
         {
             path: '/peculiarities',

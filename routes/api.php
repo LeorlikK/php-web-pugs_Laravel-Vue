@@ -8,6 +8,7 @@ use App\Http\Controllers\Media\VideoController;
 use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\Nurseries\NurseriesController;
 use App\Http\Controllers\Peculiarities\PeculiaritiesController;
+use App\Http\Controllers\PersonalArea\PersonalAreaController;
 use Illuminate\Support\Facades\Route;
 
 // leorlik@ya.ru
@@ -17,7 +18,8 @@ Route::post('/account/registration', [AuthorizationController::class, 'registrat
 Route::post('/account/login', [AuthorizationController::class, 'login']);
 Route::post('/account/logout', [AuthorizationController::class, 'logout']);
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/account/me', [AuthorizationController::class, 'me']);
+    Route::get('/account/me', [PersonalAreaController::class, 'me']);
+    Route::post('/account/update', [PersonalAreaController::class, 'update']);
 });
 
 Route::prefix('/peculiarities')->group(function (){

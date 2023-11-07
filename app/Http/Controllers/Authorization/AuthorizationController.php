@@ -7,11 +7,8 @@ use App\Http\Requests\Authorization\LoginRequest;
 use App\Http\Requests\Authorization\RegistrationRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\ValidationException;
 
 class AuthorizationController extends Controller
 {
@@ -19,7 +16,7 @@ class AuthorizationController extends Controller
     {
         $request = $request->validated();
 
-        if (isset($request['avatar'])) $request['avatar'] = Storage::disk('public')->put('/images/avatars', $request['avatar']);
+        if (isset($request['avatar'])) $request['avatar'] = '/' . Storage::disk('public')->put('/images/avatars', $request['avatar']);
         else $request['avatar'] = '/images/avatars/avatar_default.png';
 
         $request['password'] = Hash::make($request['password']);
@@ -47,11 +44,5 @@ class AuthorizationController extends Controller
         $user = auth()->user();
         auth()->logout();
         return response()->json(['user' => $user], 200);
-    }
-
-    public function me(): JsonResponse
-    {
-        $user = auth()->user();
-        return response()->json(['user' => $user]);
     }
 }

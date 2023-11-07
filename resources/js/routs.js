@@ -1,6 +1,7 @@
 export const API_ROUTES = {
     protected: {
         me: '/api/account/me',
+        updateMe: '/api/account/update',
         comments_store: '/api/comments/store',
         comments_delete: '/api/comments/delete',
     },

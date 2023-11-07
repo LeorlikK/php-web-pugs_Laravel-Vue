@@ -7,7 +7,7 @@
             <a @click.prevent="logout" class="btn btn-main">{{this.$store.getters.getLogin}}</a>
             <div class="user-menu">
                 <ul>
-                    <li><router-link :to="{name: 'home'}">Личный кабинет</router-link></li>
+                    <li><router-link :to="{name: 'personal_area'}">Личный кабинет</router-link></li>
                     <li><a @click.prevent="logout">Выход</a></li>
                 </ul>
             </div>
