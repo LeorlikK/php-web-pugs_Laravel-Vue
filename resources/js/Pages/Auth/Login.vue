@@ -1,18 +1,21 @@
 <template>
-    <div class="content">
-        <div class="login">
-            <div>
-                <input v-model="email" placeholder="Email">
-                <p v-if="this.errors.emailError">{{ this.errors.emailError[0] }}</p>
+    <div class="container-login">
+        <div class="content content-login">
+            <div class="login">
+                <div>
+                    <input v-model="email" placeholder="Email">
+                    <p v-if="this.errors.emailError">{{ this.errors.emailError[0] }}</p>
+                </div>
+                <div>
+                    <input v-model="password" type="password" placeholder="Password">
+                    <p v-if="this.errors.passwordError">{{ this.errors.passwordError[0] }}</p>
+                </div>
+                <a @click.prevent="login" class="btn">Войти</a>
+                <router-link :to="{name: 'registration'}" class="btn">Регистрация</router-link>
             </div>
-            <div>
-                <input v-model="password" type="password" placeholder="Password">
-                <p v-if="this.errors.passwordError">{{ this.errors.passwordError[0] }}</p>
-            </div>
-            <a @click.prevent="login" class="btn">Войти</a>
-            <router-link :to="{name: 'registration'}" class="btn">Регистрация</router-link>
         </div>
     </div>
+
 </template>
 
 <script>

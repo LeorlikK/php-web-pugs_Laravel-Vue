@@ -2,14 +2,12 @@
     <MediaMenu></MediaMenu>
     <div class="container-media">
         <h3 class="content-title">Photos</h3>
-        <div class="content content-media">
-            <div class="media">
-                <div v-for="post in posts" class="photo">
-                    <div>
-                        <img @click.prevent="changeShowImage(post.url)" class="image photo-img" :src="`/storage${post.url}`" alt="#">
-                    </div>
-                    <p>{{ post.name }}</p>
+        <div :class="posts.length > 3 ? 'counter-items-4' : 'counter-items-3'" class="content content-media">
+            <div v-for="post in posts" class="photo">
+                <div>
+                    <img @click.prevent="changeShowImage(post.url)" class="image photo-img" :src="`/storage${post.url}`" alt="#">
                 </div>
+                <p>{{ post.name }}</p>
             </div>
         </div>
         <BigSize
@@ -17,6 +15,7 @@
             :showImage="showImage"
         ></BigSize>
         <Paginator
+            v-if="pagination.last_page > 1"
             :current_page="pagination.current_page"
             :last_page="pagination.last_page"
             :total="pagination.total"

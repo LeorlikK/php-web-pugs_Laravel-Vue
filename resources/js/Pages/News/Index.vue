@@ -23,6 +23,7 @@
             </div>
         </div>
         <Paginator
+            v-if="pagination.last_page > 1"
             :current_page="pagination.current_page"
             :last_page="pagination.last_page"
             :total="pagination.total"

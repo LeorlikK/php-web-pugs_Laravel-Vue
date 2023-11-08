@@ -216,6 +216,13 @@ nav {
     border-bottom-right-radius: 5px;
 }
 /** Login */
+.container-login, .container-registration {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+.content-login, .content-registration {
+    display: flex;
+}
 .login, .registration {
     height: 100%;
     width: 100%;
@@ -581,17 +588,22 @@ nav {
     margin-right: 20%;
 }
 .content-media {
-    justify-content: flex-start;
     align-items: normal;
-}
-.media {
     border-radius: 5px;
     padding: 30px;
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: left;
     flex-wrap: wrap
+}
+.content-audio {
+
+}
+.counter-items-3 {
+    justify-content: left;
+}
+.counter-items-4 {
+    justify-content: space-between;
 }
 .media-menu ul{
     display: grid;

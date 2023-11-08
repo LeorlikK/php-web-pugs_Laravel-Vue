@@ -2,20 +2,19 @@
     <MediaMenu></MediaMenu>
     <div class="container-media">
         <h3 class="content-title">Audio</h3>
-        <div class="content content-media">
-            <div class="media">
-                <div v-for="post in posts" class="audio">
-                    <div>
-                        <audio
-                            :volume="volume"
-                            @input="updateVolume"
-                            controls :src="`/storage${post.url}`" preload="metadata"></audio>
-                    </div>
-                    <p>{{ post.name }}</p>
+        <div class="content content-audio">
+            <div v-for="post in posts" class="audio">
+                <div>
+                    <audio
+                        :volume="volume"
+                        @input="updateVolume"
+                        controls :src="`/storage${post.url}`" preload="metadata"></audio>
                 </div>
+                <p>{{ post.name }}</p>
             </div>
         </div>
         <Paginator
+            v-if="pagination.last_page > 1"
             :current_page="pagination.current_page"
             :last_page="pagination.last_page"
             :total="pagination.total"

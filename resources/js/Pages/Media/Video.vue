@@ -1,8 +1,8 @@
 <template>
     <MediaMenu></MediaMenu>
-    <h3 class="content-title">Video</h3>
-    <div class="content content-media">
-        <div class="media">
+    <div class="container-media">
+        <h3 class="content-title">Video</h3>
+        <div :class="posts.length > 3 ? 'counter-items-4' : 'counter-items-3'" class="content content-media">
             <div v-for="post in posts" class="photo">
                 <div>
                     <video
@@ -15,13 +15,15 @@
                 <p>{{ post.name }}</p>
             </div>
         </div>
+        <Paginator
+            v-if="pagination.last_page > 1"
+            :current_page="pagination.current_page"
+            :last_page="pagination.last_page"
+            :total="pagination.total"
+            @changePage="changePage"
+        ></Paginator>
     </div>
-    <Paginator
-        :current_page="pagination.current_page"
-        :last_page="pagination.last_page"
-        :total="pagination.total"
-        @changePage="changePage"
-    ></Paginator>
+
 </template>
 
 <script>

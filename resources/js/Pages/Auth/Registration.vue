@@ -1,28 +1,30 @@
 <template>
-    <div class="content">
-        <div class="registration">
-            <div>
-                <input v-model="login" placeholder="Login">
-                <p v-if="this.errors.loginError">{{ this.errors.loginError[0] }}</p>
+    <div class="container-registration">
+        <div class="content content-registration">
+            <div class="registration">
+                <div>
+                    <input v-model="login" placeholder="Login">
+                    <p v-if="this.errors.loginError">{{ this.errors.loginError[0] }}</p>
+                </div>
+                <div>
+                    <input v-model="email" type="email" placeholder="Email">
+                    <p v-if="this.errors.emailError">{{ this.errors.emailError[0] }}</p>
+                </div>
+                <div>
+                    <input v-model="password" type="password" placeholder="Password">
+                    <p v-if="this.errors.passwordError">{{ this.errors.passwordError[0] }}</p>
+                </div>
+                <div>
+                    <input v-model="currentPassword" type="password" placeholder="Password Confirmation">
+                    <p v-if="this.errors.currentPasswordError">{{ this.errors.currentPasswordError[0] }}</p>
+                </div>
+                <div>
+                    <input v-on:change="imageChange" type="file" accept="image/*,.png,.jpg,.jpeg,.gif">
+                    <p v-if="this.errors.avatarError">{{ this.errors.avatarError[0] }}</p>
+                </div>
+                <a @click.prevent="registration" class="btn">Зарегистрироваться</a>
+                <router-link :to="{name: 'login'}" class="btn">Назад</router-link>
             </div>
-            <div>
-                <input v-model="email" type="email" placeholder="Email">
-                <p v-if="this.errors.emailError">{{ this.errors.emailError[0] }}</p>
-            </div>
-            <div>
-                <input v-model="password" type="password" placeholder="Password">
-                <p v-if="this.errors.passwordError">{{ this.errors.passwordError[0] }}</p>
-            </div>
-            <div>
-                <input v-model="currentPassword" type="password" placeholder="Password Confirmation">
-                <p v-if="this.errors.currentPasswordError">{{ this.errors.currentPasswordError[0] }}</p>
-            </div>
-            <div>
-                <input v-on:change="imageChange" type="file" accept="image/*,.png,.jpg,.jpeg,.gif">
-                <p v-if="this.errors.avatarError">{{ this.errors.avatarError[0] }}</p>
-            </div>
-            <a @click.prevent="registration" class="btn">Зарегистрироваться</a>
-            <router-link :to="{name: 'login'}" class="btn">Назад</router-link>
         </div>
     </div>
 </template>
