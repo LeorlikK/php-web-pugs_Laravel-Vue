@@ -1,30 +1,33 @@
 <template>
-    <div class="content">
-        <div class="news news-show">
-            <div>
-                <router-link :to="{name: 'news', query: {page: $router.currentRoute.value.query.page ?? 1}}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-90deg-left" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M1.146 4.854a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H12.5A2.5 2.5 0 0 1 15 6.5v8a.5.5 0 0 1-1 0v-8A1.5 1.5 0 0 0 12.5 5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4z"></path>
-                    </svg>
-                </router-link>
-
-                <h1>{{title}}</h1><hr>
-                <div class="image">
-                    <img class="image" :src="`/storage${image_url}`" alt="#">
-                </div><hr>
+    <div class="container-news-show">
+        <div class="content content-news">
+            <div class="news news-show">
                 <div>
-                    <p>{{ text }}</p>
-                </div><hr>
-                <div class="news-footer">
-                    <p class="author">Автор: {{user}}</p>
-                    <p class="date">Дата публикации: {{ created_at }}</p>
+                    <router-link :to="{name: 'news', query: {page: $router.currentRoute.value.query.page ?? 1}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-90deg-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1.146 4.854a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H12.5A2.5 2.5 0 0 1 15 6.5v8a.5.5 0 0 1-1 0v-8A1.5 1.5 0 0 0 12.5 5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4z"></path>
+                        </svg>
+                    </router-link>
+
+                    <h1>{{title}}</h1><hr>
+                    <div class="image">
+                        <img class="image" :src="`/storage${image_url}`" alt="#">
+                    </div><hr>
+                    <div>
+                        <p>{{ text }}</p>
+                    </div><hr>
+                    <div class="news-footer">
+                        <p class="author">Автор: {{user}}</p>
+                        <p class="date">Дата публикации: {{ created_at }}</p>
+                    </div>
                 </div>
             </div>
         </div>
+        <Comments
+            :news_id="4"
+        ></Comments>
     </div>
-    <Comments
-        :news_id="4"
-    ></Comments>
+
 </template>
 
 <script>

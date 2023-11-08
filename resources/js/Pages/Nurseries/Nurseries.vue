@@ -1,8 +1,8 @@
 <template>
-    <h3 class="content-title">Питомники мопсов</h3>
-    <div class="content">
-        <div class="nurseries">
-            <div v-if="posts" v-for="post in posts">
+    <div class="container-nurseries">
+        <h3 class="content-title">Питомники мопсов</h3>
+        <div class="content content-nurseries">
+            <div v-if="posts" v-for="post in posts" class="nurseries">
                 <h1>{{post.title}}</h1>
                 <div class="image">
                     <img class="image" :src="`/storage${post.image_url}`" alt="#">
@@ -19,13 +19,13 @@
                 </div>
             </div>
         </div>
+        <Paginator
+            :current_page="pagination.current_page"
+            :last_page="pagination.last_page"
+            :total="pagination.total"
+            @changePage="changePage"
+        ></Paginator>
     </div>
-    <Paginator
-        :current_page="pagination.current_page"
-        :last_page="pagination.last_page"
-        :total="pagination.total"
-        @changePage="changePage"
-    ></Paginator>
 </template>
 
 <script>

@@ -1,17 +1,17 @@
 <template>
-    <h3 class="content-title">{{title}}</h3>
-    <div class="content">
-        <div class="content-peculiarities">
+    <div class="container-peculiarities">
+        <h3 class="content-title">{{title}}</h3>
+        <div class="content content-peculiarities">
             <p v-html="text"></p>
         </div>
-    </div>
-    <div class="category-menu peculiarities-menu">
-        <ul>
-            <li @click="getPeculiarities(API_ROUTES.public.care)"><router-link :to="{name:'peculiarities_care'}">Уход</router-link></li>
-            <li @click="getPeculiarities(API_ROUTES.public.nutrition)"><router-link :to="{name:'peculiarities_nutrition'}">Питание</router-link></li>
-            <li @click="getPeculiarities(API_ROUTES.public.health)"><router-link :to="{name:'peculiarities_health'}">Здоровье</router-link></li>
-            <li @click="getPeculiarities(API_ROUTES.public.paddock)"><router-link :to="{name:'peculiarities_paddock'}">Выгул</router-link></li>
-        </ul>
+        <div class="category-menu peculiarities-menu">
+            <ul>
+                <li @click="getPeculiarities(API_ROUTES.public.care)"><router-link :to="{name:'peculiarities_care'}">Уход</router-link></li>
+                <li @click="getPeculiarities(API_ROUTES.public.nutrition)"><router-link :to="{name:'peculiarities_nutrition'}">Питание</router-link></li>
+                <li @click="getPeculiarities(API_ROUTES.public.health)"><router-link :to="{name:'peculiarities_health'}">Здоровье</router-link></li>
+                <li @click="getPeculiarities(API_ROUTES.public.paddock)"><router-link :to="{name:'peculiarities_paddock'}">Выгул</router-link></li>
+            </ul>
+        </div>
     </div>
 </template>
 

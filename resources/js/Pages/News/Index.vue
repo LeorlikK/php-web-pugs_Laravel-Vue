@@ -1,32 +1,35 @@
 <template>
-    <h3 class="content-title">Новости</h3>
-    <div class="content">
-        <div class="news">
-            <div v-if="posts" v-for="post in posts">
-                <h1>
-                    <router-link :to="{name: 'news_show', query: {id: post.id, page: pagination.current_page}}">
-                        {{post.title}}
-                    </router-link>
-                </h1><hr>
-                <div class="image">
-                    <img class="image" :src="`/storage${post.image_url}`" alt="#">
-                </div><hr>
-                <div>
-                    <h2>{{ post.short }}</h2>
-                </div><hr>
-                <div class="news-footer">
-                    <p>Автор: {{post.user}}</p>
-                    <p>Дата публикации: {{ post.created_at }}</p>
+    <div class="container-news">
+        <h3 class="content-title">Новости</h3>
+        <div class="content content-news">
+            <div class="news">
+                <div v-if="posts" v-for="post in posts">
+                    <h1>
+                        <router-link :to="{name: 'news_show', query: {id: post.id, page: pagination.current_page}}">
+                            {{post.title}}
+                        </router-link>
+                    </h1><hr>
+                    <div class="image">
+                        <img class="image" :src="`/storage${post.image_url}`" alt="#">
+                    </div><hr>
+                    <div>
+                        <h2>{{ post.short }}</h2>
+                    </div><hr>
+                    <div class="news-footer">
+                        <p>Автор: {{post.user}}</p>
+                        <p>Дата публикации: {{ post.created_at }}</p>
+                    </div>
                 </div>
             </div>
         </div>
+        <Paginator
+            :current_page="pagination.current_page"
+            :last_page="pagination.last_page"
+            :total="pagination.total"
+            @changePage="changePage"
+        ></Paginator>
     </div>
-    <Paginator
-        :current_page="pagination.current_page"
-        :last_page="pagination.last_page"
-        :total="pagination.total"
-        @changePage="changePage"
-    ></Paginator>
+
 </template>
 
 <script>

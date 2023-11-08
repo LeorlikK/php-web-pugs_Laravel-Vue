@@ -1,7 +1,7 @@
 <template>
     <MediaMenu></MediaMenu>
     <h3 class="content-title">Video</h3>
-    <div class="content media-content">
+    <div class="content content-media">
         <div class="media">
             <div v-for="post in posts" class="photo">
                 <div>

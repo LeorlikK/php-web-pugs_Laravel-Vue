@@ -100,6 +100,11 @@ const router = createRouter({
             path: '/audio',
             name:'audio',
             component: () => import('./Pages/Media/Audio.vue'),
+        },
+        {
+            path: '/admin',
+            name:'admin',
+            component: () => import('./Pages/Admin/Index.vue'),
         }
     ]
 })

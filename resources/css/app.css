@@ -155,11 +155,10 @@ nav {
     text-decoration-color: lightcoral;
 }
 .container {
-    width: 53%;
+    width: 100%;
     margin: 60px auto;
 }
 .content {
-    display: flex;
     position: relative;
     justify-content: space-around;
     align-items: center;
@@ -167,7 +166,7 @@ nav {
     box-shadow: 0 0 30px rgba(0,0,0,.2);
     border-radius: 10px;
     min-height: 500px;
-    margin: auto;
+    padding: 20px;
 }
 .content-title {
     font-size: 1.7em;
@@ -248,14 +247,12 @@ nav {
     cursor: pointer;
 }
 /** Peculiarities */
+.container-peculiarities {
+    margin-left: 20%;
+    margin-right: 20%;
+}
 .content-peculiarities {
-    display: flex;
-    position: relative;
-    border-radius: 10px;
-    padding: 20px;
-    min-height: 500px;
-    margin: auto;
-    width: 100%;
+
 }
 .content-peculiarities p {
     justify-content: left;
@@ -281,12 +278,16 @@ nav {
 .peculiarities-menu ul li:hover {
 }
 /** Nurseries */
-.nurseries {
+.container-nurseries {
+    margin-left: 25%;
+    margin-right: 25%;
+}
+.content-nurseries {
     width: 100%;
     border-radius: 5px;
     padding: 10px;
 }
-.nurseries > div{
+.nurseries {
     display: grid;
     grid-template-columns: 20% 65% 15%;
     grid-template-rows: 10% 100%;
@@ -328,10 +329,18 @@ nav {
     margin: 0 auto 10px;
 }
 /** News */
+.container-news {
+    margin-left: 25%;
+    margin-right: 25%;
+}
+.container-news-show{
+    margin-left: 20%;
+    margin-right: 20%;
+}
+.content-news {}
 .news {
     border-radius: 5px;
     padding: 40px;
-    width: 80%;
 }
 .news > div {
     color: #292727;
@@ -383,7 +392,6 @@ nav {
 .news-footer {
     display: flex;
     justify-content: space-between;
-
 }
 .news-footer .author {
     color: lightcoral;
@@ -397,7 +405,6 @@ nav {
 }
 .news-show {
     padding: 20px;
-    width: 100%;
 }
 .news-show > div {
     border: none;
@@ -569,7 +576,11 @@ nav {
     }
 }
 /** Media */
-.media-content {
+.container-media {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+.content-media {
     justify-content: flex-start;
     align-items: normal;
 }
@@ -655,9 +666,6 @@ nav {
     width: 100%;
     display: grid;
     margin: 5% 5%;
-    /*padding: 40px;*/
-    /*position: absolute;*/
-    /*top: 0;*/
 }
 .personal-area .text {
     display: flex;
@@ -719,12 +727,10 @@ nav {
     grid-row: 2/3;
 }
 .personal-login p {
-    /*grid-row: 2/3;*/
     margin: 10px 0;
 }
 .personal-avatar {
     grid-row: 3/4;
-    width: 400px;
     height: 400px;
 }
 .personal-avatar p {
@@ -736,17 +742,98 @@ nav {
     grid-column: 1/2;
     grid-row: 4/5;
 }
-.load-img {
-    grid-column: 1/2;
-    grid-row: 2/3;
+.img-file {
+    position: relative;
+    display: flex;
+    width: 100%;
+    border: 2px solid lightcoral;
     height: 30px;
-    margin-top: 10px
+}
+
+.img-file-input {
+    opacity: 0;
+    width: 190px;
+}
+
+.img-file-label {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-right: 2px solid lightcoral;
+}
+.img-file-label label {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.img-file-label:hover {
+    background: rgba(115, 198, 182, 0.5);
+}
+.img-file-info {
+    vertical-align: top;
 }
 .error-message {
     color: darkred;
     text-align: center;
 }
+/** Admin */
+.container-admin {
+    display: flex;
+    position: relative;
+    justify-content: space-around;
+    align-items: center;
+    margin-left: 20%;
+    margin-right: 10%;
+}
+.content-admin {
+    margin-top: 80px;
+    width: 100%;
+}
+.menu-admin {
+    background-color: lightcoral;
+    border-radius: 10px;
+    display: flex;
+    width: 100%;
+    position: absolute;
+    top: 0;
+}
+.menu-admin ul{
+    display: grid;
+    width: 100%;
+    height: 50px;
+    font-weight: inherit;
+    grid-template-columns: repeat(5, 20%);
+}
+.menu-admin ul li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid goldenrod;
+}
+.menu-admin ul li:last-child {
+    border: none;
+}
+.menu-admin ul li a {
+    color: #444444FF;
+    font-weight: bolder;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 3px;
+}
+.menu-admin ul li a:hover {
+    color: #B99D61FF;
 
+}
+.admin {
+
+}
 
 @media screen and (min-width: 300px) and (max-width: 800px){
     nav {

@@ -25,15 +25,21 @@
                 <div class="text">
                     <p class="static">Avatar:</p>
                 </div>
-                <input
-                    @change="changeImage"
-                    v-if="!update"
-                    class="load-img" type="file">
+                <div v-if="!update" class="img-file">
+                    <input
+                        @change="changeImage"
+                        type="file" class="img-file-input" id="examplePhotos" accept="image/*,.png,.jpg">
+                    <div
+                        :class="this.file?.name ? 'btn-active' : 'btn-cancel'"
+                        class="img-file-label">
+                        <label  for="examplePhotos">Выберите изображение:</label>
+                    </div>
+                    <p class="img-file-info">{{ this.file?.name ?? ''}}</p>
+                </div>
                 <p v-if="this.errors.loginError" class="error-message">{{ this.errors.loginError[0] }}</p>
 
                 <div class="block-img">
                     <img :src="this.avatar" alt="#" class="photo-img">
-<!--                    <img :src="this.imageUrl" alt="#" class="photo-img">-->
                 </div>
             </div>
             <div class="update">
