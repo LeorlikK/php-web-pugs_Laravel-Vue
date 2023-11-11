@@ -24,7 +24,9 @@ class PersonalAreaController extends Controller
         $user = auth()->user();
 
         if (isset($request['avatar'])) {
-            Storage::disk('public')->delete('/' . $user->avatar);
+            if ($user->avatar !== '/images/avatars/avatar_default.png') {
+                Storage::disk('public')->delete('/' . $user->avatar);
+            }
             $request['avatar'] = '/' . Storage::disk('public')->put('/images/avatars', $request['avatar']);
         }
 
@@ -33,6 +35,13 @@ class PersonalAreaController extends Controller
 
         return response()->json([
             'user' => $user
+        ], 200);
+    }
+
+    public function feedback(Request $request)
+    {
+        return response()->json([
+            'feedback' => $request->input('feedback')
         ], 200);
     }
 }

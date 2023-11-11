@@ -647,7 +647,6 @@ nav {
     width: 100%;
     height: 80%;
     background-color: transparent;
-    /*border: 2px solid rgba(128, 128, 128, 0.5);*/
     border: 2px solid #f08080;
     border-radius: 10px;
     display: flex;
@@ -658,6 +657,7 @@ nav {
     width: 100%;
     height: 100%;
     margin: auto;
+    cursor: pointer;
     object-fit: contain;
 }
 .photo p {
@@ -684,21 +684,45 @@ nav {
     border-radius: 50%;
 }
 /** PersonalArea */
-.personal-area {
+.container-personal-area {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+.content-personal-area {
     width: 100%;
     display: grid;
+    grid-template-columns: 15% 35% 25% 25%;
+}
+.personal-error {
+    display: grid;
+    grid-template-columns: 15% 85%;
+}
+.personal-error p{
+    margin-top: 5px;
+    text-align: left;
+    grid-column: 2/3;
 }
 .text {
-    display: flex;
+    display: grid;
+    grid-template-columns: 15% 85%;
     grid-column: 1/2;
     grid-row: 1/2;
     height: 30px;
 }
-.personal-area .update {
+.content-personal-area .update {
+    height: 50px;
+    width: 100%;
     display: flex;
-    grid-column: 2/3;
-    justify-content: right;
+    grid-column: 1/3;
+    grid-row: 7/8;
+    justify-content: left;
     align-items: center;
+}
+.send-feedback {
+    display: flex;
+    grid-column: 1/5;
+    grid-row: 9/10;
+    justify-content: right;
 }
 .btn-update {
     padding: 10px 10px;
@@ -711,11 +735,22 @@ nav {
 .btn-cancel {
     background-color: #EC7063;
 }
+.text-feedback {
+    display: grid;
+}
+.content-personal-area textarea{
+    min-height: 100px;
+    overflow: hidden;
+    border: 1px solid #f08080;
+    background-color: transparent;
+    outline: none;
+    resize: vertical;
+}
 .text p {
     display: flex;
     align-items: center;
 }
-.text .static {
+.text .static, .text-feedback p {
     font-weight: bold;
     color: #f08080;
 }
@@ -745,27 +780,43 @@ nav {
     height: 50px;
     margin-bottom: 10px;
 }
+.personal-email, .personal-login, .personal-avatar, .personal-role, .personal-banned, .personal-feedback {
+    grid-column: 1/5;
+    height: 50px;
+}
 .personal-email {
     grid-row: 1/2;
 }
 .personal-login {
     grid-row: 2/3;
 }
-.personal-login p {
-    margin: 10px 0;
+.personal-login p, .personal-avatar p {
+    text-align: left;
+}
+.personal-role {
+    grid-row: 3/4;
 }
 .personal-avatar {
-    grid-row: 3/4;
-    height: 400px;
+    grid-row: 4/5;
 }
-.personal-avatar p {
-    grid-row: 3/4;
+.personal-img {
+    grid-row: 5/6;
+    grid-column: 1/5;
+    height: 100px;
+    margin-bottom: 30px;
+}
+.personal-banned {
+    grid-row: 6/7;
+}
+.personal-feedback {
+    grid-row: 8/9;
+    height: unset;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 .block-img {
     width: 200px;
     height: 100px;
-    /*grid-column: 1/2;*/
-    /*grid-row: 4/5;*/
 }
 .img-file {
     position: relative;
@@ -779,7 +830,6 @@ nav {
     opacity: 0;
     width: 190px;
 }
-
 .img-file-label {
     position: absolute;
     left: 0;
@@ -949,6 +999,12 @@ nav {
     text-decoration: none;
     cursor: pointer;
 }
+.color-active {
+    color: #099409;
+}
+.color-unactive {
+    color: #940922;
+}
 .sorted {
     display: flex;
 }
@@ -1047,18 +1103,24 @@ nav {
     align-items: end;
     grid-column: 2/3;
 }
+.text-right {
+    display: flex;
+    text-align: left;
+    align-items: end;
+    grid-column: 2/3;
+}
 .banned-line {
     background-color: rgba(240, 128, 128, 0.5);
 }
-@media screen and (min-width: 300px) and (max-width: 800px){
-    nav {
-        position: fixed;
-        bottom: auto;
-        left: 0;
-        width: 100%;
-        height: 20%;
-        background-color: green;
-        z-index: 1;
-        padding: 20px;
-    }
-}
+/*@media screen and (min-width: 300px) and (max-width: 800px){*/
+/*    nav {*/
+/*        position: fixed;*/
+/*        bottom: auto;*/
+/*        left: 0;*/
+/*        width: 100%;*/
+/*        height: 20%;*/
+/*        background-color: green;*/
+/*        z-index: 1;*/
+/*        padding: 20px;*/
+/*    }*/
+/*}*/

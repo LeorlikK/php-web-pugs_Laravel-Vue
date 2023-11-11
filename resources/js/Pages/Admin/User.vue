@@ -73,7 +73,6 @@
                                 <label  for="examplePhotos">Выберите изображение:</label>
                             </div>
                             <p class="img-file-info">{{ this.file?.name ?? 'Файл не выбран'}}</p>
-
                         </div>
                     </div>
                 </div>
@@ -185,8 +184,8 @@ export default {
                     this.login = data.login
                     this.role = data.role
                     this.avatar = this.path + data.avatar
-                    this.banned = Boolean(data.banned)
                     this.oldAvatar = this.path + data.avatar
+                    this.banned = Boolean(data.banned)
                     this.created_at = data.created_at
                     this.updated_at = data.updated_at
                 })
