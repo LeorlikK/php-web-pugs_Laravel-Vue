@@ -6,12 +6,13 @@ namespace Tests\Feature;
 use App\Models\Comment;
 use App\Models\News;
 use Database\Seeders\TestCommentSeeder;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class CommentsTest extends TestCase
 {
-    use RefreshDatabase;
+    use LazilyRefreshDatabase;
 
     protected function setUp(): void
     {

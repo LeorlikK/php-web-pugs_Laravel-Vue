@@ -69,8 +69,7 @@ class NewsTest extends TestCase
             $response = $this->get('/api/news/show/' . $newsPublishTrue->id);
             $response->assertStatus(200);
             $response->assertJsonIsObject();
-            $data = json_decode($response->getContent());
-            $this->assertIsArray($data->comments);
+            $this->assertIsArray($response->json('comments'));
             $this->assertCount(50, $data->comments);
         }
     }

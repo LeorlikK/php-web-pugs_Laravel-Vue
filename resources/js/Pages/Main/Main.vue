@@ -1,10 +1,10 @@
 <template>
-    <Disclaimer></Disclaimer>
+    <Disclaimer class="disclaimer"></Disclaimer>
 </template>
 
 <script>
 import Disclaimer from "@/Components/Disclaimer.vue";
-import Menu from "@/Components/Menu.vue";
+import Menu from "@/Components/Menu/MainMenu.vue";
 export default {
     name: "Main",
     components: {Menu, Disclaimer}

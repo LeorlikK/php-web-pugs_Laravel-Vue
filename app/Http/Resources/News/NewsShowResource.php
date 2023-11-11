@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\News;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class NewsResource extends JsonResource
+class NewsShowResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,12 @@ class NewsResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id' => $this->title,
-            'image_url' => $this->text,
-            'title' => $this->address,
-            'short' => $this->phone,
-            'created_at' => $this->created_at,
+            'user' => $this->user->login,
+            'image_url' => $this->image_url,
+            'title' => $this->title,
+            'short' => $this->short,
+            'text' => $this->text,
+            'created_at' => $this->created_at->format('Y-m-d'),
             'updated_at' => $this->updated_at,
         ];
     }

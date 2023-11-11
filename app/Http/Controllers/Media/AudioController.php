@@ -38,7 +38,7 @@ class AudioController extends Controller
         $url = Storage::disk('public')->put('/images/photos', $file);
         $name = $request['name'] ?? explode('.', $file->getClientOriginalName())[0];
 
-        $photo = Photo::create([
+        $photo = Audio::create([
             'name' => $name,
             'url' => $url,
             'size' => $size

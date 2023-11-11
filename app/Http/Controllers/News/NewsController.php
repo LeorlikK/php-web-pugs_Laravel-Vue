@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\News;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\NewsResource;
+use App\Http\Resources\News\NewsIndexResource;
+use App\Http\Resources\News\NewsShowResource;
 use App\Models\News;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,17 +15,17 @@ class NewsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(?string $page=null): AnonymousResourceCollection
+    public function index(Request $request): AnonymousResourceCollection
     {
-        $perPage = 10;
-        $page = (int) $page ?? 1;
+        $perPage = 5;
+        $page = (int) $request->input('page') ?? 1;
 
-        $news = News::query()
+        $news = News::with('user:id,login')
             ->where('publish', true)
             ->orderByDesc('created_at')
             ->paginate($perPage, '*', 'page', $page);
 
-        return NewsResource::collection($news);
+        return NewsIndexResource::collection($news);
     }
 
     /**
@@ -46,16 +47,15 @@ class NewsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(News $news): JsonResponse
+    public function show(Request $request): NewsShowResource|JsonResponse
     {
+        $news = News::with('user')->find($request->input('id'));
+
         if (!$news->publish) {
             return response()->json(['error' => 'Статья не опубликована'], 404);
         }
-//        $news->load(['comments' => function($query){
-//            $query->whereNull('parent_comment');
-//        }]);
 
-        return response()->json($news);
+        return NewsShowResource::make($news);
     }
 
     /**

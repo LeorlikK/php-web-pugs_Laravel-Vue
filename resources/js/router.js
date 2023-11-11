@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import {API_ROUTES} from "@/routs"
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory(), // process.env.BASE_URL
     routes:[
         {
             path: '/',
@@ -20,37 +20,102 @@ const router = createRouter({
             component: () => import('./Pages/Auth/Registration.vue'),
         },
         {
+            path: '/account/personal-area',
+            name:'personal_area',
+            component: () => import('./Pages/PersonalArea/PersonalArea.vue'),
+        },
+        {
             path: '/peculiarities',
             name:'peculiarities',
             component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
-            children: [
-                {
-                    path: '/peculiarities/care',
-                    name:'care',
-                    component: () => import('./Pages/Auth/Registration.vue'),
-                },
-                {
-                    path: '/peculiarities/nutrition',
-                    name:'nutrition',
-                    component: () => import('./Pages/Auth/Registration.vue'),
-                },
-                {
-                    path: '/peculiarities/health',
-                    name:'health',
-                    component: () => import('./Pages/Auth/Registration.vue'),
-                },
-                {
-                    path: '/peculiarities/paddock',
-                    name:'paddock',
-                    component: () => import('./Pages/Auth/Registration.vue'),
-                },
-            ]
+            // children: [
+            //     {
+            //         path: 'care',
+            //         name:'care',
+            //         component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
+            //     },
+            //     {
+            //         path: '/peculiarities/nutrition',
+            //         name:'nutrition',
+            //         component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
+            //     },
+            //     {
+            //         path: '/peculiarities/health',
+            //         name:'health',
+            //         component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
+            //     },
+            //     {
+            //         path: '/peculiarities/paddock',
+            //         name:'paddock',
+            //         component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
+            //     },
+            // ]
         },
         {
-            path: '/nurseries/:page?',
+            path: '/peculiarities/care',
+            name:'peculiarities_care',
+            component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
+        },
+        {
+            path: '/peculiarities/nutrition',
+            name:'peculiarities_nutrition',
+            component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
+        },
+        {
+            path: '/peculiarities/health',
+            name:'peculiarities_health',
+            component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
+        },
+        {
+            path: '/peculiarities/paddock',
+            name:'peculiarities_paddock',
+            component: () => import('./Pages/Peculiarities/Peculiarities.vue'),
+        },
+        {
+            path: '/nurseries',
             name:'nurseries',
             component: () => import('./Pages/Nurseries/Nurseries.vue'),
         },
+        {
+            path: '/news',
+            name:'news',
+            component: () => import('./Pages/News/Index.vue'),
+        },
+        {
+            path: '/news/show',
+            name:'news_show',
+            component: () => import('./Pages/News/Show.vue'),
+        },
+        {
+            path: '/photos',
+            name:'photos',
+            component: () => import('./Pages/Media/Photo.vue'),
+        },
+        {
+            path: '/video',
+            name:'video',
+            component: () => import('./Pages/Media/Video.vue'),
+        },
+        {
+            path: '/audio',
+            name:'audio',
+            component: () => import('./Pages/Media/Audio.vue'),
+        },
+        {
+            path: '/admin',
+            name:'admin',
+            component: () => import('./Pages/Admin/Index.vue'),
+        },
+        {
+            path: '/admin/users',
+            name:'admin_users',
+            component: () => import('./Pages/Admin/Users.vue'),
+        },
+        {
+            path: '/admin/user/edit/:user',
+            name:'admin_user_edit',
+            component: () => import('./Pages/Admin/User.vue'),
+        }
     ]
 })
 
