@@ -105,6 +105,16 @@ const router = createRouter({
             path: '/admin',
             name:'admin',
             component: () => import('./Pages/Admin/Index.vue'),
+        },
+        {
+            path: '/admin/users',
+            name:'admin_users',
+            component: () => import('./Pages/Admin/Users.vue'),
+        },
+        {
+            path: '/admin/user/edit/:user',
+            name:'admin_user_edit',
+            component: () => import('./Pages/Admin/User.vue'),
         }
     ]
 })

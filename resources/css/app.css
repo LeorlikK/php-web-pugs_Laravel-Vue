@@ -43,6 +43,7 @@ header div:last-child {
 }
 .user-menu li {
     text-align: right;
+    padding-top: 5px;
     margin-top: 5px;
 }
 .user-menu a {
@@ -63,9 +64,9 @@ header div:last-child {
     align-items: center;
     padding: 10px 0;
     text-decoration: none;
-    font-size: 1.2em;
     cursor: pointer;
     border: 1px solid #f08080;
+    transition: 0.3s;
 }
 .btn:active {
     background-color: darkgray;
@@ -78,6 +79,15 @@ header div:last-child {
     height: 45px;
     z-index: 10;
     font-weight: bolder;
+}
+.btn-size-12 {
+    font-size: 1.2em;
+}
+.btn-white-c {
+    color: white;
+}
+.text-white-c {
+    color: white;
 }
 .disclaimer {
     margin-top: 15px;
@@ -120,7 +130,7 @@ nav {
 .menu-main a {
     text-decoration: none;
     font-weight: bolder;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     text-indent: 20px;
     margin: 5px 0 100px 10px;
     font-size: 1em;
@@ -369,7 +379,7 @@ nav {
     font-size: 1.5em;
     font-weight: bold;
     text-align: center;
-    color: lightcoral;
+    color: #f08080;
 }
 .news p{
     text-indent: 20px;
@@ -380,7 +390,7 @@ nav {
 }
 .news h1 > a {
     text-decoration: none;
-    color: lightcoral;
+    color: #f08080;
 }
 .news h1 > a:hover {
     text-decoration: underline;
@@ -401,12 +411,12 @@ nav {
     justify-content: space-between;
 }
 .news-footer .author {
-    color: lightcoral;
+    color: #f08080;
     text-indent: 0;
     text-align: left;
 }
 .news-footer .date {
-    color: lightcoral;
+    color: #f08080;
     text-indent: 0;
     text-align: right;
 }
@@ -417,7 +427,7 @@ nav {
     border: none;
 }
 .news-show a {
-    color: lightcoral;
+    color: #f08080;
 }
 .news-show svg:hover{
     scale: 1.2;
@@ -446,7 +456,7 @@ nav {
 }
 .comments .user-name > span:first-child{
     font-weight: bolder;
-    color: lightcoral;
+    color: #f08080;
 }
 .comments .user-name > span:last-child{
     font-size: 0.8em;
@@ -458,7 +468,7 @@ nav {
 .comments a {
     width: 120px;
     font-weight: bolder;
-    color: lightcoral;
+    color: #f08080;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -511,13 +521,13 @@ nav {
     margin: 0 40px;
     overflow: hidden;
     border: none;
-    border-bottom: 1px solid lightcoral;
+    border-bottom: 1px solid #f08080;
     background-color: transparent;
     outline: none;
     resize: vertical;
 }
 .input-comment textarea::placeholder{
-    color: lightcoral;
+    color: #f08080;
     font-weight: normal;
     font-size: 1.3em;
     opacity: 0.5;
@@ -538,7 +548,7 @@ nav {
     white-space: nowrap;
 }
 .loading-text{
-    color: lightcoral;
+    color: #f08080;
     font-weight: initial;
 }
 .comments .comments-loading {
@@ -551,7 +561,7 @@ nav {
     display: flex;
     width: 5px;
     height: 5px;
-    background-color: lightcoral;
+    background-color: #f08080;
     border-radius: 50%;
     margin-left: 5px;
 
@@ -638,7 +648,7 @@ nav {
     height: 80%;
     background-color: transparent;
     /*border: 2px solid rgba(128, 128, 128, 0.5);*/
-    border: 2px solid lightcoral;
+    border: 2px solid #f08080;
     border-radius: 10px;
     display: flex;
     justify-content: center;
@@ -677,9 +687,8 @@ nav {
 .personal-area {
     width: 100%;
     display: grid;
-    margin: 5% 5%;
 }
-.personal-area .text {
+.text {
     display: flex;
     grid-column: 1/2;
     grid-row: 1/2;
@@ -694,7 +703,7 @@ nav {
 .btn-update {
     padding: 10px 10px;
     border-radius: 5px;
-    margin: 0 5px;
+    margin-right: 5px;
 }
 .btn-active {
     background-color: #73C6B6 ;
@@ -702,33 +711,37 @@ nav {
 .btn-cancel {
     background-color: #EC7063;
 }
-.personal-area p {
+.text p {
     display: flex;
     align-items: center;
 }
-.personal-area .static {
-    font-size: 1.5em;
+.text .static {
     font-weight: bold;
-    color: lightcoral;
+    color: #f08080;
 }
-.personal-area .value {
-    margin-left: 10px;
-    font-size: 1.2em;
+.text .value {
     width: 100%;
     outline: none;
     background-color: transparent;
     font-weight: normal;
+}
+.size-12 {
+    font-size: 1.2em;
+}
+.size-15 {
+    font-size: 1.5em;
 }
 .input-unactive {
     border-color: transparent;
 }
 .input-active {
     border-color: transparent;
-    border-bottom-color: lightcoral;
+    border-bottom-color: #f08080;
 }
-.personal-email, .personal-login, .personal-avatar {
+.item {
     display: grid;
     grid-column: 1/3;
+    grid-template-rows: 60% 40%;
     height: 50px;
     margin-bottom: 10px;
 }
@@ -749,16 +762,16 @@ nav {
     grid-row: 3/4;
 }
 .block-img {
-    width: 400px;
-    height: 400px;
-    grid-column: 1/2;
-    grid-row: 4/5;
+    width: 200px;
+    height: 100px;
+    /*grid-column: 1/2;*/
+    /*grid-row: 4/5;*/
 }
 .img-file {
     position: relative;
     display: flex;
     width: 100%;
-    border: 2px solid lightcoral;
+    border: 2px solid #f08080;
     height: 30px;
 }
 
@@ -774,7 +787,7 @@ nav {
     cursor: pointer;
     display: flex;
     align-items: center;
-    border-right: 2px solid lightcoral;
+    border-right: 2px solid #f08080;
 }
 .img-file-label label {
     display: flex;
@@ -786,7 +799,7 @@ nav {
     transition: 0.3s;
 }
 .img-file-label:hover {
-    background: rgba(115, 198, 182, 0.5);
+    background: rgba(160, 162, 161, 0.5);
 }
 .img-file-info {
     vertical-align: top;
@@ -808,8 +821,9 @@ nav {
     margin-top: 80px;
     width: 100%;
 }
+.admin {}
 .menu-admin {
-    background-color: lightcoral;
+    background-color: #f08080;
     border-radius: 10px;
     display: flex;
     width: 100%;
@@ -828,6 +842,10 @@ nav {
     justify-content: center;
     align-items: center;
     border-right: 1px solid goldenrod;
+    transition: 0.3s;
+}
+.menu-admin ul li:hover {
+    background-color: white;
 }
 .menu-admin ul li:last-child {
     border: none;
@@ -841,12 +859,197 @@ nav {
 }
 .menu-admin ul li a:hover {
     color: #B99D61FF;
-
 }
-.admin {
-
+.statistic {
+    display: grid;
+    grid-template-columns: 50% 50%;
 }
-
+.user-stats div, .media-stats div {
+    margin-bottom: 30px;
+    display: flex;
+}
+.user-stats div p:first-child, .media-stats div p:first-child {
+    font-weight: bolder;
+    color: #f08080;
+}
+.photo-size:before, .video-size:before, .audio-size:before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 2px 5px;
+}
+.photo-size:before {
+    background-color: #20A7FBE2;
+}
+.video-size:before {
+    background-color: #6527FDDB;
+}
+.audio-size:before {
+    background-color: #FF6363E5;
+}
+.user-stats div p:last-child, .media-stats div p:last-child {
+    margin-left: 5px;
+    color: #444444FF;
+}
+.all-size {
+    margin-left: 15px;
+}
+.stat-line {
+    grid-column: 1/3;
+    width: 100%;
+    height: 20px;
+    border-radius: 10px;
+    margin-top: 200px;
+}
+.content-admin-users {
+    margin-top: 80px;
+    width: 100%;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+}
+.users {}
+.users table {
+    width: 100%;
+    background-color: rgba(252,252,252,.7);
+    border-collapse: collapse;
+}
+.users tr {
+    border-bottom: 1px solid whitesmoke;
+}
+.users th, .users td {
+    padding: 10px;
+}
+.users table thead, .users table tbody th{
+    font-weight: bold;
+    color: #f08080;
+}
+.users table tbody td{
+    font-weight: lighter;
+}
+.users table thead tr th:nth-child(2),
+.users table thead tr th:nth-child(3)
+{
+    width: 200px;
+}
+.users table thead tr th:nth-child(4) {
+    width: 150px;
+}
+.users table thead th {
+    text-align: start;
+}
+.users-btn-update a{
+    color: #099409;
+    text-decoration: none;
+    cursor: pointer;
+}
+.users-btn-banned a{
+    color: #940922;
+    text-decoration: none;
+    cursor: pointer;
+}
+.sorted {
+    display: flex;
+}
+.sorted p{
+    display: flex;
+    align-items: center;
+}
+.sorted select {
+    margin-left: 10px;
+    width: 200px;
+    height: 25px;
+    border: 1px solid #f08080;
+    outline: none;
+}
+.find {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+.find input{
+    width: 500px;
+    height: 25px;
+    border: 1px solid #f08080;
+    outline: none;
+}
+.find a{
+    margin-left: 10px;
+}
+.sorted-type-one, .sorted-type-two {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 20px;
+}
+.sorted-type-one:before {
+    content: "";
+    display: block;
+    border-style: solid;
+    height: 0;
+    width: 0;
+}
+.sorted-type-two:before {
+    content: "";
+    display: block;
+    border-style: solid;
+    height: 0;
+    width: 0;
+}
+.sorted-color-l:before {
+    border-width: 10px 6px 0;
+    border-color: #f08080 transparent transparent;
+}
+.sorted-color-b:before {
+    border-width: 0 6px 10px;
+    border-color: transparent transparent #333;
+}
+.user {
+    width: 100%;
+    display: grid;
+    background-color: rgba(252,252,252,.7);
+    padding: 20px;
+}
+.text-user {
+    display: grid;
+    grid-template-columns: 15% 85%;
+}
+.user .update {
+    display: flex;
+    grid-column: 1/2;
+    justify-content: left;
+    align-items: center;
+}
+.user .text select {
+    width: 100px;
+}
+.item-image {
+    height: 140px;
+}
+.select-active {
+    border: 2px solid #f08080;
+    outline: none;
+}
+.checkbox {
+    width: 24px;
+    height: 24px;
+}
+.checkbox-active, .checkbox-active:hover, .checkbox-active:focus, .checkbox-active:active {
+    outline: 2px solid #f08080;
+}
+.img-active {
+    border: 2px solid #f08080;
+}
+.text-left {
+    display: flex;
+    text-align: left;
+    align-items: end;
+    grid-column: 2/3;
+}
+.banned-line {
+    background-color: rgba(240, 128, 128, 0.5);
+}
 @media screen and (min-width: 300px) and (max-width: 800px){
     nav {
         position: fixed;

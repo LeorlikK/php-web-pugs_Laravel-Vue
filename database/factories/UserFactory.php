@@ -21,9 +21,11 @@ class UserFactory extends Factory
         return [
             'login' => 'leorlik',
             'email' => 'leorlik@ya.ru',
+            'role' => $this->faker->randomElement(['admin', 'user', 'moder']),
             'email_verified_at' => now(),
             'password' => Hash::make('Pristxolidc2013'),
             'avatar' => '/images/avatars/avatar_default.png',
+            'banned' => false,
             'remember_token' => null,
         ];
     }

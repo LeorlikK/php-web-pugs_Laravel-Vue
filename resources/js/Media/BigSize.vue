@@ -4,7 +4,7 @@
             <CloseWindow
                 @closeButton="closeButton"
             ></CloseWindow>
-            <img :src="`/storage${showImage}`" alt="#" class="image photo-img">
+            <img :src="showImage" alt="#" class="image photo-img">
         </div>
     </div>
 </template>

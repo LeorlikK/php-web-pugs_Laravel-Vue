@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Peculiarities;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class PeculiaritiesFactory extends Factory
 {
-    protected $model = 'Peculiarities';
+    protected $model = Peculiarities::class;
 
     private static int $countId = 0;
     private static array $title = [

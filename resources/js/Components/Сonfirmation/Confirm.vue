@@ -1,12 +1,12 @@
 <template>
-    <div @click.prevent="" :hidden="question === false" class="confirm">
+    <div @click.prevent="no" :hidden="question === false" class="confirm">
         <div class="confirmWindow">
             <div class="question">
-                <p>{{ text }}</p>
+                <p class="text-white-c">{{ text }}</p>
             </div>
             <div class="answer">
-                <a @click.prevent="yes" class="yes btn">Да</a>
-                <a @click.prevent="no" class="cancel btn">Нет</a>
+                <a @click.prevent.stop="yes" class="yes btn btn-white-c">Да</a>
+                <a @click.prevent.stop="no" class="cancel btn btn-white-c">Нет</a>
             </div>
         </div>
     </div>
@@ -31,9 +31,6 @@ export default {
         no() {
             this.$emit('answer', false)
         },
-        close() {
-
-        }
     }
 }
 </script>

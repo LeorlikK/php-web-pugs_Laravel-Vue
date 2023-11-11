@@ -14,9 +14,6 @@ class News extends Model
 
     protected $guarded = [];
     protected $table = 'news';
-//    protected $casts = [
-//        'created_at' => 'datetime:Y-m-d'
-//    ];
 
     public function user(): BelongsTo
     {
@@ -27,11 +24,4 @@ class News extends Model
     {
         return $this->hasMany(Comment::class, 'news_id', 'id');
     }
-
-//    public function getCreatedAtDifferenceAttribute(): string
-//    {
-//        $createdAt = Carbon::parse($this->created_at);
-//
-//        return $createdAt->diffForHumans(now());
-//    }
 }

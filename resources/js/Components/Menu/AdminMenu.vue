@@ -14,7 +14,7 @@
                 <router-link :to="{name: 'photos'}">Media</router-link>
             </li>
             <li>
-                <router-link :to="{name: 'admin'}">Users</router-link>
+                <router-link :to="{name: 'admin_users'}">Users</router-link>
             </li>
         </ul>
     </div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Authorization\AuthorizationController;
 use App\Http\Controllers\Comments\CommentsController;
 use App\Http\Controllers\Media\AudioController;
@@ -20,6 +21,12 @@ Route::post('/account/logout', [AuthorizationController::class, 'logout']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/account/me', [PersonalAreaController::class, 'me']);
     Route::post('/account/update', [PersonalAreaController::class, 'update']);
+    Route::prefix('/admin')->middleware('admin')->group(function () {
+        Route::get('users', [AdminController::class, 'index']);
+        Route::get('user/edit/{user}', [AdminController::class, 'edit']);
+        Route::post('user/update/{user}', [AdminController::class, 'update']);
+        Route::post('user/banned/{user}', [AdminController::class, 'banned']);
+    });
 });
 
 Route::prefix('/peculiarities')->group(function (){
