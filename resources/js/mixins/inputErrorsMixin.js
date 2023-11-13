@@ -8,6 +8,7 @@ export default {
             this.errors.passwordError = arrayErrors.password ?? ''
             this.errors.currentPasswordError = arrayErrors.password_confirmation ?? ''
             this.errors.avatarError = arrayErrors.avatar ?? ''
+            this.errors.feedbackError = arrayErrors.feedback ?? ''
         }
     }
 }

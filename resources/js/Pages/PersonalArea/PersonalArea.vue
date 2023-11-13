@@ -90,9 +90,13 @@
                     <p class="static size-15">Feedback:</p>
                     <textarea v-model="feedback" placeholder="Leave a review..."></textarea>
                 </div>
+                <div class="personal-error">
+                    <p v-if="this.errors.feedbackError" class="error-message" style="grid-column: 1/5">{{ this.errors.feedbackError[0] }}</p>
+                </div>
             </div>
             <div class="send-feedback">
                 <a
+                    aria-disabled="true"
                     @click.prevent="sendFeedback"
                     class="btn btn-update" style="margin-right: 0">Отправить
                 </a>
@@ -135,6 +139,7 @@ export default {
             errors: {
                 loginError: '',
                 avatarError: '',
+                feedbackError: ''
             },
         }
     },
@@ -180,6 +185,7 @@ export default {
                 })
         },
         sendFeedback() {
+            this.errors.feedbackError = null
             axiosAuthUser.post(`${API_ROUTES.protected.feedbackMe}`, {feedback: this.feedback})
                 .then(data => {
                     console.log(data)

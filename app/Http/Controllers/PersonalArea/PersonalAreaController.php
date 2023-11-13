@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\PersonalArea;
 
+use App\Events\FeedbackSendEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Authorization\UpdateMeRequest;
-use App\Models\User;
+use App\Http\Requests\FeedbackRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class PersonalAreaController extends Controller
@@ -38,10 +38,14 @@ class PersonalAreaController extends Controller
         ], 200);
     }
 
-    public function feedback(Request $request)
+    public function feedback(FeedbackRequest $request): JsonResponse
     {
-        return response()->json([
-            'feedback' => $request->input('feedback')
-        ], 200);
+        $request->validated();
+        $feedback = $request->input('feedback') ?? '';
+        $from = auth()->user()->email;
+
+        event(new FeedbackSendEvent($from, $feedback));
+
+        return response()->json([], 200);
     }
 }
