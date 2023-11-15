@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Authorization\AuthorizationController;
+use App\Http\Controllers\Authorization\VerifyController;
 use App\Http\Controllers\Comments\CommentsController;
 use App\Http\Controllers\Media\AudioController;
 use App\Http\Controllers\Media\PhotoController;
@@ -15,10 +16,11 @@ use Illuminate\Support\Facades\Route;
 // leorlik@ya.ru
 // leorlik_2@ya.ru
 // Pristxolidc2013
+Route::get('/account/verify', [VerifyController::class, 'verify'])->name('verification.verify');
 Route::post('/account/registration', [AuthorizationController::class, 'registration']);
 Route::post('/account/login', [AuthorizationController::class, 'login']);
 Route::post('/account/logout', [AuthorizationController::class, 'logout']);
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/account/me', [PersonalAreaController::class, 'me']);
     Route::post('/account/update', [PersonalAreaController::class, 'update']);
     Route::post('/account/feedback', [PersonalAreaController::class, 'feedback']);

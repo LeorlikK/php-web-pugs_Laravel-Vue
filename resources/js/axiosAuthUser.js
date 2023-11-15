@@ -11,9 +11,13 @@ axiosAuthUser.interceptors.response.use(response => {
         router.push({name: 'login'})
         router.replace({name: 'login'})
         return Promise.reject(reject);
-    }else {
+    }else if (reject.response.status === 403) {
+        router.push({name: 'home'})
+        router.replace({name: ''})
         return Promise.reject(reject)
     }
+
+    return Promise.reject(reject)
 })
 
 export default axiosAuthUser

@@ -15,7 +15,7 @@ class AdminRole
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->user()->role !== 'admin') return \response()->json('You are not admin', 401);
+        if (auth()->user()->role !== 'admin') return \response()->json('You are not admin', 403);
         return $next($request);
     }
 }

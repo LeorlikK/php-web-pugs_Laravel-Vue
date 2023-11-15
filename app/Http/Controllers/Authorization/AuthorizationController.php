@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Authorization\LoginRequest;
 use App\Http\Requests\Authorization\RegistrationRequest;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -24,6 +25,8 @@ class AuthorizationController extends Controller
 
         $user = User::firstOrCreate($request);
         auth()->login($user);
+
+        event(new Registered($user));
 
         return response()->json(['login' => $user->login], 201);
     }
