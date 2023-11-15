@@ -24,7 +24,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/account/me', [PersonalAreaController::class, 'me']);
     Route::post('/account/update', [PersonalAreaController::class, 'update']);
     Route::post('/account/feedback', [PersonalAreaController::class, 'feedback']);
-    Route::prefix('/admin')->middleware('admin')->group(function () {
+    Route::prefix('/admin')->middleware(['verified', 'admin'])->group(function () {
         Route::get('users', [AdminController::class, 'index']);
         Route::get('user/edit/{user}', [AdminController::class, 'edit']);
         Route::post('user/update/{user}', [AdminController::class, 'update']);
