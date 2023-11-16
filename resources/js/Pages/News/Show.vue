@@ -24,7 +24,8 @@
             </div>
         </div>
         <Comments
-            :news_id="4"
+            v-if="news_id !== null"
+            :news_id=news_id
         ></Comments>
     </div>
 

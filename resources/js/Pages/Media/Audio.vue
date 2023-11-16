@@ -32,11 +32,12 @@ import BigSize from "@/Media/BigSize.vue";
 import router from "@/router";
 import MediaMenu from "@/Components/Menu/MediaMenu.vue";
 import cookiesMixin from "@/mixins/authMixin";
-import errorsLogMixin from "@/mixins/errorsLogMixin";
+import logMixin from "@/mixins/logMixin";
+
 export default {
     name: "Audio",
     components: {MediaMenu, BigSize, Paginator},
-    mixins: [cookiesMixin, errorsLogMixin],
+    mixins: [cookiesMixin, logMixin],
     data() {
         return {
             showImage: false,
@@ -58,7 +59,7 @@ export default {
                 },
             })
                 .then(data => {
-                    console.log(data)
+                    this.dataLog(data)
                     data = data.data
                     this.posts.splice(0)
                     this.posts.push(...data.data)
@@ -67,7 +68,7 @@ export default {
                     this.pagination.total = data.meta.total
                 })
                 .catch(errors => {
-                    console.log(errors)
+                    this.errorsLog(errors)
                 })
         },
         changePage(page) {

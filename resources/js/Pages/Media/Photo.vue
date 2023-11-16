@@ -31,9 +31,12 @@ import axiosAuthUser from "@/axiosAuthUser";
 import BigSize from "@/Media/BigSize.vue";
 import router from "@/router";
 import MediaMenu from "@/Components/Menu/MediaMenu.vue";
+import imageMixin from "@/mixins/imageMixin";
+import logMixin from "@/mixins/logMixin";
 export default {
     name: "Photo",
     components: {MediaMenu, BigSize, Paginator},
+    mixins: [imageMixin, logMixin],
     data() {
         return {
             showImage: false,
@@ -54,7 +57,7 @@ export default {
                 },
             })
                 .then(data => {
-                    console.log(data)
+                    this.dataLog(data)
                     data = data.data
                     this.posts.splice(0)
                     this.posts.push(...data.data)
@@ -63,11 +66,8 @@ export default {
                     this.pagination.total = data.meta.total
                 })
                 .catch(errors => {
-                    console.log(errors)
+                    this.errorsLog(errors)
                 })
-        },
-        changeShowImage(value) {
-            this.showImage = value
         },
         changePage(page) {
             router.replace({ query: { page: page } })

@@ -140,11 +140,12 @@ import router from "@/router";
 import axiosAuthUser from "@/axiosAuthUser";
 import {API_ROUTES} from "@/routs";
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
-import errorsLogMixin from "@/mixins/errorsLogMixin";
+import errorsLogMixin from "@/mixins/logMixin";
+import imageMixin from "@/mixins/imageMixin";
 export default {
     name: "User",
     components: {AdminMenu, BigSize},
-    mixins: [inputErrorsMixin, errorsLogMixin],
+    mixins: [inputErrorsMixin, errorsLogMixin, imageMixin],
     data() {
         return {
             user_id: router.currentRoute.value.params.user,
@@ -244,16 +245,6 @@ export default {
             this.errors.avatarError = null
             this.file = null
             this.update = true
-        },
-
-        changeShowImage(value) {
-            this.showImage = value
-        },
-        changeImage(event) {
-            this.file = event.target.files[0]
-            if (this.file) {
-                this.avatar = URL.createObjectURL(this.file);
-            }
         },
     },
     mounted() {

@@ -1,7 +1,7 @@
 import indexStore  from '@/store/index.js'
 
 export default function admin({ to, next }) {
-    if (!indexStore.getters.getVerify) {
+    if (!indexStore.getters['authModule/getVerify']) {
         to.meta.redirectRoute = 'home';
         return next(false)
     }

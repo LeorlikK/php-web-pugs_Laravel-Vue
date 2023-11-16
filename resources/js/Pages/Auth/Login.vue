@@ -22,7 +22,7 @@
 import axios from "axios";
 import {API_ROUTES} from "@/routs"
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
-import errorsLogMixin from "@/mixins/errorsLogMixin";
+import errorsLogMixin from "@/mixins/logMixin";
 import cookiesMixin from "@/mixins/authMixin";
 import axiosAuthUser from "@/axiosAuthUser";
 

@@ -79,7 +79,7 @@ import axiosAuthUser from "@/axiosAuthUser";
 import Confirm from "@/Components/Сonfirmation/Confirm.vue";
 import {API_ROUTES} from "@/routs";
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
-import errorsLogMixin from "@/mixins/errorsLogMixin";
+import errorsLogMixin from "@/mixins/logMixin";
 export default {
     name: "Users",
     components: {AdminMenu, Confirm},

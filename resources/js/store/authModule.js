@@ -1,4 +1,5 @@
-export const auth = {
+export const authModule = {
+    namespaced: true,
     state: () => ({
         isAuth: false,
         login: '',

@@ -113,12 +113,13 @@
 import axiosAuthUser from "@/axiosAuthUser";
 import {API_ROUTES} from "@/routs";
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
-import errorsLogMixin from "@/mixins/errorsLogMixin";
+import logMixin from "@/mixins/logMixin";
 import BigSize from "@/Media/BigSize.vue";
+import imageMixin from "@/mixins/imageMixin";
 export default {
     name: "PersonalArea",
     components: {BigSize},
-    mixins: [inputErrorsMixin, errorsLogMixin],
+    mixins: [inputErrorsMixin, logMixin, imageMixin],
     data() {
         return {
             email: null,
@@ -166,7 +167,6 @@ export default {
             if (this.file) {
                 formData.append('avatar', this.file)
             }
-
             axiosAuthUser.post(`${API_ROUTES.protected.updateMe}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -188,7 +188,6 @@ export default {
             this.errors.feedbackError = null
             axiosAuthUser.post(`${API_ROUTES.protected.feedbackMe}`, {feedback: this.feedback})
                 .then(data => {
-                    console.log(data)
                     this.feedback = null
                 })
                 .catch(errors => {
@@ -207,15 +206,6 @@ export default {
             this.errors.loginError = null
             this.errors.avatarError = null
             this.update = true
-        },
-        changeShowImage(value) {
-            this.showImage = value
-        },
-        changeImage(event) {
-            this.file = event.target.files[0]
-            if (this.file) {
-                this.avatar = URL.createObjectURL(this.file);
-            }
         },
     },
     mounted() {

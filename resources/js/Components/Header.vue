@@ -3,8 +3,8 @@
         <router-link class="btn btn-main" :to="{name: 'home'}">Главная</router-link>
     </div>
     <div>
-        <template v-if="this.$store.getters.getIsAuth">
-            <a @click.prevent="logout" class="btn btn-main">{{this.$store.getters.getLogin}}</a>
+        <template v-if="this.$store.getters['authModule/getIsAuth']">
+            <a @click.prevent="logout" class="btn btn-main">{{this.$store.getters['authModule/getLogin']}}</a>
             <div class="user-menu">
                 <ul>
                     <li><router-link :to="{name: 'personal_area'}">Личный кабинет</router-link></li>
@@ -22,17 +22,25 @@
 import axios from "axios";
 import {API_ROUTES} from "@/routs";
 import cookiesMixin from "@/mixins/authMixin";
-import errorsLogMixin from "@/mixins/errorsLogMixin";
 import axiosAuthUser from "@/axiosAuthUser";
+import authMixin from "@/mixins/authMixin";
+import logMixin from "@/mixins/logMixin";
+// import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
 
 export default {
     name: "Header",
-    mixins: [cookiesMixin, errorsLogMixin],
+    mixins: [cookiesMixin, logMixin, authMixin],
     data() {
         return {
         }
     },
     methods: {
+        // ...mapMutations({
+        //     changeIsAuth: 'authModule/changeLogin'
+        // }),
+        // ...mapActions({
+        //
+        // }),
         logout() {
             axiosAuthUser.post(API_ROUTES.public.logout)
                 .then(data => {
@@ -44,6 +52,19 @@ export default {
                 })
         }
     },
+    // computed: {
+    //     ...mapState({
+    //         testRole: state => state.authModule.role
+    //     }),
+    //     ...mapGetters('authModule', {
+    //         getIsAuth: 'getIsAuth',
+    //         getLogin: 'getLogin',
+    //         getAdmin: 'getAdmin',
+    //         getVerify: 'getVerify'
+    //     })
+    // },
+    mounted() {
+    }
 }
 </script>
 

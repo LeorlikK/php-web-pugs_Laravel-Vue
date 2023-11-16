@@ -6,7 +6,6 @@ export default {
             const token = this.getCookie('XSRF-TOKEN')
             if (token) {
                 this.input(token, data.data.login)
-                router.push({name: 'home'})
             }else {
                 this.exit()
             }
@@ -14,27 +13,29 @@ export default {
         check() {
             const token = this.getLocalStorage('XSRF-TOKEN')
             const login = this.getLocalStorage('login')
-            if (token) this.$store.commit('changeIsAuth', true)
-            if (login) this.$store.commit('changeLogin', login)
+            if (token) this.$store.commit('authModule/changeIsAuth', true)
+            if (login) this.$store.commit('authModule/changeLogin', login)
 
         },
         input(token, login) {
             this.setLocalStorage('XSRF-TOKEN', token)
             this.setLocalStorage('login', login)
-            this.$store.commit('changeIsAuth', true)
-            this.$store.commit('changeLogin', login)
+            this.$store.commit('authModule/changeIsAuth', true)
+            this.$store.commit('authModule/changeLogin', login)
+            router.push({name: 'home'})
         },
         exit() {
             const token = this.getLocalStorage('XSRF-TOKEN')
             const login = this.getLocalStorage('login')
-            if (token) {
+            if(token) {
                 this.forgotLocalStorage('XSRF-TOKEN')
-                this.$store.commit('changeIsAuth', false)
+                this.$store.commit('authModule/changeIsAuth', false)
             }
-            if(login){
+            if(login) {
                 this.forgotLocalStorage('login')
-                this.$store.commit('changeLogin', '')
+                this.$store.commit('authModule/changeLogin', '')
             }
+            router.push({name: 'home'})
         },
         getCookie(name) {
             let matches = document.cookie.match(new RegExp(

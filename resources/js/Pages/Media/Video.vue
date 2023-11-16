@@ -34,11 +34,11 @@ import router from "@/router";
 import axiosAuthUser from "@/axiosAuthUser";
 import {API_ROUTES} from "@/routs";
 import cookiesMixin from "@/mixins/authMixin";
-import errorsLogMixin from "@/mixins/errorsLogMixin";
+import logMixin from "@/mixins/logMixin";
 export default {
     name: "Video",
     components: {MediaMenu, BigSize, Paginator},
-    mixins: [cookiesMixin, errorsLogMixin],
+    mixins: [cookiesMixin, logMixin],
     data() {
         return {
             showImage: false,
@@ -60,6 +60,7 @@ export default {
                 },
             })
                 .then(data => {
+                    this.dataLog(data)
                     data = data.data
                     this.posts.splice(0)
                     this.posts.push(...data.data)
@@ -68,7 +69,7 @@ export default {
                     this.pagination.total = data.meta.total
                 })
                 .catch(errors => {
-                    console.log(errors)
+                    this.errorsLog(errors)
                 })
         },
         changePage(page) {

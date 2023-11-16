@@ -33,7 +33,7 @@
 import axios from "axios";
 import {API_ROUTES} from "@/routs"
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
-import errorsLogMixin from "@/mixins/errorsLogMixin";
+import errorsLogMixin from "@/mixins/logMixin";
 import axiosAuthUser from "@/axiosAuthUser";
 import authMixin from "@/mixins/authMixin";
 

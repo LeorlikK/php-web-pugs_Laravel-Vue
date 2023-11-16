@@ -82,7 +82,7 @@ import Paginator from "@/Components/Paginator.vue";
 import Comment from "@/Components/Comments/Comment.vue";
 import cookiesMixin from "@/mixins/authMixin";
 import axios from "axios";
-import errorsLogMixin from "@/mixins/errorsLogMixin";
+import errorsLogMixin from "@/mixins/logMixin";
 import Confirm from "@/Components/Сonfirmation/Confirm.vue";
 
 export default {
@@ -90,9 +90,7 @@ export default {
     mixins: [cookiesMixin, errorsLogMixin],
     components: {Confirm, Comment, Paginator },
     props: {
-        news_id: {
-            type: Number,
-        },
+        news_id: {},
     },
     data() {
         return {
