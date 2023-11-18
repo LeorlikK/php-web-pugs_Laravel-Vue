@@ -3,11 +3,11 @@
         <div class="content content-login">
             <div class="login">
                 <div>
-                    <input v-model="email" placeholder="Email">
+                    <Input :value="email" @update="updateEmail" placeholder="Email"></Input>
                     <p v-if="this.errors.emailError">{{ this.errors.emailError[0] }}</p>
                 </div>
                 <div>
-                    <input v-model="password" type="password" placeholder="Password">
+                    <Input :value="password" @update="updatePassword" placeholder="Password" type="password"></Input>
                     <p v-if="this.errors.passwordError">{{ this.errors.passwordError[0] }}</p>
                 </div>
                 <a @click.prevent="login" class="btn">Войти</a>
@@ -25,10 +25,13 @@ import logMixin from "@/mixins/logMixin";
 import myAxios from "@/myAxios";
 import router from "@/router";
 import {authService} from "@/services/authService";
+import Input from "@/Components/Inputs/Input.vue";
+import inputMixin from "@/mixins/inputMixin";
 
 export default {
     name: "Login",
-    mixins: [inputErrorsMixin, logMixin],
+    components: {Input},
+    mixins: [inputErrorsMixin, logMixin, inputMixin],
     data() {
         return {
             email: '',

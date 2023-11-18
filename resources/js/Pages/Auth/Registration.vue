@@ -3,23 +3,27 @@
         <div class="content content-registration">
             <div class="registration">
                 <div>
-                    <input v-model="login" placeholder="Login">
+                    <Input :value="login" @update="updateLogin" placeholder="Login"></Input>
                     <p v-if="this.errors.loginError">{{ this.errors.loginError[0] }}</p>
                 </div>
                 <div>
-                    <input v-model="email" type="email" placeholder="Email">
+                    <Input :value="email" @update="updateEmail" placeholder="Email" type="Email"></Input>
                     <p v-if="this.errors.emailError">{{ this.errors.emailError[0] }}</p>
                 </div>
                 <div>
-                    <input v-model="password" type="password" placeholder="Password">
+                    <Input :value="password" @update="updatePassword" placeholder="Password" type="password"></Input>
                     <p v-if="this.errors.passwordError">{{ this.errors.passwordError[0] }}</p>
                 </div>
                 <div>
-                    <input v-model="currentPassword" type="password" placeholder="Password Confirmation">
+                    <Input :value="currentPassword" @update="updateCurrentPassword" placeholder="Password Confirmation" type="password"></Input>
                     <p v-if="this.errors.currentPasswordError">{{ this.errors.currentPasswordError[0] }}</p>
                 </div>
                 <div>
-                    <input v-on:change="imageChange" type="file" accept="image/*,.png,.jpg,.jpeg,.gif">
+                    <InputImage
+                        :file="this.file"
+                        @changeImage="changeImage"
+                    ></InputImage>
+
                     <p v-if="this.errors.avatarError">{{ this.errors.avatarError[0] }}</p>
                 </div>
                 <a @click.prevent="registration" class="btn">Зарегистрироваться</a>
@@ -30,7 +34,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import {API_ROUTES} from "@/routs"
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
 import logMixin from "@/mixins/logMixin";
@@ -38,10 +41,15 @@ import myAxios from "@/myAxios";
 import {authService} from "@/services/authService";
 import cookieService from '@/services/cookieService.js'
 import router from "@/router";
+import Input from "@/Components/Inputs/Input.vue";
+import inputMixin from "@/mixins/inputMixin";
+import InputImage from "@/Components/Inputs/InputImage.vue";
+import imageMixin from "@/mixins/imageMixin";
 
 export default {
     name: "Registration",
-    mixins: [inputErrorsMixin, logMixin],
+    components: {InputImage, Input},
+    mixins: [inputErrorsMixin, logMixin, inputMixin, imageMixin],
     data() {
         return {
             login: '',
@@ -49,31 +57,40 @@ export default {
             password: '',
             currentPassword: '',
             avatar: '',
+            file: null,
         }
     },
     methods: {
         registration() {
-            axios.get('/sanctum/csrf-cookie', {
+            const formData = new FormData()
+            formData.append('login', this.login)
+            formData.append('email', this.email)
+            formData.append('password', this.password)
+            formData.append('password_confirmation', this.currentPassword)
+            if (this.file) {
+                console.log(this.file)
+                formData.append('avatar', this.file)
+            }
+            myAxios.get('/sanctum/csrf-cookie', {
                 headers: {
                     'Accept': 'application/json',
                     'Content-type': 'application/json'
                 }
             })
                 .then(data => {
+                    this.dataLog(data)
                     const csrfToken = cookieService.getCookie('XSRF-TOKEN')
-                    myAxios.post(API_ROUTES.public.registration, {
-                        login: this.login,
-                        email: this.email,
-                        password: this.password,
-                        password_confirmation: this.currentPassword
-                    }, {
+                    myAxios.post(API_ROUTES.public.registration, formData,
+            {
                         headers: {
                             'Accept': 'application/json',
                             'Content-type': 'application/json',
+                            'Content-Type': 'multipart/form-data',
                             'X-XSRF-TOKEN': csrfToken
                         }
                     })
                         .then(data => {
+                            this.dataLog(data)
                             authService().auth(data, 'enter')
                             router.push({name: 'home'})
                         })
@@ -86,9 +103,6 @@ export default {
                     this.errorsLog(errors)
                 })
         },
-        imageChange(event) {
-            this.avatar = event.target.files[0]
-        }
     }
 }
 </script>

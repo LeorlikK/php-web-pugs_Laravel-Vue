@@ -23,7 +23,7 @@ class RegistrationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'login' => ['required', 'string', 'max:20', 'min:3', Rule::unique('users', 'login')],
+            'login' => ['required', 'string', 'max:40', 'min:3', Rule::unique('users', 'login')],
             'email' => ['required', 'email', 'max:200', Rule::unique('users', 'email')],
             'password' => ['required', 'string', 'min:8', 'max:200', 'regex:/^(?=.*[A-ZА-Я])(?=.*\d).+$/', 'confirmed'],
             'password_confirmation' => ['required', 'string', 'max:200'],

@@ -23,6 +23,9 @@ class AuthorizationController extends Controller
         $request['password'] = Hash::make($request['password']);
         unset($request['password_confirmation']);
 
+        $request['role'] = 'user';
+        $request['banned'] = false;
+
         $user = User::firstOrCreate($request);
         auth()->login($user);
 
