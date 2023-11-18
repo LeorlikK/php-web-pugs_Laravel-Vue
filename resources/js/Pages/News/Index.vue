@@ -38,10 +38,13 @@ import myAxios from "@/myAxios";
 import {API_ROUTES} from "@/routs";
 import Paginator from "@/Components/Paginator.vue";
 import router from "@/router";
+import inputErrorsMixin from "@/mixins/inputErrorsMixin";
+import logMixin from "@/mixins/logMixin";
 
 export default {
     name: "Index",
     components: {Paginator},
+    mixins: [inputErrorsMixin, logMixin],
     data() {
         return {
             posts: [],

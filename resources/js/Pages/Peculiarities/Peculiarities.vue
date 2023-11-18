@@ -17,13 +17,15 @@
 
 <script>
 import {onMounted, ref} from "vue";
-import axios from "axios";
 import {API_ROUTES} from "@/routs"
 import router from "@/router";
+import logMixin from "@/mixins/logMixin.js";
+import myAxios from "@/myAxios";
 
 export default {
     name: "Peculiarities",
     setup(){
+        const { errorsLog, dataLog } = logMixin.methods;
         const title = ref(null)
         const text = ref(null)
 
@@ -32,14 +34,14 @@ export default {
         })
         const getPeculiarities = (url) => {
             router.currentRoute.value.fullPath = url
-            axios.get(url ?? API_ROUTES.public.peculiarities)
+            myAxios.get(url ?? API_ROUTES.public.peculiarities)
                 .then(data => {
-                    this.dataLog(data)
+                    dataLog(data)
                     title.value = data.data.title
                     text.value = data.data.text
                 })
                 .catch(errors => {
-                    this.errorsLog(errors)
+                    errorsLog(errors)
                 })
         }
 
