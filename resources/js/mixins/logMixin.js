@@ -4,7 +4,7 @@ export default {
             console.log(errors)
         },
         dataLog(data) {
-            console.log(data)
+            // console.log(data)
         }
     },
 }

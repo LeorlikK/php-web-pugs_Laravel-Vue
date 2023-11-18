@@ -1,23 +1,21 @@
 export const authModule = {
     namespaced: true,
     state: () => ({
-        isAuth: false,
-        login: '',
-        role: 'admin',
-        verify: true,
+        user: null,
+        token: null,
     }),
     getters: {
-        getIsAuth: state => state.isAuth,
-        getLogin: state => state.login,
-        getAdmin: state => state.role === 'admin',
-        getVerify: state => state.verify,
+        getLogin: state => state.user?.login,
+        getIsAuth: state => state.user !== null && state.token !== null,
+        getIsAdmin: state => state.user?.role === 'admin',
+        getIsVerify: state => state.user !== null && state.user.email_verified_at !== null,
     },
     mutations: {
-        changeIsAuth(state, flag) {
-            state.isAuth = flag
+        changeUser(state, user) {
+            state.user = user
         },
-        changeLogin(state, login) {
-            state.login = login
+        changeToken(state, token) {
+            state.token = token
         },
     },
     actions: {

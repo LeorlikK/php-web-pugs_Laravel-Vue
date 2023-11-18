@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import axiosAuthUser from "@/axiosAuthUser";
+import myAxios from "@/myAxios";
 import {API_ROUTES} from "@/routs";
 import Paginator from "@/Components/Paginator.vue";
 import router from "@/router";
@@ -52,12 +52,13 @@ export default {
     methods: {
         getNurseries() {
             this.page = router.currentRoute.value.query.page
-            axiosAuthUser.get(`${API_ROUTES.public.nurseries}`, {
+            myAxios.get(`${API_ROUTES.public.nurseries}`, {
                 params: {
                     page: this.page
                 },
             })
                 .then(data => {
+                    this.dataLog(data)
                     data = data.data
                     this.posts.splice(0)
                     this.posts.push(...data.data)
@@ -66,7 +67,7 @@ export default {
                     this.pagination.total = data.meta.total
                 })
                 .catch(errors => {
-                    console.log(errors);
+                    this.errorsLog(errors)
                 })
         },
         changePage(page) {

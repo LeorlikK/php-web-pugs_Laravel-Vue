@@ -3,8 +3,8 @@
         <img :src="`/storage${comment.user.avatar}`" alt="#">
         <p class="user-name"><span>{{ comment.user.login}}</span><span>: {{ comment.created_at_diff }} назад</span></p>
         <div class="answer-comment" >
-            <a v-if="comment.user.login === this.$store.getters.getLogin" @click.prevent="this.deleteComment(comment)">удалить</a>
-            <template v-if="this.$store.getters.getIsAuth && comment.comments_children">
+            <a v-if="comment.user.login === this.getLogin" @click.prevent="this.deleteComment(comment)">удалить</a>
+            <template v-if="this.getIsAuth && comment.comments_children">
                 <a v-if="comment.id === this.answerCommentId" @click.prevent="this.changeAnswerCommentId(false)">отмена</a>
                 <a v-else @click.prevent="this.changeAnswerCommentId(comment.id)">ответить</a>
             </template>
@@ -26,12 +26,20 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
     name: "Comment",
     emits: ['getCommentsChildren', 'hidden', 'changeAnswerCommentId', 'confirmDelete'],
     props: {
         comment: {},
         answerCommentId: {}
+    },
+    computed: {
+        ...mapGetters('authModule', {
+            getIsAuth: 'getIsAuth',
+            getLogin: 'getLogin'
+        })
     },
     methods: {
         getCommentsChildren(page, comment_id, comment) {

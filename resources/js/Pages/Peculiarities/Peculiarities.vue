@@ -34,12 +34,12 @@ export default {
             router.currentRoute.value.fullPath = url
             axios.get(url ?? API_ROUTES.public.peculiarities)
                 .then(data => {
-                    console.log(data.data);
+                    this.dataLog(data)
                     title.value = data.data.title
                     text.value = data.data.text
                 })
                 .catch(errors => {
-                    console.log(errors);
+                    this.errorsLog(errors)
                 })
         }
 

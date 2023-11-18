@@ -137,25 +137,19 @@
 import AdminMenu from "@/Components/Menu/AdminMenu.vue";
 import BigSize from "@/Media/BigSize.vue";
 import router from "@/router";
-import axiosAuthUser from "@/axiosAuthUser";
+import myAxios from "@/myAxios";
 import {API_ROUTES} from "@/routs";
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
-import errorsLogMixin from "@/mixins/logMixin";
+import logMixin from "@/mixins/logMixin";
 import imageMixin from "@/mixins/imageMixin";
 export default {
     name: "User",
     components: {AdminMenu, BigSize},
-    mixins: [inputErrorsMixin, errorsLogMixin, imageMixin],
+    mixins: [inputErrorsMixin, logMixin, imageMixin],
     data() {
         return {
             user_id: router.currentRoute.value.params.user,
             update: true,
-            errors: {
-                emailError: '',
-                loginError: '',
-                roleError: '',
-                avatarError: '',
-            },
             path: '/storage',
             file: null,
             showImage: false,
@@ -177,8 +171,9 @@ export default {
     },
     methods: {
         getUser() {
-            axiosAuthUser.get(`${API_ROUTES.protected.admin_user_edit}/${this.user_id}`)
+            myAxios.get(`${API_ROUTES.protected.admin_user_edit}/${this.user_id}`)
                 .then(data => {
+                    this.dataLog(data)
                     data = data.data.data
                     this.id = data.id
                     this.email = data.email
@@ -207,12 +202,13 @@ export default {
                 formData.append('avatar', this.file)
             }
 
-            axiosAuthUser.post(`${API_ROUTES.protected.admin_user_update}/${this.id}`, formData, {
+            myAxios.post(`${API_ROUTES.protected.admin_user_update}/${this.id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
             })
                 .then(data => {
+                    this.dataLog(data)
                     data = data.data.data
                     this.id = data.id
                     this.email = data.email

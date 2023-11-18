@@ -1,9 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import {API_ROUTES} from "@/routs"
 import admin from "@/router/middleware/admin.js"
 import verify_email from "@/router/middleware/verify_email.js"
+import redirectIfAuth from "@/router/middleware/redirectIfAuth.js"
 import { nextMiddleware } from "@/router/middleware/middlewareForEach.js";
-import index from "vuex";
 
 const router = createRouter({
     history: createWebHistory(), // process.env.BASE_URL
@@ -21,6 +20,9 @@ const router = createRouter({
             name:'login',
             component: () => import('./Pages/Auth/Login.vue'),
             meta: {
+                middleware: [
+                    redirectIfAuth
+                ],
                 title: 'Login'
             }
         },
@@ -29,6 +31,9 @@ const router = createRouter({
             name:'registration',
             component: () => import('./Pages/Auth/Registration.vue'),
             meta: {
+                middleware: [
+                    redirectIfAuth
+                ],
                 title: 'Registration'
             }
         },
@@ -190,9 +195,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const store = index
-    const token = localStorage.getItem('XSRF-TOKEN')
-
     if (!to.meta.middleware) {
         document.title = to.meta.title
         return next()

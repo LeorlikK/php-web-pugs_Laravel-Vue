@@ -1,4 +1,17 @@
 export default {
+    data() {
+        return {
+            errors: {
+                loginError: '',
+                emailError: '',
+                passwordError: '',
+                currentPasswordError: '',
+                roleError: '',
+                avatarError: '',
+                feedbackError: ''
+            }
+        }
+    },
     methods: {
         saveError(errors) {
             const arrayErrors = errors.response.data.errors

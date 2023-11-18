@@ -110,7 +110,7 @@
 </template>
 
 <script>
-import axiosAuthUser from "@/axiosAuthUser";
+import myAxios from "@/myAxios";
 import {API_ROUTES} from "@/routs";
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
 import logMixin from "@/mixins/logMixin";
@@ -137,17 +137,13 @@ export default {
             feedback: null,
 
             update: true,
-            errors: {
-                loginError: '',
-                avatarError: '',
-                feedbackError: ''
-            },
         }
     },
     methods: {
         getMe(){
-            axiosAuthUser.get(`${API_ROUTES.protected.me}`)
+            myAxios.get(`${API_ROUTES.protected.me}`)
                 .then(data => {
+                    this.dataLog(data)
                     this.email = data.data.user.email
                     this.login = data.data.user.login
                     this.role = data.data.user.role
@@ -167,12 +163,13 @@ export default {
             if (this.file) {
                 formData.append('avatar', this.file)
             }
-            axiosAuthUser.post(`${API_ROUTES.protected.updateMe}`, formData, {
+            myAxios.post(`${API_ROUTES.protected.updateMe}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
             })
                 .then(data => {
+                    this.dataLog(data)
                     this.email = data.data.user.email
                     this.login = data.data.user.login
                     this.avatar = this.path + data.data.user.avatar
@@ -186,8 +183,9 @@ export default {
         },
         sendFeedback() {
             this.errors.feedbackError = null
-            axiosAuthUser.post(`${API_ROUTES.protected.feedbackMe}`, {feedback: this.feedback})
+            myAxios.post(`${API_ROUTES.protected.feedbackMe}`, {feedback: this.feedback})
                 .then(data => {
+                    this.dataLog(data)
                     this.feedback = null
                 })
                 .catch(errors => {

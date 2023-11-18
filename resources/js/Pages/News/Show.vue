@@ -32,15 +32,18 @@
 </template>
 
 <script>
-import axiosAuthUser from "@/axiosAuthUser";
+import myAxios from "@/myAxios";
 import {API_ROUTES} from "@/routs";
 import router from "@/router";
 import Comments from "@/Components/Comments/Comments.vue";
 import DeleteComment from "@/Components/Сonfirmation/Confirm.vue";
+import inputErrorsMixin from "@/mixins/inputErrorsMixin.js";
+import logMixin from "@/mixins/logMixin.js";
 
 export default {
     name: "Show",
     components: {DeleteComment, Comments},
+    mixins: [inputErrorsMixin, logMixin],
     data() {
         return {
             news_id: null,
@@ -55,13 +58,13 @@ export default {
     methods: {
         getPost() {
             this.news_id = router.currentRoute.value.query.id
-            axiosAuthUser.get(`${API_ROUTES.public.news_show}`, {
+            myAxios.get(`${API_ROUTES.public.news_show}`, {
                 params: {
                     id: this.news_id
                 },
             })
                 .then(data => {
-                    console.log(data.data.data)
+                    this.dataLog(data)
                     this.image_url = data.data.data.image_url
                     this.title = data.data.data.title
                     this.text = data.data.data.text
@@ -70,7 +73,7 @@ export default {
                     this.updated_at = data.data.data.updated_at
                 })
                 .catch(errors => {
-                    console.log(errors)
+                    this.errorsLog(errors)
                 })
         }
     },

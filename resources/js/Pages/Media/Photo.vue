@@ -27,7 +27,7 @@
 <script>
 import Paginator from "@/Components/Paginator.vue";
 import {API_ROUTES} from "@/routs";
-import axiosAuthUser from "@/axiosAuthUser";
+import myAxios from "@/myAxios";
 import BigSize from "@/Media/BigSize.vue";
 import router from "@/router";
 import MediaMenu from "@/Components/Menu/MediaMenu.vue";
@@ -51,7 +51,7 @@ export default {
     methods: {
         getPosts(page){
             this.pagination.current_page = page
-            axiosAuthUser.get(`${API_ROUTES.public.photos}`, {
+            myAxios.get(`${API_ROUTES.public.photos}`, {
                 params: {
                     page: String(this.pagination.current_page)
                 },

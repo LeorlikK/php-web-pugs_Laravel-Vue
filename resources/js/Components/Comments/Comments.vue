@@ -2,7 +2,7 @@
     <h3 class="comments-title">Комментарии:</h3>
     <div class="content comments-content">
         <div class="comments">
-            <div v-if="this.$store.getters.getIsAuth" class="input-comment">
+            <div v-if="this.getIsAuth" class="input-comment">
                 <textarea v-model="inputField" placeholder="Введите комментарий:" ></textarea>
                 <div>
                     <a @click.prevent="cancel">Отмена</a>
@@ -22,7 +22,7 @@
                     @confirmDelete="confirmDelete"
                 ></Comment>
 
-                <div v-if="this.$store.getters.getIsAuth && comment.id === this.answerCommentId" class="input-comment input-answer">
+                <div v-if="this.getIsAuth && comment.id === this.answerCommentId" class="input-comment input-answer">
                     <textarea v-model="answerInput" placeholder="Введите комментарий:" id="textareaId"></textarea>
                     <div>
                         <a @click.prevent="answerCancel">Отмена</a>
@@ -76,18 +76,18 @@
 </template>
 
 <script>
-import axiosAuthUser from "@/axiosAuthUser";
+import myAxios from "@/myAxios";
 import { API_ROUTES } from "@/routs";
 import Paginator from "@/Components/Paginator.vue";
 import Comment from "@/Components/Comments/Comment.vue";
-import cookiesMixin from "@/mixins/authMixin";
-import axios from "axios";
-import errorsLogMixin from "@/mixins/logMixin";
+import inputErrorsMixin from "@/mixins/inputErrorsMixin";
+import logMixin from "@/mixins/logMixin";
 import Confirm from "@/Components/Сonfirmation/Confirm.vue";
+import {mapGetters} from "vuex";
 
 export default {
     name: "Comments",
-    mixins: [cookiesMixin, errorsLogMixin],
+    mixins: [inputErrorsMixin, logMixin],
     components: {Confirm, Comment, Paginator },
     props: {
         news_id: {},
@@ -109,10 +109,16 @@ export default {
             textDeleteComment: 'Удалить коментарий??'
         };
     },
+    computed: {
+        ...mapGetters('authModule', {
+            getIsAuth: 'getIsAuth'
+        })
+    },
     methods: {
         getComments(news_id, page) {
-            axiosAuthUser.get(API_ROUTES.public.comments + `/${news_id}/${page}`)
+            myAxios.get(API_ROUTES.public.comments + `/${news_id}/${page}`)
                 .then((data) => {
+                    this.dataLog(data)
                     data = data.data;
                     data.data = data.data.map((comment) => {
                         comment.comments_children = [];
@@ -137,8 +143,9 @@ export default {
                 delete comment.comments_children.pagination;
             } else {
                 comment.loading = true
-                axios.get(API_ROUTES.public.comments + `/${this.news_id}/${page}/${parent_comment}`)
+                myAxios.get(API_ROUTES.public.comments + `/${this.news_id}/${page}/${parent_comment}`)
                     .then((data) => {
+                        this.dataLog(data)
                         comment.comments_children.pagination = {
                             current_page: data.data.meta.current_page,
                             last_page: data.data.meta.last_page,
@@ -163,9 +170,10 @@ export default {
                 news_id: this.news_id,
                 parent_comment: parent_comment
             };
-            axiosAuthUser.post(API_ROUTES.protected.comments_store, data)
+            myAxios.post(API_ROUTES.protected.comments_store, data)
                 .then(data => {
-                    console.log(data.data.comment)
+                    this.dataLog(data)
+                    this.inputField = null
                     const comment = data.data.comment
 
                     comment.comments_children = [];
@@ -184,8 +192,9 @@ export default {
                 news_id: this.news_id,
                 parent_comment: comment_parent.id
             };
-            axiosAuthUser.post(API_ROUTES.protected.comments_store, data)
+            myAxios.post(API_ROUTES.protected.comments_store, data)
                 .then(data => {
+                    this.dataLog(data)
                     const comment = data.data.comment
 
                     comment_parent.comments_children.unshift(comment)
@@ -228,8 +237,9 @@ export default {
             if (confirm){
                 const comment = this.commentDelete
                 this.commentDelete = null
-                axiosAuthUser.post(API_ROUTES.protected.comments_delete + `/${comment.id}`)
+                myAxios.post(API_ROUTES.protected.comments_delete + `/${comment.id}`)
                     .then(data => {
+                        this.dataLog(data)
                         if (comment.parent_comment) {
                             const indexParentComment = this.comments.findIndex(c => c.id === comment.parent_comment);
                             const parent_comment = this.comments[indexParentComment]

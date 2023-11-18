@@ -19,36 +19,34 @@
 </template>
 
 <script>
-import axios from "axios";
 import {API_ROUTES} from "@/routs"
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
-import errorsLogMixin from "@/mixins/logMixin";
-import cookiesMixin from "@/mixins/authMixin";
-import axiosAuthUser from "@/axiosAuthUser";
+import logMixin from "@/mixins/logMixin";
+import myAxios from "@/myAxios";
+import router from "@/router";
+import {authService} from "@/services/authService";
 
 export default {
     name: "Login",
-    mixins: [inputErrorsMixin, errorsLogMixin, cookiesMixin],
+    mixins: [inputErrorsMixin, logMixin],
     data() {
         return {
             email: '',
             password: '',
-            errors: {
-                emailError: '',
-                passwordError: '',
-            }
         }
     },
     methods: {
         login() {
-            axiosAuthUser.get('/sanctum/csrf-cookie')
+            myAxios.get('/sanctum/csrf-cookie')
                 .then(data => {
-                    axiosAuthUser.post(API_ROUTES.public.login, {
+                    this.dataLog(data)
+                    myAxios.post(API_ROUTES.public.login, {
                         email: this.email, password: this.password
                     })
                         .then(data => {
-                            console.log(data.data);
-                            this.auth(data)
+                            this.dataLog(data)
+                            authService().auth(data, 'enter')
+                            router.push({name: 'home'})
                         })
                         .catch(errors => {
                             this.errorsLog(errors)

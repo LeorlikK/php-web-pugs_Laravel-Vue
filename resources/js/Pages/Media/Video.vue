@@ -31,14 +31,14 @@ import MediaMenu from "@/Components/Menu/MediaMenu.vue";
 import BigSize from "@/Media/BigSize.vue";
 import Paginator from "@/Components/Paginator.vue";
 import router from "@/router";
-import axiosAuthUser from "@/axiosAuthUser";
+import myAxios from "@/myAxios";
 import {API_ROUTES} from "@/routs";
-import cookiesMixin from "@/mixins/authMixin";
+import cookieService from '@/services/cookieService.js'
 import logMixin from "@/mixins/logMixin";
 export default {
     name: "Video",
     components: {MediaMenu, BigSize, Paginator},
-    mixins: [cookiesMixin, logMixin],
+    mixins: [cookieService, logMixin],
     data() {
         return {
             showImage: false,
@@ -48,13 +48,13 @@ export default {
                 last_page: null,
                 total: null,
             },
-            volume: this.getCookie('video-volume') ?? 1
+            volume: cookieService.getCookie('video-volume') ?? 1
         }
     },
     methods: {
         getPosts(page){
             this.pagination.current_page = page
-            axiosAuthUser.get(`${API_ROUTES.public.video}`, {
+            myAxios.get(`${API_ROUTES.public.video}`, {
                 params: {
                     page: String(this.pagination.current_page)
                 },

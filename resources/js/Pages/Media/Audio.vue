@@ -27,17 +27,17 @@
 <script>
 import Paginator from "@/Components/Paginator.vue";
 import {API_ROUTES} from "@/routs";
-import axiosAuthUser from "@/axiosAuthUser";
+import myAxios from "@/myAxios";
 import BigSize from "@/Media/BigSize.vue";
 import router from "@/router";
 import MediaMenu from "@/Components/Menu/MediaMenu.vue";
-import cookiesMixin from "@/mixins/authMixin";
+import cookieService from '@/services/cookieService.js'
 import logMixin from "@/mixins/logMixin";
 
 export default {
     name: "Audio",
     components: {MediaMenu, BigSize, Paginator},
-    mixins: [cookiesMixin, logMixin],
+    mixins: [cookieService, logMixin],
     data() {
         return {
             showImage: false,
@@ -47,13 +47,13 @@ export default {
                 last_page: null,
                 total: null,
             },
-            volume: this.getCookie('audio-volume') ?? 1
+            volume: cookieService.getCookie('audio-volume') ?? 1
         }
     },
     methods: {
         getPosts(page){
             this.pagination.current_page = page
-            axiosAuthUser.get(`${API_ROUTES.public.audio}`, {
+            myAxios.get(`${API_ROUTES.public.audio}`, {
                 params: {
                     page: String(this.pagination.current_page)
                 },

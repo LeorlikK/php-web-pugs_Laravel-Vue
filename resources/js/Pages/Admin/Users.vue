@@ -75,7 +75,7 @@
 <script>
 import AdminMenu from "@/Components/Menu/AdminMenu.vue";
 import router from "@/router";
-import axiosAuthUser from "@/axiosAuthUser";
+import myAxios from "@/myAxios";
 import Confirm from "@/Components/Сonfirmation/Confirm.vue";
 import {API_ROUTES} from "@/routs";
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
@@ -111,8 +111,9 @@ export default {
                 search: this.search
             }
             router.replace({ query: query })
-            axiosAuthUser.get(`${API_ROUTES.protected.admin_users}`, { params: query })
+            myAxios.get(`${API_ROUTES.protected.admin_users}`, { params: query })
                 .then(data => {
+                    this.dataLog(data)
                     data = data.data
                     this.posts.splice(0)
                     this.posts.push(...data.data)
@@ -127,8 +128,9 @@ export default {
         bannedUser(confirm) {
             this.question = false
             if (confirm){
-                axiosAuthUser.post(`${API_ROUTES.protected.admin_user_banned}/${this.userBanned.id}`)
+                myAxios.post(`${API_ROUTES.protected.admin_user_banned}/${this.userBanned.id}`)
                     .then(data => {
+                        this.dataLog(data)
                         this.userBanned.banned = !this.userBanned.banned
                     })
                     .catch(errors => {

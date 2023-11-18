@@ -33,13 +33,15 @@
 import axios from "axios";
 import {API_ROUTES} from "@/routs"
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
-import errorsLogMixin from "@/mixins/logMixin";
-import axiosAuthUser from "@/axiosAuthUser";
-import authMixin from "@/mixins/authMixin";
+import logMixin from "@/mixins/logMixin";
+import myAxios from "@/myAxios";
+import {authService} from "@/services/authService";
+import cookieService from '@/services/cookieService.js'
+import router from "@/router";
 
 export default {
     name: "Registration",
-    mixins: [inputErrorsMixin, errorsLogMixin, authMixin],
+    mixins: [inputErrorsMixin, logMixin],
     data() {
         return {
             login: '',
@@ -47,13 +49,6 @@ export default {
             password: '',
             currentPassword: '',
             avatar: '',
-            errors: {
-                loginError: '',
-                emailError: '',
-                passwordError: '',
-                currentPasswordError: '',
-                avatarError: '',
-            }
         }
     },
     methods: {
@@ -65,8 +60,8 @@ export default {
                 }
             })
                 .then(data => {
-                    const csrfToken = this.getCookie('XSRF-TOKEN')
-                    axiosAuthUser.post(API_ROUTES.public.registration, {
+                    const csrfToken = cookieService.getCookie('XSRF-TOKEN')
+                    myAxios.post(API_ROUTES.public.registration, {
                         login: this.login,
                         email: this.email,
                         password: this.password,
@@ -79,7 +74,8 @@ export default {
                         }
                     })
                         .then(data => {
-                            this.auth(data)
+                            authService().auth(data, 'enter')
+                            router.push({name: 'home'})
                         })
                         .catch(errors => {
                             this.errorsLog(errors)

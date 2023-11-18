@@ -19,17 +19,16 @@
 </template>
 
 <script>
-import axios from "axios";
 import {API_ROUTES} from "@/routs";
-import cookiesMixin from "@/mixins/authMixin";
-import axiosAuthUser from "@/axiosAuthUser";
-import authMixin from "@/mixins/authMixin";
+import inputErrorsMixin from "@/mixins/inputErrorsMixin";
 import logMixin from "@/mixins/logMixin";
-// import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
+import myAxios from "@/myAxios";
+import router from "@/router";
+import {authService} from "@/services/authService";
 
 export default {
     name: "Header",
-    mixins: [cookiesMixin, logMixin, authMixin],
+    mixins: [inputErrorsMixin, logMixin],
     data() {
         return {
         }
@@ -42,10 +41,10 @@ export default {
         //
         // }),
         logout() {
-            axiosAuthUser.post(API_ROUTES.public.logout)
+            myAxios.post(API_ROUTES.public.logout)
                 .then(data => {
-                    console.log(data);
-                    this.exit()
+                    authService().auth(data, 'exit')
+                    router.push({name: 'home'})
                 })
                 .catch(errors => {
                     this.errorsLog(errors)
@@ -64,6 +63,7 @@ export default {
     //     })
     // },
     mounted() {
+
     }
 }
 </script>

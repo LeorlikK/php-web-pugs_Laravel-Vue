@@ -13,6 +13,7 @@ use App\Http\Controllers\Peculiarities\PeculiaritiesController;
 use App\Http\Controllers\PersonalArea\PersonalAreaController;
 use Illuminate\Support\Facades\Route;
 
+// leorl1k@yandex.ru
 // leorlik@ya.ru
 // leorlik_2@ya.ru
 // Pristxolidc2013
@@ -20,8 +21,8 @@ Route::get('/account/verify', [VerifyController::class, 'verify'])->name('verifi
 Route::post('/account/registration', [AuthorizationController::class, 'registration']);
 Route::post('/account/login', [AuthorizationController::class, 'login']);
 Route::post('/account/logout', [AuthorizationController::class, 'logout']);
+Route::get('/account/me', [PersonalAreaController::class, 'me']);
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/account/me', [PersonalAreaController::class, 'me']);
     Route::post('/account/update', [PersonalAreaController::class, 'update']);
     Route::post('/account/feedback', [PersonalAreaController::class, 'feedback']);
     Route::prefix('/admin')->middleware(['verified', 'admin'])->group(function () {

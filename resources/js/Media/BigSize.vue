@@ -24,7 +24,6 @@ export default {
         },
         closeWindow(event) {
             this.$emit('changeShowImage', false)
-            console.log('Закрыть окно');
         },
         stopPropagation(event) {
             event.stopPropagation();
