@@ -11,7 +11,7 @@
                 <router-link :to="{name: 'news', query: { page: 1 }}">News</router-link>
             </li>
             <li>
-                <router-link :to="{name: 'photos'}">Media</router-link>
+                <router-link :to="{name: 'admin_photos'}">Media</router-link>
             </li>
             <li>
                 <router-link :to="{name: 'admin_users'}">Users</router-link>

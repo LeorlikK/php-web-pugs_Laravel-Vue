@@ -25,7 +25,7 @@
                     <input v-model="search" @keyup.enter="changeSearch" placeholder="Поиск по email">
                     <a @click.prevent="changeSearch" class="btn btn-update btn-white-c">Поиск</a>
                 </div>
-                <table>
+                <table class="admin-table">
                     <thead>
                         <tr>
                             <th scope="row">ID</th>

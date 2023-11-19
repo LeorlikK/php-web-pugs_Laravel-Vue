@@ -6,9 +6,11 @@ export const API_ROUTES = {
         comments_store: '/api/comments/store',
         comments_delete: '/api/comments/delete',
         admin_users: '/api/admin/users',
-        admin_user_edit: '/api/admin/user/edit',
-        admin_user_update: '/api/admin/user/update',
-        admin_user_banned: '/api/admin/user/banned',
+        admin_user_edit: '/api/admin/users/edit',
+        admin_user_update: '/api/admin/users/update',
+        admin_user_banned: '/api/admin/users/banned',
+        admin_photo_store: '/api/admin/photo/store',
+        admin_photo_delete: '/api/admin/photo/delete'
     },
     public: {
         home: '/',
@@ -29,7 +31,7 @@ export const API_ROUTES = {
 
         comments: '/api/comments',
 
-        photos: '/api/media/photo',
+        photo: '/api/media/photo',
         video: '/api/media/video',
         audio: '/api/media/audio',
     }

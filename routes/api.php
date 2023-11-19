@@ -26,10 +26,23 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/account/update', [PersonalAreaController::class, 'update']);
     Route::post('/account/feedback', [PersonalAreaController::class, 'feedback']);
     Route::prefix('/admin')->middleware(['verified', 'admin'])->group(function () {
-        Route::get('users', [AdminController::class, 'index']);
-        Route::get('user/edit/{user}', [AdminController::class, 'edit']);
-        Route::post('user/update/{user}', [AdminController::class, 'update']);
-        Route::post('user/banned/{user}', [AdminController::class, 'banned']);
+        Route::prefix('/users')->group(function () {
+            Route::get('/', [AdminController::class, 'index']);
+            Route::get('/edit/{user}', [AdminController::class, 'edit']);
+            Route::post('/update/{user}', [AdminController::class, 'update']);
+            Route::post('/banned/{user}', [AdminController::class, 'banned']);
+        });
+        Route::prefix('/photo')->group(function () {
+            Route::post('/store', [PhotoController::class, 'store']);
+            Route::patch('/update/{photo}', [PhotoController::class, 'update']);
+            Route::delete('/delete/{photo}', [PhotoController::class, 'destroy']);
+        });
+        Route::prefix('/video')->group(function () {
+            Route::post('/store', [VideoController::class, 'store']);
+            Route::patch('/update/{video}', [VideoController::class, 'update']);
+            Route::delete('/delete/{video}', [VideoController::class, 'destroy']);
+        });
+
     });
 });
 
@@ -57,15 +70,9 @@ Route::prefix('/comments')->group(function (){
 Route::prefix('/media')->group(function (){
     Route::prefix('/photo')->group(function (){
         Route::get('/{page?}', [PhotoController::class, 'index']);
-        Route::post('/store', [PhotoController::class, 'store']);
-        Route::patch('/update/{photo}', [PhotoController::class, 'update']);
-        Route::delete('/delete/{photo}', [PhotoController::class, 'destroy']);
     });
     Route::prefix('/video')->group(function (){
         Route::get('/{page?}', [VideoController::class, 'index']);
-        Route::post('/store', [VideoController::class, 'store']);
-        Route::patch('/update/{video}', [VideoController::class, 'update']);
-        Route::delete('/delete/{video}', [VideoController::class, 'destroy']);
     });
     Route::prefix('/audio')->group(function (){
         Route::get('/{page?}', [AudioController::class, 'index']);

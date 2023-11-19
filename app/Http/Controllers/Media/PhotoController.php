@@ -25,13 +25,13 @@ class PhotoController extends Controller
         return PhotoResource::collection($photos);
     }
 
-    public function store(PhotoStoreRequest $request): JsonResponse
+    public function store(PhotoStoreRequest $request): PhotoResource
     {
         $request = $request->validated();
 
         $file = $request['file'];
         $size = $file->getSize();
-        $url = Storage::disk('public')->put('/images/photos', $file);
+        $url = '/' . Storage::disk('public')->put( '/images/photos', $file);
         $name = $request['name'] ?? explode('.', $file->getClientOriginalName())[0];
 
         $photo = Photo::create([
@@ -40,7 +40,7 @@ class PhotoController extends Controller
             'size' => $size
         ]);
 
-        return response()->json(['id' => $photo->id], 201);
+        return PhotoResource::make($photo);
     }
 
     public function update(PhotoUpdateRequest $request, Photo $photo): JsonResponse
@@ -55,6 +55,10 @@ class PhotoController extends Controller
 
     public function destroy(Photo $photo): JsonResponse
     {
+        if (isset($photo->url) && $photo->url !== '/images/avatars/avatar_default.png') {
+                Storage::disk('public')->delete($photo->url);
+        }
+
         $photo->delete();
 
         return response()->json(status:204);

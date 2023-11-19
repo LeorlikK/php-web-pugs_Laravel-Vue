@@ -1,11 +1,15 @@
 <template>
-    <MediaMenu></MediaMenu>
+    <MediaMenu
+        photo_route="photos"
+        video_route="video"
+        audio_route="audio"
+    ></MediaMenu>
     <div class="container-media">
         <h3 class="content-title">Photos</h3>
         <div :class="posts.length > 3 ? 'counter-items-4' : 'counter-items-3'" class="content content-media">
             <div v-for="post in posts" class="photo">
                 <div>
-                    <img @click.prevent="changeShowImage(post.url)" class="image photo-img" :src="`/storage${post.url}`" alt="#">
+                    <img @click.prevent="changeShowImage(this.path + post.url)" class="image photo-img" :src="`/storage${post.url}`" alt="#">
                 </div>
                 <p>{{ post.name }}</p>
             </div>
@@ -39,19 +43,22 @@ export default {
     mixins: [imageMixin, logMixin],
     data() {
         return {
-            showImage: false,
+
             posts: [],
             pagination: {
-                current_page: 1,
+                current_page: router.currentRoute.value.query.page,
                 last_page: null,
                 total: null,
             },
+            path: '/storage',
+            showImage: false,
         }
     },
     methods: {
         getPosts(page){
             this.pagination.current_page = page
-            myAxios.get(`${API_ROUTES.public.photos}`, {
+            router.replace({ query: {page: page} })
+            myAxios.get(`${API_ROUTES.public.photo}`, {
                 params: {
                     page: String(this.pagination.current_page)
                 },
@@ -76,7 +83,7 @@ export default {
         }
     },
     mounted() {
-        this.getPosts()
+        this.getPosts(this.pagination.current_page)
     }
 }
 </script>

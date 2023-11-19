@@ -1,5 +1,9 @@
 <template>
-    <MediaMenu></MediaMenu>
+    <MediaMenu
+        photo_route="photos"
+        video_route="video"
+        audio_route="audio"
+    ></MediaMenu>
     <div class="container-media">
         <h3 class="content-title">Audio</h3>
         <div class="content content-audio">
@@ -43,7 +47,7 @@ export default {
             showImage: false,
             posts: [],
             pagination: {
-                current_page: 1,
+                current_page: router.currentRoute.value.query.page,
                 last_page: null,
                 total: null,
             },
@@ -53,6 +57,7 @@ export default {
     methods: {
         getPosts(page){
             this.pagination.current_page = page
+            router.replace({ query: {page: page} })
             myAxios.get(`${API_ROUTES.public.audio}`, {
                 params: {
                     page: String(this.pagination.current_page)
@@ -84,7 +89,7 @@ export default {
         }
     },
     mounted() {
-        this.getPosts()
+        this.getPosts(this.pagination.current_page)
     }
 }
 </script>

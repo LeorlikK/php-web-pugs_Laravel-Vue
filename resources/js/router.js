@@ -170,7 +170,7 @@ const router = createRouter({
         {
             path: '/admin/users',
             name:'admin_users',
-            component: () => import('./Pages/Admin/Users.vue'),
+            component: () => import('./Pages/Admin/Users/Users.vue'),
             meta: {
                 middleware: [
                     verify_email,
@@ -182,13 +182,49 @@ const router = createRouter({
         {
             path: '/admin/user/edit/:user',
             name:'admin_user_edit',
-            component: () => import('./Pages/Admin/User.vue'),
+            component: () => import('./Pages/Admin/Users/User.vue'),
             meta: {
                 middleware: [
                     verify_email,
                     admin
                 ],
                 title: 'Admin-User'
+            }
+        },
+        {
+            path: '/admin/photos',
+            name:'admin_photos',
+            component: () => import('./Pages/Admin/Media/Photo.vue'),
+            meta: {
+                middleware: [
+                    verify_email,
+                    admin
+                ],
+                title: 'Admin-Photos'
+            }
+        },
+        {
+            path: '/admin/video',
+            name:'admin_video',
+            component: () => import('./Pages/Admin/Media/Video.vue'),
+            meta: {
+                middleware: [
+                    verify_email,
+                    admin
+                ],
+                title: 'Admin-Video'
+            }
+        },
+        {
+            path: '/admin/audio',
+            name:'admin_audio',
+            component: () => import('./Pages/Admin/Media/Audio.vue'),
+            meta: {
+                middleware: [
+                    verify_email,
+                    admin
+                ],
+                title: 'Admin-Audio'
             }
         }
     ]

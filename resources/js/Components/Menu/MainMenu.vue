@@ -14,7 +14,7 @@
             <li>
                 <router-link :to="{name: 'photos'}">Медиа</router-link>
             </li>
-            <li v-if="this.$store.getters['authModule/getIsAuth'] && this.$store.getters['authModule/getIsAdmin']">
+            <li v-if="this.$store.getters['authModule/getIsVerify'] && this.$store.getters['authModule/getIsAdmin']">
                 <router-link :to="{name: 'admin'}">Админка</router-link>
             </li>
         </ul>
