@@ -34,18 +34,11 @@
             <div class="personal-avatar">
                 <div class="text">
                     <p class="static size-15">Avatar:</p>
-
-                    <div v-if="!update" class="img-file">
-                        <input
-                            @change="changeImage"
-                            type="file" class="img-file-input" id="examplePhotos" accept="image/*,.png,.jpg">
-                        <div
-                            :class="this.file?.name ? 'btn-active' : 'btn-cancel'"
-                            class="img-file-label">
-                            <label  for="examplePhotos">Выберите изображение:</label>
-                        </div>
-                        <p class="img-file-info">{{ this.file?.name ?? 'Файл не выбран'}}</p>
-                    </div>
+                    <InputImage
+                        v-if="!update"
+                        :file="this.file"
+                        @changeImage="changeImage"
+                    ></InputImage>
                 </div>
                 <div class="personal-error">
                     <p v-if="this.errors.avatarError" class="error-message">{{ this.errors.avatarError[0] }}</p>
@@ -116,9 +109,10 @@ import inputErrorsMixin from "@/mixins/inputErrorsMixin";
 import logMixin from "@/mixins/logMixin";
 import BigSize from "@/Media/BigSize.vue";
 import imageMixin from "@/mixins/imageMixin";
+import InputImage from "@/Components/Inputs/InputImage.vue";
 export default {
     name: "PersonalArea",
-    components: {BigSize},
+    components: {InputImage, BigSize},
     mixins: [inputErrorsMixin, logMixin, imageMixin],
     data() {
         return {
@@ -174,6 +168,7 @@ export default {
                     this.login = data.data.user.login
                     this.avatar = this.path + data.data.user.avatar
                     this.oldAvatar = this.path + data.data.user.avatar
+                    this.file = null
                     this.update = true
                 })
                 .catch(errors => {

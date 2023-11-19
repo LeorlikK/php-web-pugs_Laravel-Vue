@@ -1,9 +1,8 @@
 <template>
     <div class="img-file">
         <input
-            style="width: 200px"
             @change="changeImage"
-            type="file" class="img-file-input" id="examplePhotos" accept="image/*,.png,.jpg">
+            type="file" class="img-file-input fix-width" id="examplePhotos" accept="image/*,.png,.jpg">
         <div
             :class="this.file?.name ? 'btn-active' : 'btn-cancel'"
             class="img-file-label">
@@ -28,5 +27,7 @@ export default {
 </script>
 
 <style scoped>
-
+.fix-width {
+    width: 200px;
+}
 </style>

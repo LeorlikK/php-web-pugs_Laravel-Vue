@@ -23,7 +23,6 @@
                         :file="this.file"
                         @changeImage="changeImage"
                     ></InputImage>
-
                     <p v-if="this.errors.avatarError">{{ this.errors.avatarError[0] }}</p>
                 </div>
                 <a @click.prevent="registration" class="btn">Зарегистрироваться</a>
