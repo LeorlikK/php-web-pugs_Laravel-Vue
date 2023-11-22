@@ -29,13 +29,13 @@ class AudioController extends Controller
         return AudioResource::collection($audio);
     }
 
-    public function store(AudioStoreRequest $request): JsonResponse
+    public function store(AudioStoreRequest $request): AudioResource
     {
         $request = $request->validated();
 
-        $file = $request['file'];
+        $file = $request['audio'];
         $size = $file->getSize();
-        $url = Storage::disk('public')->put('/images/photos', $file);
+        $url = Storage::disk('public')->put('/audio', $file);
         $name = $request['name'] ?? explode('.', $file->getClientOriginalName())[0];
 
         $photo = Audio::create([
@@ -44,7 +44,7 @@ class AudioController extends Controller
             'size' => $size
         ]);
 
-        return response()->json(['id' => $photo->id], 201);
+        return AudioResource::make($photo);
     }
 
     public function update(PhotoUpdateRequest $request, Photo $photo): JsonResponse
@@ -57,10 +57,14 @@ class AudioController extends Controller
         return response()->json($photo, 204);
     }
 
-    public function destroy(Photo $photo): JsonResponse
+    public function destroy(Audio $audio): JsonResponse
     {
-        $photo->delete();
+        if ($audio->url !== '/images/avatars/avatar_default.png') {
+            Storage::disk('public')->delete($audio->url);
+        }
 
-        return response()->json(status:204);
+        $delete = $audio->delete();
+
+        return response()->json(['success' => $delete], 204);
     }
 }

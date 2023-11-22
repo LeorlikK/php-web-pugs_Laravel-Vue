@@ -7,8 +7,12 @@ export default {
                 passwordError: '',
                 currentPasswordError: '',
                 roleError: '',
+                feedbackError: '',
                 avatarError: '',
-                feedbackError: ''
+                fileError: '',
+                imageError: '',
+                videoError: '',
+                audioError: '',
             }
         }
     },
@@ -20,8 +24,17 @@ export default {
             this.errors.roleError = arrayErrors.role ?? ''
             this.errors.passwordError = arrayErrors.password ?? ''
             this.errors.currentPasswordError = arrayErrors.password_confirmation ?? ''
-            this.errors.avatarError = arrayErrors.avatar ?? ''
             this.errors.feedbackError = arrayErrors.feedback ?? ''
+            this.errors.avatarError = arrayErrors.avatar ?? ''
+            this.errors.fileError = arrayErrors.file ?? ''
+            this.errors.imageError = arrayErrors.image ?? ''
+            this.errors.videoError = arrayErrors.video ?? ''
+            this.errors.audioError = arrayErrors.audio ?? ''
+        },
+        clearErrors() {
+            for (let errorKey in this.errors) {
+                this.errors[errorKey] = ''
+            }
         }
     }
 }

@@ -839,7 +839,17 @@ nav {
     border: 2px solid #f08080;
     height: 30px;
 }
-
+.process-loading {
+    height: 10px;
+    margin: 5px 0;
+    display: flex;
+}
+.text-percent {
+    text-align: right;
+    font-weight: bolder;
+    font-size: 1.2em;
+    color: #73C6B6;
+}
 .img-file-input {
     opacity: 0;
     width: 200px;
@@ -869,8 +879,9 @@ nav {
     vertical-align: top;
 }
 .error-message {
+    margin-top: 2px;
     color: darkred;
-    text-align: center;
+    text-align: left;
 }
 /** Admin */
 .container-admin {

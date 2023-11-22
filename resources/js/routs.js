@@ -10,7 +10,11 @@ export const API_ROUTES = {
         admin_user_update: '/api/admin/users/update',
         admin_user_banned: '/api/admin/users/banned',
         admin_photo_store: '/api/admin/photo/store',
-        admin_photo_delete: '/api/admin/photo/delete'
+        admin_photo_delete: '/api/admin/photo/delete',
+        admin_video_store: '/api/admin/video/store',
+        admin_video_delete: '/api/admin/video/delete',
+        admin_audio_store: '/api/admin/audio/store',
+        admin_audio_delete: '/api/admin/audio/delete',
     },
     public: {
         home: '/',

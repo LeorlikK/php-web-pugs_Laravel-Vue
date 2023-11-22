@@ -21,7 +21,7 @@
                 <div>
                     <InputImage
                         :file="this.file"
-                        @changeImage="changeImage"
+                        @changeImage="changeFile"
                     ></InputImage>
                     <p v-if="this.errors.avatarError">{{ this.errors.avatarError[0] }}</p>
                 </div>
@@ -43,7 +43,7 @@ import router from "@/router";
 import Input from "@/Components/Inputs/Input.vue";
 import inputMixin from "@/mixins/inputMixin";
 import InputImage from "@/Components/Inputs/InputImage.vue";
-import imageMixin from "@/mixins/imageMixin";
+import imageMixin from "@/mixins/fileMixin";
 
 export default {
     name: "Registration",

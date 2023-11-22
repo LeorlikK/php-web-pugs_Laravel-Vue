@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Media\Video;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class VideoStoreRequest extends FormRequest
 {
@@ -22,7 +23,15 @@ class VideoStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'video' => ['required', 'file', 'mimes:mp4', 'max:104857600']
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'video.mimes' => 'Файл не является одним из допустимых форматов(mp4)',
+            'video.max' => 'Максимальный размер файла 10МБ',
         ];
     }
 }

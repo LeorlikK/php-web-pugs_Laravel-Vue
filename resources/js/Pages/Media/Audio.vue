@@ -81,7 +81,7 @@ export default {
             router.currentRoute.value.query.page = page
             this.getPosts(page)
         },
-        updateVolume(event) {
+        audioUpdateVolume(event) {
             let currentDate = new Date();
             let currentYear = currentDate.getFullYear()
             currentDate.setMonth(currentYear + 1)

@@ -22,8 +22,8 @@ class UserResource extends JsonResource
             'role' => $this->role,
             'avatar' => $this->avatar,
             'banned' => $this->banned,
-            'created_at' => Carbon::parse($this->created_at)->format('Y:m:d h'),
-            'updated_at' => Carbon::parse($this->created_at)->format('Y:m:d h'),
+            'created_at' => Carbon::parse($this->created_at)->format('Y-m-d h:i:s'),
+            'updated_at' => Carbon::parse($this->created_at)->format('Y-m-d h:i:s'),
         ];
     }
 }

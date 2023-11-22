@@ -42,7 +42,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::patch('/update/{video}', [VideoController::class, 'update']);
             Route::delete('/delete/{video}', [VideoController::class, 'destroy']);
         });
-
+        Route::prefix('/video')->group(function () {
+            Route::post('/store', [AudioController::class, 'store']);
+            Route::patch('/update/{audio}', [AudioController::class, 'update']);
+            Route::delete('/delete/{audio}', [AudioController::class, 'destroy']);
+        });
     });
 });
 
@@ -76,9 +80,6 @@ Route::prefix('/media')->group(function (){
     });
     Route::prefix('/audio')->group(function (){
         Route::get('/{page?}', [AudioController::class, 'index']);
-        Route::post('/store', [AudioController::class, 'store']);
-        Route::patch('/update/{audio}', [AudioController::class, 'update']);
-        Route::delete('/delete/{audio}', [AudioController::class, 'destroy']);
     });
     Route::get('/{news}/{parent_comment?}/{page?}', [CommentsController::class, 'index']);
 });

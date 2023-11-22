@@ -24,7 +24,7 @@ class PhotoStoreRequest extends FormRequest
     {
         return [
             'name' => ['string', 'max:255'],
-            'file' => ['required', 'file', 'mimes:png,jpeg,jpg,gif', 'max:10240',
+            'image' => ['required', 'file', 'mimes:png,jpeg,jpg,gif', 'max:10240',
                 Rule::dimensions()->minWidth(100)->minHeight(100)->maxWidth(5000)->maxHeight(5000)],
         ];
     }
@@ -34,9 +34,9 @@ class PhotoStoreRequest extends FormRequest
         return [
             'name.string' => 'Поле name должно быть строкой',
             'name.max' => 'Поле name не должно превышать 255 символов',
-            'file.mimes' => 'Файл не является одним из допустимых форматов(png,jpeg,jpg,gif)',
-            'file.max' => 'Максимальный размер файла 10МБ',
-            'file.dimensions' => 'Некорректный размер изображения: мин 100х100; макс: 5000х5000'
+            'image.mimes' => 'Файл не является одним из допустимых форматов(png,jpeg,jpg,gif)',
+            'image.max' => 'Максимальный размер файла 10МБ',
+            'image.dimensions' => 'Некорректный размер изображения: мин 100х100; макс: 5000х5000'
         ];
     }
 }
