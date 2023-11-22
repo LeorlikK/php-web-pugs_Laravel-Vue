@@ -37,7 +37,7 @@
                     <InputImage
                         v-if="!update"
                         :file="this.file"
-                        @changeImage="changeImage"
+                        @changeImage="changeFile"
                     ></InputImage>
                 </div>
                 <div class="personal-error">
@@ -108,7 +108,7 @@ import {API_ROUTES} from "@/routs";
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
 import logMixin from "@/mixins/logMixin";
 import BigSize from "@/Media/BigSize.vue";
-import imageMixin from "@/mixins/imageMixin";
+import imageMixin from "@/mixins/fileMixin";
 import InputImage from "@/Components/Inputs/InputImage.vue";
 export default {
     name: "PersonalArea",

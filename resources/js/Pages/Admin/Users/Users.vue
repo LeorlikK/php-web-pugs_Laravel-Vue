@@ -40,17 +40,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="post in posts" :class="post.banned ? 'banned-line' : ''">
-                            <th>{{ post.id }}</th>
-                            <td>{{ post.email }}</td>
-                            <td>{{ post.login }}</td>
-                            <td>{{ post.role }}</td>
-                            <td>{{ post.avatar }}</td>
-                            <td>{{ post.created_at }}</td>
-                            <td>{{ post.updated_at }}</td>
-                            <td class="users-btn-update"><router-link :to="{name: 'admin_user_edit', params: {user: post.id}}">Update</router-link></td>
-                            <td :class="post.banned ? 'users-btn-banned' : 'users-btn-update'">
-                                <a @click.prevent="confirmBanned(post)">{{ post.banned ? 'Banned' : 'Active'}}</a>
+                        <tr v-for="item in items" :class="item.banned ? 'banned-line' : ''" :key="item.id">
+                            <th>{{ item.id }}</th>
+                            <td>{{ item.email }}</td>
+                            <td>{{ item.login }}</td>
+                            <td>{{ item.role }}</td>
+                            <td>{{ item.avatar }}</td>
+                            <td>{{ item.created_at }}</td>
+                            <td>{{ item.updated_at }}</td>
+                            <td class="users-btn-update"><router-link :to="{name: 'admin_user_edit', params: {user: item.id}}">Update</router-link></td>
+                            <td :class="item.banned ? 'users-btn-banned' : 'users-btn-update'">
+                                <a @click.prevent="confirm(item, item.banned ? 'Разблокировать пользователя?' : 'Заблокировать пользователя?')">
+                                    {{ item.banned ? 'Banned' : 'Active'}}
+                                </a>
                             </td>
                         </tr>
                     </tbody>
@@ -64,7 +66,7 @@
                 @changePage="changePage"
             ></Paginator>
             <Confirm
-                :text="textBannedUser"
+                :text="textConfirm"
                 :question="question"
                 @answer="bannedUser"
             ></Confirm>
@@ -80,30 +82,24 @@ import Confirm from "@/Components/Сonfirmation/Confirm.vue";
 import {API_ROUTES} from "@/routs";
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
 import errorsLogMixin from "@/mixins/logMixin";
+import fileMixin from "@/mixins/fileMixin";
+import confirmMixin from "@/mixins/confirmMixin";
+import paginationMixin from "@/mixins/paginationMixin";
 export default {
     name: "Users",
     components: {AdminMenu, Confirm},
-    mixins: [inputErrorsMixin, errorsLogMixin],
+    mixins: [inputErrorsMixin, errorsLogMixin, fileMixin, confirmMixin, paginationMixin],
     data() {
         return {
-            posts: [],
-            pagination: {
-                current_page: router.currentRoute.value.query.page,
-                last_page: null,
-                total: null,
-            },
+            items: [],
             sorted: router.currentRoute.value.query.sorted ?? 'id',
             sorted_type: router.currentRoute.value.query.sorted_type ?? 'asc',
             search: router.currentRoute.value.query.search,
-
-            textBannedUser: '',
-            question: false,
-            userBanned: null
         }
     },
     methods: {
-        getUsers(page) {
-            this.pagination.current_page = page
+        getItems(page) {
+            this.assigningCurrentPage(page)
             const query = {
                 page: this.pagination.current_page,
                 sorted: this.sorted,
@@ -115,11 +111,9 @@ export default {
                 .then(data => {
                     this.dataLog(data)
                     data = data.data
-                    this.posts.splice(0)
-                    this.posts.push(...data.data)
-                    this.pagination.current_page = data.meta.current_page
-                    this.pagination.last_page = data.meta.last_page
-                    this.pagination.total = data.meta.total
+                    this.items.splice(0)
+                    this.items.push(...data.data)
+                    this.assigningValuesPaginator(data)
                 })
                 .catch(errors => {
                     this.errorsLog(errors)
@@ -128,39 +122,31 @@ export default {
         bannedUser(confirm) {
             this.question = false
             if (confirm){
-                myAxios.post(`${API_ROUTES.protected.admin_user_banned}/${this.userBanned.id}`)
+                myAxios.post(`${API_ROUTES.protected.admin_user_banned}/${this.objQuestion.id}`)
                     .then(data => {
                         this.dataLog(data)
-                        this.userBanned.banned = !this.userBanned.banned
+                        this.objQuestion.banned = !this.objQuestion.banned
                     })
                     .catch(errors => {
                         this.errorsLog(errors)
                     })
             } else {
-                this.userBanned = null
+                this.objQuestion = null
             }
         },
-        changePage(page) {
-            this.getUsers(page)
-        },
         changeSorted() {
-            this.getUsers(1)
+            this.getItems(1)
         },
         changeSortedType(type) {
             this.sorted_type = type
-            this.getUsers(1)
+            this.getItems(1)
         },
         changeSearch() {
-            this.getUsers(1)
-        },
-        confirmBanned(user){
-            this.textBannedUser = user.banned ? 'Разблокировать пользователя?' : 'Заблокировать пользователя?'
-            this.question = true
-            this.userBanned = user
+            this.getItems(1)
         },
     },
     mounted() {
-        this.getUsers(this.pagination.current_page)
+        this.getItems(this.pagination.current_page)
     }
 }
 </script>

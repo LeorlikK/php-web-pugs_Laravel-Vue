@@ -22,7 +22,7 @@ class TestUsersSeeder extends Seeder
                 'role' => ['admin', 'user', 'moder'][random_int(0, 2)],
                 'email_verified_at' => now(),
                 'password' => Hash::make('Pristxolidc2013'),
-                'avatar' => '/images/avatars/avatar_default.png',
+                'avatar' => 'images/avatars/avatar_default.png',
                 'banned' => [true, false][random_int(0, 1)],
                 'remember_token' => null,
             ]);

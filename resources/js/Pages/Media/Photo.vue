@@ -35,7 +35,7 @@ import myAxios from "@/myAxios";
 import BigSize from "@/Media/BigSize.vue";
 import router from "@/router";
 import MediaMenu from "@/Components/Menu/MediaMenu.vue";
-import imageMixin from "@/mixins/imageMixin";
+import imageMixin from "@/mixins/fileMixin";
 import logMixin from "@/mixins/logMixin";
 export default {
     name: "Photo",

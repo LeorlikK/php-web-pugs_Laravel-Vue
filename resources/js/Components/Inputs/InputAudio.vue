@@ -1,8 +1,8 @@
 <template>
     <div class="img-file">
         <input
-            @change="changeImage"
-            type="file" class="img-file-input fix-width" id="examplePhotos" accept="image/*,.png,.jpg">
+            @change="changeAudio"
+            type="file" class="img-file-input fix-width" id="examplePhotos" accept="audio/*,.mp3">
         <div
             :class="this.file?.name ? 'btn-active' : 'btn-cancel'"
             class="img-file-label">
@@ -19,8 +19,8 @@
 
 <script>
 export default {
-    name: "InputImage",
-    emits: ['changeImage'],
+    name: "InputAudio",
+    emits: ['changeAudio'],
     props: {
         file: {},
         percent: {type: Number},
@@ -32,8 +32,8 @@ export default {
         }
     },
     methods: {
-        changeImage(event) {
-            this.$emit('changeImage', event)
+        changeAudio(event) {
+            this.$emit('changeAudio', event)
         },
         getLinearGradient() {
             return `linear-gradient(135deg, #73C6B6 0%, #73C6B6 ${this.percent}%,
@@ -45,7 +45,5 @@ export default {
 </script>
 
 <style scoped>
-.fix-width {
-    width: 200px;
-}
+
 </style>

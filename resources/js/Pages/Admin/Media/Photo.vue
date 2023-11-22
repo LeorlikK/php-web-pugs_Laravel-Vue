@@ -9,14 +9,16 @@
         <div class="content content-admin-media">
             <div class="users">
                 <InputImage
-                    :file="this.file"
+                    :process="process"
+                    :percent="percent"
+                    :file="this.fileImage"
                     @changeImage="changeImage"
                 ></InputImage>
-                <p v-if="this.errors.avatarError" class="error-message">{{ this.errors.avatarError[0] }}</p>
+                <p v-if="this.errors.imageError" class="error-message">{{ this.errors.imageError[0] }}</p>
                 <div class="update margin-20">
                     <a
                         @click.prevent="loadImage"
-                        :class="btnIsActive ? 'btn-active' : 'btn-block'"
+                        :class="imageBtnIsActive ? 'btn-active' : 'btn-block'"
                         class="btn btn-update btn-white-c">Добавить</a>
                 </div>
                 <table class="admin-table">
@@ -34,19 +36,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="post in posts" :class="post.banned ? 'banned-line' : ''" :key="post.id">
-                        <th>{{ post.id }}</th>
+                    <tr v-for="item in items" :class="item.banned ? 'banned-line' : ''" :key="item.id">
+                        <th>{{ item.id }}</th>
                         <td>
-                            <img @click.prevent="changeShowImage(this.path + post.url)" :src="this.path + post.url" alt="#" class="table-img">
+                            <img @click.prevent="changeShowImage(this.path + item.url)" :src="this.path + item.url" alt="#" class="table-img">
                         </td>
-                        <td>{{ post.url }}</td>
-                        <td>{{ post.name }}</td>
-                        <td>{{ post.size }}</td>
-                        <td>{{ post.created_at }}</td>
-                        <td>{{ post.updated_at }}</td>
-                        <td class="users-btn-update"><router-link :to="{name: 'admin_user_edit', params: {user: post.id}}">Update</router-link></td>
+                        <td>{{ item.url }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.size }}</td>
+                        <td>{{ item.created_at }}</td>
+                        <td>{{ item.updated_at }}</td>
+                        <td class="users-btn-update"><router-link :to="{name: 'admin_user_edit', params: {user: item.id}}">Update</router-link></td>
                         <td class="users-btn-banned">
-                            <a @click.prevent="confirmDelete(post)">Delete</a>
+                            <a @click.prevent="confirm(item, 'Удалить изображение?')">Delete</a>
                         </td>
                     </tr>
                     </tbody>
@@ -60,7 +62,7 @@
                 @changePage="changePage"
             ></Paginator>
             <Confirm
-                :text="textBannedUser"
+                :text="textConfirm"
                 :question="question"
                 @answer="deleteImage"
             ></Confirm>
@@ -80,106 +82,85 @@ import errorsLogMixin from "@/mixins/logMixin";
 import router from "@/router";
 import myAxios from "@/myAxios";
 import {API_ROUTES} from "@/routs";
-import imageMixin from "@/mixins/imageMixin";
 import BigSize from "@/Media/BigSize.vue";
 import Confirm from "@/Components/Сonfirmation/Confirm.vue";
 import InputImage from "@/Components/Inputs/InputImage.vue";
+import fileMixin from "@/mixins/fileMixin";
+import confirmMixin from "@/mixins/confirmMixin";
+import paginationMixin from "@/mixins/paginationMixin";
 export default {
     name: "Photos",
     components: {AdminMenu, MediaMenu, BigSize, Confirm, InputImage},
-    mixins: [inputErrorsMixin, errorsLogMixin, imageMixin],
+    mixins: [inputErrorsMixin, errorsLogMixin, fileMixin, confirmMixin, paginationMixin],
     data() {
         return {
-            posts: [],
-            pagination: {
-                current_page: router.currentRoute.value.query.page,
-                last_page: null,
-                total: null,
-            },
-            path: '/storage',
-            avatar: null,
-            oldAvatar: null,
-            file: null,
-            showImage: false,
-
-            textBannedUser: '',
-            question: false,
-            imageForDelete: null
+            items: [],
         }
     },
     methods: {
-        getPhotos(page) {
-            this.pagination.current_page = page
+        getItems(page) {
+            this.assigningCurrentPage(page)
             router.replace({ query: {page: page} })
-            myAxios.get(`${API_ROUTES.public.photos}`, { params: {page: page} })
+            myAxios.get(`${API_ROUTES.public.photo}`, { params: {page: page} })
                 .then(data => {
                     this.dataLog(data)
                     data = data.data
-                    this.posts.splice(0)
-                    this.posts.push(...data.data)
-                    this.pagination.current_page = data.meta.current_page
-                    this.pagination.last_page = data.meta.last_page
-                    this.pagination.total = data.meta.total
+                    this.items.splice(0)
+                    this.items.push(...data.data)
+                    this.assigningValuesPaginator(data)
                 })
                 .catch(errors => {
                     this.errorsLog(errors)
                 })
         },
-        changePage(page) {
-            this.getPhotos(page)
-        },
-        confirmDelete(user){
-            this.textBannedUser = 'Удалить изображение?'
-            this.question = true
-            this.imageForDelete = user
+        loadImage() {
+            if (this.fileImage) {
+                this.clearErrors()
+                this.process = true
+                const formData = new FormData()
+                formData.append('image', this.fileImage)
+                myAxios.post(`${API_ROUTES.protected.admin_photo_store}`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                    onUploadProgress: progressEvent => {
+                        this.percent = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+                    }
+                })
+                    .then(data => {
+                        this.dataLog(data)
+                        this.items.unshift(data.data.data)
+                        this.fileImage = null
+                        this.process = false
+                        this.percent = 0
+                    })
+                    .catch(errors => {
+                        this.errorsLog(errors)
+                        if (errors.response.status === 422) this.saveError(errors)
+                        this.process = false
+                        this.percent = 0
+                    })
+            }
         },
         deleteImage(confirm) {
             this.question = false
             if (confirm){
-                myAxios.delete(`${API_ROUTES.protected.admin_photo_delete}/${this.imageForDelete.id}`)
+                myAxios.delete(`${API_ROUTES.protected.admin_photo_delete}/${this.objQuestion.id}`)
                     .then(data => {
                         this.dataLog(data)
-                        this.posts = this.posts.filter(c => c.id !== this.imageForDelete.id);
-                        this.imageForDelete = null
+                        this.items = this.items.filter(c => c.id !== this.objQuestion.id);
+                        this.objQuestion = null
                     })
                     .catch(errors => {
                         this.errorsLog(errors)
                     })
             } else {
-                this.imageForDelete = null
+                this.objQuestion = null
             }
         },
-        loadImage() {
-            const formData = new FormData()
-            if (this.file && this.file.name) {
-                formData.append('name', this.file.name)
-                formData.append('file', this.file)
-
-                myAxios.post(`${API_ROUTES.protected.admin_photo_store}`, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    }
-                })
-                    .then(data => {
-                        this.dataLog(data)
-                        data = data.data.data
-                        this.posts.unshift(data)
-                        this.file = null
-                    })
-                    .catch(errors => {
-                        this.errorsLog(errors)
-                        if (errors.response.status === 422) this.saveError(errors)
-                    })
-            }
-        }
-    },
-    computed: {
-        btnIsActive() {
-            return this.file !== null && this.file !== undefined
-        }
     },
     mounted() {
-        this.getPhotos(this.pagination.current_page)
+        this.getItems(this.pagination.current_page)
     }
 }
 </script>

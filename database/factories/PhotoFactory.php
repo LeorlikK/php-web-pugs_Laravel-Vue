@@ -17,7 +17,7 @@ class PhotoFactory extends Factory
     public function definition(): array
     {
         return [
-            'url' => '/images/photos/avatar_default.png',
+            'url' => 'images/photos/avatar_default.png',
             'name' => fake()->name,
             'size' => '100500',
         ];

@@ -65,7 +65,7 @@
                         <p class="static"></p>
                         <div class="img-file">
                             <input
-                                @change="changeImage"
+                                @change="changeFile"
                                 type="file" class="img-file-input" id="examplePhotos" accept="image/*,.png,.jpg">
                             <div
                                 :class="this.file?.name ? 'btn-active' : 'btn-cancel'"
@@ -141,18 +141,15 @@ import myAxios from "@/myAxios";
 import {API_ROUTES} from "@/routs";
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
 import logMixin from "@/mixins/logMixin";
-import imageMixin from "@/mixins/imageMixin";
+import fileMixin from "@/mixins/fileMixin";
 export default {
     name: "User",
     components: {AdminMenu, BigSize},
-    mixins: [inputErrorsMixin, logMixin, imageMixin],
+    mixins: [inputErrorsMixin, logMixin, fileMixin],
     data() {
         return {
             user_id: router.currentRoute.value.params.user,
             update: true,
-            path: '/storage',
-            file: null,
-            showImage: false,
 
             id: null,
             email: null,

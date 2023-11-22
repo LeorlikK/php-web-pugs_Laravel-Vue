@@ -5,6 +5,7 @@ export const authModule = {
         token: null,
     }),
     getters: {
+        getId: state => state.user?.id,
         getLogin: state => state.user?.login,
         getIsAuth: state => state.user !== null && state.token !== null,
         getIsAdmin: state => state.user?.role === 'admin',

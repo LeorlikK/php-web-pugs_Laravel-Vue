@@ -29,9 +29,9 @@ class PhotoController extends Controller
     {
         $request = $request->validated();
 
-        $file = $request['file'];
+        $file = $request['image'];
         $size = $file->getSize();
-        $url = '/' . Storage::disk('public')->put( '/images/photos', $file);
+        $url = Storage::disk('public')->put( '/images/photos', $file);
         $name = $request['name'] ?? explode('.', $file->getClientOriginalName())[0];
 
         $photo = Photo::create([
@@ -55,12 +55,12 @@ class PhotoController extends Controller
 
     public function destroy(Photo $photo): JsonResponse
     {
-        if (isset($photo->url) && $photo->url !== '/images/avatars/avatar_default.png') {
+        if ($photo->url !== '/images/avatars/avatar_default.png') {
                 Storage::disk('public')->delete($photo->url);
         }
 
-        $photo->delete();
+        $delete = $photo->delete();
 
-        return response()->json(status:204);
+        return response()->json(['success' => $delete], 204);
     }
 }

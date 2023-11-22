@@ -17,10 +17,11 @@ class VideoResource extends JsonResource
         return [
             'id' => $this->id,
             'url' => $this->url,
+            'frame' => $this->frame,
             'name' => $this->name,
             'size' => $this->size,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'created_at' => $this->created_at->format('Y-m-d h:i:s'),
+            'updated_at' => $this->updated_at->format('Y-m-d h:i:s'),
         ];
     }
 }
