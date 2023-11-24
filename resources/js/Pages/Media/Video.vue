@@ -6,17 +6,18 @@
     ></MediaMenu>
     <div class="container-media">
         <h3 class="content-title">Video</h3>
-        <div :class="posts.length > 3 ? 'counter-items-4' : 'counter-items-3'" class="content content-media">
-            <div v-for="post in posts" class="photo">
+        <div :class="items.length > 3 ? 'counter-items-4' : 'counter-items-3'" class="content content-media">
+            <div v-for="item in items" class="photo">
                 <div>
-                    <video
-                        :volume="volume"
-                        @input="updateVolume"
-                        controls class="image video-img">
-                        <source :src="`/storage${post.url}`" type="video/mp4">
-                    </video>
+                    <img @click.prevent="changeShowImage(this.path + item.frame)" class="image photo-img" :src="this.path + item.frame" alt="#">
+<!--                    <video-->
+<!--                        :volume="volume"-->
+<!--                        @input="updateVolume"-->
+<!--                        controls class="image video-img">-->
+<!--                        <source :src="`/storage${item.url}`" type="video/mp4">-->
+<!--                    </video>-->
                 </div>
-                <p>{{ post.name }}</p>
+                <p>{{ item.name }}</p>
             </div>
         </div>
         <Paginator
@@ -39,58 +40,42 @@ import myAxios from "@/myAxios";
 import {API_ROUTES} from "@/routs";
 import cookieService from '@/services/cookieService.js'
 import logMixin from "@/mixins/logMixin";
+import fileMixin from "@/mixins/fileMixin";
+import paginationMixin from "@/mixins/paginationMixin";
 export default {
     name: "Video",
     components: {MediaMenu, BigSize, Paginator},
-    mixins: [cookieService, logMixin],
+    mixins: [fileMixin, logMixin, paginationMixin],
     data() {
         return {
-            showImage: false,
-            posts: [],
-            pagination: {
-                current_page: router.currentRoute.value.query.page,
-                last_page: null,
-                total: null,
-            },
+            items: [],
             volume: cookieService.getCookie('video-volume') ?? 1
         }
     },
     methods: {
-        getPosts(page){
-            this.pagination.current_page = page
+        getItems(page){
+            this.assigningCurrentPage(page)
             router.replace({ query: {page: page} })
             myAxios.get(`${API_ROUTES.public.video}`, {
                 params: {
-                    page: String(this.pagination.current_page)
+                    page: this.pagination.current_page
                 },
             })
                 .then(data => {
                     this.dataLog(data)
                     data = data.data
-                    this.posts.splice(0)
-                    this.posts.push(...data.data)
-                    this.pagination.current_page = data.meta.current_page
-                    this.pagination.last_page = data.meta.last_page
-                    this.pagination.total = data.meta.total
+                    this.items.splice(0)
+                    this.items.push(...data.data)
+                    console.log(data)
+                    this.assigningValuesPaginator(data)
                 })
                 .catch(errors => {
                     this.errorsLog(errors)
                 })
         },
-        changePage(page) {
-            router.replace({ query: { page: page } })
-            router.currentRoute.value.query.page = page
-            this.getPosts(page)
-        },
-        updateVolume(event) {
-            let currentDate = new Date();
-            let currentYear = currentDate.getFullYear()
-            currentDate.setMonth(currentYear + 1)
-            document.cookie = `video-volume=${event.target.volume}; expires=${currentDate.toUTCString()}`
-        }
     },
     mounted() {
-        this.getPosts(this.pagination.current_page)
+        this.getItems(this.pagination.current_page)
     }
 }
 </script>

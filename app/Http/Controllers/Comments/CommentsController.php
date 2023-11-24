@@ -32,7 +32,7 @@ class CommentsController extends Controller
         return CommentsResource::collection($comments);
     }
 
-    public function store(CommentRequest $request): JsonResponse
+    public function store(CommentRequest $request): CommentsResource
     {
         $request->validated();
         $user = auth()->user();
@@ -47,7 +47,7 @@ class CommentsController extends Controller
         $comment->load('user');
         $comment->loadCount('children');
 
-        return response()->json(['comment' => $comment], 201);
+        return CommentsResource::make($comment);
     }
 
     public function destroy(Comment $comment): JsonResponse
@@ -55,8 +55,8 @@ class CommentsController extends Controller
         $comment->children->each(function ($children_comment) {
             $children_comment->delete();
         });
-        $comment->delete();
+        $comment = $comment->delete();
 
-        return response()->json(['comment' => $comment], 200);
+        return response()->json(['success' => true], 204);
     }
 }

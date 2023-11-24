@@ -17,8 +17,8 @@ class AuthorizationController extends Controller
     {
         $request = $request->validated();
 
-        if (isset($request['avatar'])) $request['avatar'] = '/' . Storage::disk('public')->put('/images/avatars', $request['avatar']);
-        else $request['avatar'] = '/images/avatars/avatar_default.png';
+        if (isset($request['avatar'])) $request['avatar'] = Storage::disk('public')->put(config('media.images.avatars'), $request['avatar']);
+        else $request['avatar'] = config('media.default.avatar');
 
         $request['password'] = Hash::make($request['password']);
         unset($request['password_confirmation']);
@@ -27,11 +27,11 @@ class AuthorizationController extends Controller
         $request['banned'] = false;
 
         $user = User::firstOrCreate($request);
-        auth()->login($user);
 
+//        auth()->login($user);
         event(new Registered($user));
 
-        return response()->json(['login' => $user->login], 201);
+        return response()->json(['success' => true, 'user' => $user], 201);
     }
 
     public function login(LoginRequest $request): JsonResponse
@@ -39,16 +39,16 @@ class AuthorizationController extends Controller
         $request->validated();
 
         if (auth()->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])){
-            return response()->json(['user' => auth()->user()], 200);
+            return response()->json(['success' => true, 'user' => auth()->user()], 200);
         };
 
-        return response()->json(['errors' => ['password' => ['Неверный логин или пароль']]], 422);
+        return response()->json(['success' => false, 'errors' => ['password' => ['Неверный логин или пароль']]], 422);
     }
 
     public function logout(): JsonResponse
     {
         $user = auth()->user();
         auth()->logout();
-        return response()->json(['user' => $user], 200);
+        return response()->json(['success' => true, 'user' => $user]);
     }
 }

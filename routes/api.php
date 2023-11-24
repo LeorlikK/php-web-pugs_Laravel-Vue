@@ -34,15 +34,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
         Route::prefix('/photo')->group(function () {
             Route::post('/store', [PhotoController::class, 'store']);
-            Route::patch('/update/{photo}', [PhotoController::class, 'update']);
+            Route::get('/edit/{photo}', [PhotoController::class, 'edit']);
+            Route::post('/update/{photo}', [PhotoController::class, 'update']);
             Route::delete('/delete/{photo}', [PhotoController::class, 'destroy']);
         });
         Route::prefix('/video')->group(function () {
             Route::post('/store', [VideoController::class, 'store']);
-            Route::patch('/update/{video}', [VideoController::class, 'update']);
+            Route::get('/edit/{video}', [VideoController::class, 'edit']);
+            Route::post('/update/{video}', [VideoController::class, 'update']);
             Route::delete('/delete/{video}', [VideoController::class, 'destroy']);
         });
-        Route::prefix('/video')->group(function () {
+        Route::prefix('/audio')->group(function () {
             Route::post('/store', [AudioController::class, 'store']);
             Route::patch('/update/{audio}', [AudioController::class, 'update']);
             Route::delete('/delete/{audio}', [AudioController::class, 'destroy']);

@@ -11,7 +11,7 @@
 
                     <h1>{{title}}</h1><hr>
                     <div class="image">
-                        <img class="image" :src="`/storage${image_url}`" alt="#">
+                        <img class="image" :src="this.path + image_url" alt="#">
                     </div><hr>
                     <div>
                         <p>{{ text }}</p>
@@ -39,11 +39,12 @@ import Comments from "@/Components/Comments/Comments.vue";
 import DeleteComment from "@/Components/Сonfirmation/Confirm.vue";
 import inputErrorsMixin from "@/mixins/inputErrorsMixin.js";
 import logMixin from "@/mixins/logMixin.js";
+import fileMixin from "@/mixins/fileMixin";
 
 export default {
     name: "Show",
     components: {DeleteComment, Comments},
-    mixins: [inputErrorsMixin, logMixin],
+    mixins: [inputErrorsMixin, logMixin, fileMixin],
     data() {
         return {
             news_id: null,
@@ -65,12 +66,13 @@ export default {
             })
                 .then(data => {
                     this.dataLog(data)
-                    this.image_url = data.data.data.image_url
-                    this.title = data.data.data.title
-                    this.text = data.data.data.text
-                    this.user = data.data.data.user
-                    this.created_at = data.data.data.created_at
-                    this.updated_at = data.data.data.updated_at
+                    data = data.data.data
+                    this.image_url = data.image_url
+                    this.title = data.title
+                    this.text = data.text
+                    this.user = data.user
+                    this.created_at = data.created_at
+                    this.updated_at = data.updated_at
                 })
                 .catch(errors => {
                     this.errorsLog(errors)

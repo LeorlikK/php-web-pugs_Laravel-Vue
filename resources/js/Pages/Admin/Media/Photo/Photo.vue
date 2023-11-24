@@ -2,23 +2,23 @@
     <div class="container-admin">
         <AdminMenu></AdminMenu>
         <MediaMenu
-            photo_route="admin_photos"
+            photo_route="admin_photo"
             video_route="admin_video"
             audio_route="admin_audio"
         ></MediaMenu>
         <div class="content content-admin-media">
             <div class="users">
-                <InputAudio
+                <InputImage
                     :process="process"
                     :percent="percent"
-                    :file="this.fileAudio"
-                    @changeAudio="changeAudio"
-                ></InputAudio>
-                <p v-if="this.errors.audioError" class="error-message">{{ this.errors.audioError[0] }}</p>
+                    :file="this.fileImage"
+                    @changeImage="changeImage"
+                ></InputImage>
+                <p v-if="this.errors.imageError" class="error-message">{{ this.errors.imageError[0] }}</p>
                 <div class="update margin-20">
                     <a
-                        @click.prevent="loadAudio"
-                        :class="audioBtnIsActive ? 'btn-active' : 'btn-block'"
+                        @click.prevent="loadImage"
+                        :class="imageBtnIsActive ? 'btn-active' : 'btn-block'"
                         class="btn btn-update btn-white-c">Добавить</a>
                 </div>
                 <table class="admin-table">
@@ -39,19 +39,16 @@
                     <tr v-for="item in items" :class="item.banned ? 'banned-line' : ''" :key="item.id">
                         <th>{{ item.id }}</th>
                         <td>
-                            <audio
-                                :volume="volume"
-                                @input="audioUpdateVolume"
-                                controls :src="this.path + item.url" preload="metadata"></audio>
+                            <img @click.prevent="changeShowImage(this.path + item.url)" :src="this.path + item.url" alt="#" class="table-img">
                         </td>
                         <td>{{ item.url }}</td>
                         <td>{{ item.name }}</td>
                         <td>{{ item.size }}</td>
                         <td>{{ item.created_at }}</td>
                         <td>{{ item.updated_at }}</td>
-                        <td class="users-btn-update"><router-link :to="{name: 'admin_user_edit', params: {user: item.id}}">Update</router-link></td>
+                        <td class="users-btn-update"><router-link :to="{name: 'admin_photo_edit', params: {photo: item.id}}">Update</router-link></td>
                         <td class="users-btn-banned">
-                            <a @click.prevent="confirm(item, 'Удалить аудио?')">Delete</a>
+                            <a @click.prevent="confirm(item, 'Удалить изображение?')">Delete</a>
                         </td>
                     </tr>
                     </tbody>
@@ -67,42 +64,44 @@
             <Confirm
                 :text="textConfirm"
                 :question="question"
-                @answer="deleteAudio"
+                @answer="deleteImage"
             ></Confirm>
+            <BigSize
+                @changeShowImage="changeShowImage"
+                :showImage="showImage"
+            ></BigSize>
         </div>
     </div>
 </template>
 
 <script>
-import AdminMenu from "@/Components/Menu/AdminMenu.vue";
 import MediaMenu from "@/Components/Menu/MediaMenu.vue";
-import Confirm from "@/Components/Сonfirmation/Confirm.vue";
-import router from "@/router";
+import AdminMenu from "@/Components/Menu/AdminMenu.vue";
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
 import errorsLogMixin from "@/mixins/logMixin";
-import fileMixin from "@/mixins/fileMixin";
+import router from "@/router";
 import myAxios from "@/myAxios";
 import {API_ROUTES} from "@/routs";
-import InputAudio from "@/Components/Inputs/InputAudio.vue";
+import BigSize from "@/Media/BigSize.vue";
+import Confirm from "@/Components/Сonfirmation/Confirm.vue";
+import InputImage from "@/Components/Inputs/InputImage.vue";
+import fileMixin from "@/mixins/fileMixin";
 import confirmMixin from "@/mixins/confirmMixin";
 import paginationMixin from "@/mixins/paginationMixin";
-import cookieService from "@/services/cookieService";
-
 export default {
-    name: "Audio",
-    components: {AdminMenu, MediaMenu, Confirm, InputAudio},
+    name: "Photos",
+    components: {AdminMenu, MediaMenu, BigSize, Confirm, InputImage},
     mixins: [inputErrorsMixin, errorsLogMixin, fileMixin, confirmMixin, paginationMixin],
     data() {
         return {
             items: [],
-            volume: cookieService.getCookie('audio-volume') ?? 1
         }
     },
     methods: {
         getItems(page) {
             this.assigningCurrentPage(page)
             router.replace({ query: {page: page} })
-            myAxios.get(`${API_ROUTES.public.audio}`, { params: {page: page} })
+            myAxios.get(`${API_ROUTES.public.photo}`, { params: {page: page} })
                 .then(data => {
                     this.dataLog(data)
                     data = data.data
@@ -114,13 +113,13 @@ export default {
                     this.errorsLog(errors)
                 })
         },
-        loadAudio() {
-            if (this.fileAudio) {
+        loadImage() {
+            if (this.fileImage) {
                 this.clearErrors()
                 this.process = true
                 const formData = new FormData()
-                formData.append('audio', this.fileAudio)
-                myAxios.post(API_ROUTES.protected.admin_video_store, formData, {
+                formData.append('image', this.fileImage)
+                myAxios.post(`${API_ROUTES.protected.admin_photo_store}`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
@@ -131,22 +130,22 @@ export default {
                     .then(data => {
                         this.dataLog(data)
                         this.items.unshift(data.data.data)
-                        this.fileAudio = null
+                        this.fileImage = null
                         this.process = false
                         this.percent = 0
                     })
-                    .catch(error => {
-                        this.errorsLog(error)
-                        if (error.response.status === 422) this.saveError(error)
+                    .catch(errors => {
+                        this.errorsLog(errors)
+                        if (errors.response.status === 422) this.saveError(errors)
                         this.process = false
                         this.percent = 0
                     })
             }
         },
-        deleteAudio(confirm) {
+        deleteImage(confirm) {
             this.question = false
             if (confirm){
-                myAxios.delete(`${API_ROUTES.protected.admin_video_delete}/${this.objQuestion.id}`)
+                myAxios.delete(`${API_ROUTES.protected.admin_photo_delete}/${this.objQuestion.id}`)
                     .then(data => {
                         this.dataLog(data)
                         this.items = this.items.filter(c => c.id !== this.objQuestion.id);

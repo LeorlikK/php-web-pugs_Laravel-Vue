@@ -20,8 +20,10 @@
                 </div>
                 <div>
                     <InputImage
-                        :file="this.file"
-                        @changeImage="changeFile"
+                        :process="process"
+                        :percent="percent"
+                        :file="this.fileImage"
+                        @changeImage="changeImage"
                     ></InputImage>
                     <p v-if="this.errors.avatarError">{{ this.errors.avatarError[0] }}</p>
                 </div>
@@ -43,12 +45,12 @@ import router from "@/router";
 import Input from "@/Components/Inputs/Input.vue";
 import inputMixin from "@/mixins/inputMixin";
 import InputImage from "@/Components/Inputs/InputImage.vue";
-import imageMixin from "@/mixins/fileMixin";
+import fileMixin from "@/mixins/fileMixin";
 
 export default {
     name: "Registration",
     components: {InputImage, Input},
-    mixins: [inputErrorsMixin, logMixin, inputMixin, imageMixin],
+    mixins: [inputErrorsMixin, logMixin, inputMixin, fileMixin],
     data() {
         return {
             login: '',
@@ -56,7 +58,6 @@ export default {
             password: '',
             currentPassword: '',
             avatar: '',
-            file: null,
         }
     },
     methods: {
@@ -66,9 +67,8 @@ export default {
             formData.append('email', this.email)
             formData.append('password', this.password)
             formData.append('password_confirmation', this.currentPassword)
-            if (this.file) {
-                console.log(this.file)
-                formData.append('avatar', this.file)
+            if (this.fileImage) {
+                formData.append('avatar', this.fileImage)
             }
             myAxios.get('/sanctum/csrf-cookie', {
                 headers: {

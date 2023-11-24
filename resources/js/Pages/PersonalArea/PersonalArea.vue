@@ -36,8 +36,10 @@
                     <p class="static size-15">Avatar:</p>
                     <InputImage
                         v-if="!update"
-                        :file="this.file"
-                        @changeImage="changeFile"
+                        :process="process"
+                        :percent="percent"
+                        :file="this.fileImage"
+                        @changeImage="changeImage"
                     ></InputImage>
                 </div>
                 <div class="personal-error">
@@ -48,7 +50,7 @@
                 <div class="text text-user">
                     <p class="static"></p>
                     <div class="block-img" :class="update ? '' : 'img-active'">
-                        <img @click.prevent="changeShowImage(this.avatar)" :src="this.avatar" alt="#" class="photo-img">
+                        <img @click.prevent="changeShowImage(this.image ?? this.avatar)" :src="this.image ?? this.avatar" alt="#" class="photo-img">
                     </div>
                 </div>
             </div>
@@ -108,12 +110,12 @@ import {API_ROUTES} from "@/routs";
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
 import logMixin from "@/mixins/logMixin";
 import BigSize from "@/Media/BigSize.vue";
-import imageMixin from "@/mixins/fileMixin";
+import fileMixin from "@/mixins/fileMixin";
 import InputImage from "@/Components/Inputs/InputImage.vue";
 export default {
     name: "PersonalArea",
     components: {InputImage, BigSize},
-    mixins: [inputErrorsMixin, logMixin, imageMixin],
+    mixins: [inputErrorsMixin, logMixin, fileMixin],
     data() {
         return {
             email: null,
@@ -122,11 +124,8 @@ export default {
             banned: null,
             oldLogin: null,
 
-            path: '/storage',
             avatar: null,
-            oldAvatar: null,
-            file: null,
-            showImage: false,
+            image: null,
 
             feedback: null,
 
@@ -142,7 +141,6 @@ export default {
                     this.login = data.data.user.login
                     this.role = data.data.user.role
                     this.avatar = this.path + data.data.user.avatar
-                    this.oldAvatar = this.path + data.data.user.avatar
                     this.banned = data.data.user.banned
                 })
                 .catch(errors => {
@@ -150,16 +148,19 @@ export default {
                 })
         },
         save() {
-            this.errors.loginError = null
-            this.errors.avatarError = null
+            this.clearErrors()
             const formData = new FormData()
             formData.append('login', this.login)
-            if (this.file) {
-                formData.append('avatar', this.file)
+            if (this.fileImage) {
+                this.process = true
+                formData.append('avatar', this.fileImage)
             }
             myAxios.post(`${API_ROUTES.protected.updateMe}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                },
+                onUploadProgress: progressEvent => {
+                    this.percent = Math.round((progressEvent.loaded * 100) / progressEvent.total)
                 }
             })
                 .then(data => {
@@ -167,13 +168,17 @@ export default {
                     this.email = data.data.user.email
                     this.login = data.data.user.login
                     this.avatar = this.path + data.data.user.avatar
-                    this.oldAvatar = this.path + data.data.user.avatar
-                    this.file = null
+                    this.fileImage = null
+                    this.image = null
                     this.update = true
+                    this.process = false
+                    this.percent = 0
                 })
                 .catch(errors => {
                     this.errorsLog(errors)
                     if (errors.response.status === 422) this.saveError(errors)
+                    this.process = false
+                    this.percent = 0
                 })
         },
         sendFeedback() {
@@ -194,10 +199,9 @@ export default {
         },
         cancel() {
             this.login = this.oldLogin
-            if (this.oldAvatar) this.avatar = this.oldAvatar
-            this.file = null
-            this.errors.loginError = null
-            this.errors.avatarError = null
+            this.fileImage = null
+            this.image = null
+            this.clearErrors()
             this.update = true
         },
     },

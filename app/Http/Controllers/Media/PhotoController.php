@@ -31,7 +31,7 @@ class PhotoController extends Controller
 
         $file = $request['image'];
         $size = $file->getSize();
-        $url = Storage::disk('public')->put( '/images/photos', $file);
+        $url = Storage::disk('public')->put(config('media.images.photos'), $file);
         $name = $request['name'] ?? explode('.', $file->getClientOriginalName())[0];
 
         $photo = Photo::create([
@@ -43,24 +43,37 @@ class PhotoController extends Controller
         return PhotoResource::make($photo);
     }
 
-    public function update(PhotoUpdateRequest $request, Photo $photo): JsonResponse
+    public function edit(Photo $photo): PhotoResource
+    {
+        return PhotoResource::make($photo);
+    }
+
+    public function update(PhotoUpdateRequest $request, Photo $photo): PhotoResource
     {
         $request = $request->validated();
 
-        $photo->update(['name' => $request['name']]);
+        if (isset($request['image'])) {
+            if ($photo->url !== config('media.default.photo')) {
+                Storage::disk('public')->delete($photo->url);
+            }
+            $request['url'] = Storage::disk('public')->put(config('media.images.photos'), $request['image']);
+            unset($request['image']);
+        }
+
+        $photo->update($request);
         $photo->refresh();
 
-        return response()->json($photo, 204);
+        return PhotoResource::make($photo);
     }
 
     public function destroy(Photo $photo): JsonResponse
     {
-        if ($photo->url !== '/images/avatars/avatar_default.png') {
+        if ($photo->url !== config('media.images.photos')) {
                 Storage::disk('public')->delete($photo->url);
         }
 
-        $delete = $photo->delete();
+        $photo->delete();
 
-        return response()->json(['success' => $delete], 204);
+        return response()->json(['success' => true], 204);
     }
 }

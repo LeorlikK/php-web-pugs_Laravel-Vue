@@ -174,7 +174,7 @@ export default {
                 .then(data => {
                     this.dataLog(data)
                     this.inputField = null
-                    const comment = data.data.comment
+                    const comment = data.data.data
 
                     comment.comments_children = [];
                     comment.loading = false
@@ -195,7 +195,7 @@ export default {
             myAxios.post(API_ROUTES.protected.comments_store, data)
                 .then(data => {
                     this.dataLog(data)
-                    const comment = data.data.comment
+                    const comment = data.data.data
 
                     comment_parent.comments_children.unshift(comment)
                     comment_parent.children_count += 1

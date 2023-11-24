@@ -9,7 +9,7 @@ export const authModule = {
         getLogin: state => state.user?.login,
         getIsAuth: state => state.user !== null && state.token !== null,
         getIsAdmin: state => state.user?.role === 'admin',
-        getIsVerify: state => state.user !== null && state.user.email_verified_at !== null,
+        getIsVerify: state => state.user !== null && state.user !== undefined && state.user.email_verified_at !== null,
     },
     mutations: {
         changeUser(state, user) {

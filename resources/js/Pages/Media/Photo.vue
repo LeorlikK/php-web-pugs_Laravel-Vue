@@ -6,12 +6,13 @@
     ></MediaMenu>
     <div class="container-media">
         <h3 class="content-title">Photos</h3>
-        <div :class="posts.length > 3 ? 'counter-items-4' : 'counter-items-3'" class="content content-media">
-            <div v-for="post in posts" class="photo">
+        <div :class="items.length > 3 ? 'counter-items-4' : 'counter-items-3'" class="content content-media">
+            <div v-for="item in items" class="photo">
                 <div>
-                    <img @click.prevent="changeShowImage(this.path + post.url)" class="image photo-img" :src="`/storage${post.url}`" alt="#">
+<!--                    <img @click.prevent="changeShowImage(this.path + item.url)" class="image photo-img" :src="this.path + item.url" alt="#">-->
+                    <img @click.prevent="changeShowImage(this.path + item.url)" class="image photo-img" src="" alt="#">
                 </div>
-                <p>{{ post.name }}</p>
+                <p>{{ item.name }}</p>
             </div>
         </div>
         <BigSize
@@ -35,55 +36,41 @@ import myAxios from "@/myAxios";
 import BigSize from "@/Media/BigSize.vue";
 import router from "@/router";
 import MediaMenu from "@/Components/Menu/MediaMenu.vue";
-import imageMixin from "@/mixins/fileMixin";
+import fileMixin from "@/mixins/fileMixin";
 import logMixin from "@/mixins/logMixin";
+import paginationMixin from "@/mixins/paginationMixin";
 export default {
     name: "Photo",
     components: {MediaMenu, BigSize, Paginator},
-    mixins: [imageMixin, logMixin],
+    mixins: [fileMixin, logMixin, paginationMixin],
     data() {
         return {
-
-            posts: [],
-            pagination: {
-                current_page: router.currentRoute.value.query.page,
-                last_page: null,
-                total: null,
-            },
-            path: '/storage',
-            showImage: false,
+            items: [],
         }
     },
     methods: {
-        getPosts(page){
-            this.pagination.current_page = page
+        getItems(page){
+            this.assigningCurrentPage(page)
             router.replace({ query: {page: page} })
             myAxios.get(`${API_ROUTES.public.photo}`, {
                 params: {
-                    page: String(this.pagination.current_page)
+                    page: this.pagination.current_page
                 },
             })
                 .then(data => {
                     this.dataLog(data)
                     data = data.data
-                    this.posts.splice(0)
-                    this.posts.push(...data.data)
-                    this.pagination.current_page = data.meta.current_page
-                    this.pagination.last_page = data.meta.last_page
-                    this.pagination.total = data.meta.total
+                    this.items.splice(0)
+                    this.items.push(...data.data)
+                    this.assigningValuesPaginator(data)
                 })
                 .catch(errors => {
                     this.errorsLog(errors)
                 })
         },
-        changePage(page) {
-            router.replace({ query: { page: page } })
-            router.currentRoute.value.query.page = page
-            this.getPosts(page)
-        }
     },
     mounted() {
-        this.getPosts(this.pagination.current_page)
+        this.getItems(this.pagination.current_page)
     }
 }
 </script>

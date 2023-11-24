@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Media\Photo;
+namespace App\Http\Requests\Media\Video;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class PhotoUpdateRequest extends FormRequest
+class VideoUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,6 +26,7 @@ class PhotoUpdateRequest extends FormRequest
             'name' => ['string', 'max:255'],
             'image' => ['file', 'mimes:png,jpeg,jpg,gif', 'max:10240',
                 Rule::dimensions()->minWidth(100)->minHeight(100)->maxWidth(5000)->maxHeight(5000)],
+            'video' => ['file', 'mimes:mp4', 'max:104857600']
         ];
     }
 

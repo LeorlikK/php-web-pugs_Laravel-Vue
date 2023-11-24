@@ -1,6 +1,7 @@
 @import 'reset.css';
 
 body {
+    background-image: url("@src/img/mops_173403_1920x1080.jpg");
     font-family: 'Roboto', sans-serif;
     font-weight: 100;
     font-size: 16px;
@@ -1093,7 +1094,7 @@ nav {
     border-width: 0 6px 10px;
     border-color: transparent transparent #333;
 }
-.user {
+.admin-edit {
     width: 100%;
     display: grid;
     background-color: rgba(252,252,252,.7);
@@ -1109,7 +1110,7 @@ nav {
     justify-content: left;
     align-items: center;
 }
-.user .text select {
+.admin-edit .text select {
     width: 100px;
 }
 .item-image {
@@ -1132,13 +1133,13 @@ nav {
 .text-left {
     display: flex;
     text-align: left;
-    align-items: end;
+    /*align-items: end;*/
     grid-column: 2/3;
 }
 .text-right {
     display: flex;
     text-align: left;
-    align-items: end;
+    /*align-items: end;*/
     grid-column: 2/3;
 }
 .banned-line {

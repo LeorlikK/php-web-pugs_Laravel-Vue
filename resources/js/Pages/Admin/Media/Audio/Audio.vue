@@ -2,23 +2,23 @@
     <div class="container-admin">
         <AdminMenu></AdminMenu>
         <MediaMenu
-            photo_route="admin_photos"
+            photo_route="admin_photo"
             video_route="admin_video"
             audio_route="admin_audio"
         ></MediaMenu>
         <div class="content content-admin-media">
             <div class="users">
-                <InputVideo
+                <InputAudio
                     :process="process"
                     :percent="percent"
-                    :file="this.fileVideo"
-                    @changeVideo="changeVideo"
-                ></InputVideo>
-                <p v-if="this.errors.videoError" class="error-message">{{ this.errors.videoError[0] }}</p>
+                    :file="this.fileAudio"
+                    @changeAudio="changeAudio"
+                ></InputAudio>
+                <p v-if="this.errors.audioError" class="error-message">{{ this.errors.audioError[0] }}</p>
                 <div class="update margin-20">
                     <a
-                        @click.prevent="loadVideo"
-                        :class="videoBtnIsActive ? 'btn-active' : 'btn-block'"
+                        @click.prevent="loadAudio"
+                        :class="audioBtnIsActive ? 'btn-active' : 'btn-block'"
                         class="btn btn-update btn-white-c">Добавить</a>
                 </div>
                 <table class="admin-table">
@@ -39,14 +39,10 @@
                     <tr v-for="item in items" :class="item.banned ? 'banned-line' : ''" :key="item.id">
                         <th>{{ item.id }}</th>
                         <td>
-                            <img @click.prevent="changeShowImage(this.path + item.frame)" :src="this.path + item.frame" alt="#" class="table-img">
-
-                            <!--                            <video-->
-<!--                                :volume="volume"-->
-<!--                                @input="updateVolume"-->
-<!--                                controls class="table-video">-->
-<!--                                <source :src="`/storage${post.url}`" type="video/mp4">-->
-<!--                            </video>-->
+                            <audio
+                                :volume="volume"
+                                @input="audioUpdateVolume"
+                                controls :src="this.path + item.url" preload="metadata"></audio>
                         </td>
                         <td>{{ item.url }}</td>
                         <td>{{ item.name }}</td>
@@ -55,7 +51,7 @@
                         <td>{{ item.updated_at }}</td>
                         <td class="users-btn-update"><router-link :to="{name: 'admin_user_edit', params: {user: item.id}}">Update</router-link></td>
                         <td class="users-btn-banned">
-                            <a @click.prevent="confirm(item, 'Удалить видео?')">Delete</a>
+                            <a @click.prevent="confirm(item, 'Удалить аудио?')">Delete</a>
                         </td>
                     </tr>
                     </tbody>
@@ -71,7 +67,7 @@
             <Confirm
                 :text="textConfirm"
                 :question="question"
-                @answer="deleteVideo"
+                @answer="deleteAudio"
             ></Confirm>
         </div>
     </div>
@@ -87,24 +83,26 @@ import errorsLogMixin from "@/mixins/logMixin";
 import fileMixin from "@/mixins/fileMixin";
 import myAxios from "@/myAxios";
 import {API_ROUTES} from "@/routs";
-import InputVideo from "@/Components/Inputs/InputVideo.vue";
+import InputAudio from "@/Components/Inputs/InputAudio.vue";
 import confirmMixin from "@/mixins/confirmMixin";
 import paginationMixin from "@/mixins/paginationMixin";
+import cookieService from "@/services/cookieService";
 
 export default {
-    name: "Video",
-    components: {AdminMenu, MediaMenu, Confirm, InputVideo},
+    name: "Audio",
+    components: {AdminMenu, MediaMenu, Confirm, InputAudio},
     mixins: [inputErrorsMixin, errorsLogMixin, fileMixin, confirmMixin, paginationMixin],
     data() {
         return {
             items: [],
+            volume: cookieService.getCookie('audio-volume') ?? 1
         }
     },
     methods: {
         getItems(page) {
             this.assigningCurrentPage(page)
             router.replace({ query: {page: page} })
-            myAxios.get(`${API_ROUTES.public.video}`, { params: {page: page} })
+            myAxios.get(`${API_ROUTES.public.audio}`, { params: {page: page} })
                 .then(data => {
                     this.dataLog(data)
                     data = data.data
@@ -116,13 +114,13 @@ export default {
                     this.errorsLog(errors)
                 })
         },
-        loadVideo() {
-            if (this.fileVideo) {
+        loadAudio() {
+            if (this.fileAudio) {
                 this.clearErrors()
                 this.process = true
                 const formData = new FormData()
-                formData.append('video', this.fileVideo)
-                myAxios.post(API_ROUTES.protected.admin_video_store, formData, {
+                formData.append('audio', this.fileAudio)
+                myAxios.post(API_ROUTES.protected.admin_audio_store, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
@@ -133,7 +131,7 @@ export default {
                     .then(data => {
                         this.dataLog(data)
                         this.items.unshift(data.data.data)
-                        this.fileVideo = null
+                        this.fileAudio = null
                         this.process = false
                         this.percent = 0
                     })
@@ -145,10 +143,10 @@ export default {
                     })
             }
         },
-        deleteVideo(confirm) {
+        deleteAudio(confirm) {
             this.question = false
             if (confirm){
-                myAxios.delete(`${API_ROUTES.protected.admin_video_delete}/${this.objQuestion.id}`)
+                myAxios.delete(`${API_ROUTES.protected.admin_audio_delete}/${this.objQuestion.id}`)
                     .then(data => {
                         this.dataLog(data)
                         this.items = this.items.filter(c => c.id !== this.objQuestion.id);

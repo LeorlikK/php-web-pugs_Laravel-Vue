@@ -2,19 +2,19 @@
     <div class="container-nurseries">
         <h3 class="content-title">Питомники мопсов</h3>
         <div class="content content-nurseries">
-            <div v-if="posts" v-for="post in posts" class="nurseries">
-                <h1>{{post.title}}</h1>
+            <div v-if="items" v-for="item in items" class="nurseries" :key="item">
+                <h1>{{item.title}}</h1>
                 <div class="image">
-                    <img class="image" :src="`/storage${post.image_url}`" alt="#">
+                    <img class="image" :src="this.path + item.image_url" alt="#">
                 </div>
-                <p>{{post.text}}</p>
+                <p>{{item.text}}</p>
                 <div class="contact-info">
                     <button class="btn">
-                        <a :href="'tel:' + post.phone">Позвонить</a>
+                        <a :href="'tel:' + item.phone">Позвонить</a>
                     </button>
 
                     <button class="btn">
-                        <a :href=post.address target="_blank">Сайт</a>
+                        <a :href=item.address target="_blank">Сайт</a>
                     </button>
                 </div>
             </div>
@@ -36,25 +36,21 @@ import Paginator from "@/Components/Paginator.vue";
 import router from "@/router";
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
 import logMixin from "@/mixins/logMixin";
+import fileMixin from "@/mixins/fileMixin";
+import paginationMixin from "@/mixins/paginationMixin";
 
 export default {
     name: "Nurseries",
     components: {Paginator},
-    mixins: [inputErrorsMixin, logMixin],
+    mixins: [fileMixin, logMixin, paginationMixin],
     data(){
         return {
-            posts: [],
-            pagination: {
-                current_page: null,
-                last_page: null,
-                total: null,
-            },
-            page: 1
+            items: [],
         }
     },
     methods: {
-        getNurseries() {
-            this.page = router.currentRoute.value.query.page
+        getItems(page) {
+            this.assigningCurrentPage(page)
             myAxios.get(`${API_ROUTES.public.nurseries}`, {
                 params: {
                     page: this.page
@@ -63,24 +59,18 @@ export default {
                 .then(data => {
                     this.dataLog(data)
                     data = data.data
-                    this.posts.splice(0)
-                    this.posts.push(...data.data)
-                    this.pagination.current_page = data.meta.current_page
-                    this.pagination.last_page = data.meta.last_page
-                    this.pagination.total = data.meta.total
+                    this.items.splice(0)
+                    this.items.push(...data.data)
+                    this.assigningValuesPaginator(data)
+
                 })
                 .catch(errors => {
                     this.errorsLog(errors)
                 })
         },
-        changePage(page) {
-            router.replace({ query: { page: page } })
-            router.currentRoute.value.query.page = page
-            this.getNurseries()
-        }
     },
     mounted() {
-        this.getNurseries()
+        this.getItems(this.pagination.current_page)
     }
 }
 </script>

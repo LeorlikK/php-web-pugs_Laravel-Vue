@@ -41,10 +41,10 @@ class AdminController extends Controller
         $request['banned'] = $request['banned'] === 'true';
 
         if (isset($request['avatar'])) {
-            if ($user->avatar !== '/images/avatars/avatar_default.png') {
-                Storage::disk('public')->delete('/' . $user->avatar);
+            if ($user->avatar !== config('media.default.avatar')) {
+                Storage::disk('public')->delete($user->avatar);
             }
-            $request['avatar'] = '/' . Storage::disk('public')->put('/images/avatars', $request['avatar']);
+            $request['avatar'] = Storage::disk('public')->put(config('media.images.avatars'), $request['avatar']);
         }
         $user->update($request);
         $user->refresh();

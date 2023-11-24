@@ -2,23 +2,23 @@
     <div class="container-admin">
         <AdminMenu></AdminMenu>
         <MediaMenu
-            photo_route="admin_photos"
+            photo_route="admin_photo"
             video_route="admin_video"
             audio_route="admin_audio"
         ></MediaMenu>
         <div class="content content-admin-media">
             <div class="users">
-                <InputImage
+                <InputVideo
                     :process="process"
                     :percent="percent"
-                    :file="this.fileImage"
-                    @changeImage="changeImage"
-                ></InputImage>
-                <p v-if="this.errors.imageError" class="error-message">{{ this.errors.imageError[0] }}</p>
+                    :file="this.fileVideo"
+                    @changeVideo="changeVideo"
+                ></InputVideo>
+                <p v-if="this.errors.videoError" class="error-message">{{ this.errors.videoError[0] }}</p>
                 <div class="update margin-20">
                     <a
-                        @click.prevent="loadImage"
-                        :class="imageBtnIsActive ? 'btn-active' : 'btn-block'"
+                        @click.prevent="loadVideo"
+                        :class="videoBtnIsActive ? 'btn-active' : 'btn-block'"
                         class="btn btn-update btn-white-c">Добавить</a>
                 </div>
                 <table class="admin-table">
@@ -39,16 +39,23 @@
                     <tr v-for="item in items" :class="item.banned ? 'banned-line' : ''" :key="item.id">
                         <th>{{ item.id }}</th>
                         <td>
-                            <img @click.prevent="changeShowImage(this.path + item.url)" :src="this.path + item.url" alt="#" class="table-img">
+                            <img @click.prevent="changeShowImage(this.path + item.frame)" :src="this.path + item.frame" alt="#" class="table-img">
+
+                            <!--                            <video-->
+<!--                                :volume="volume"-->
+<!--                                @input="updateVolume"-->
+<!--                                controls class="table-video">-->
+<!--                                <source :src="`/storage${post.url}`" type="video/mp4">-->
+<!--                            </video>-->
                         </td>
                         <td>{{ item.url }}</td>
                         <td>{{ item.name }}</td>
                         <td>{{ item.size }}</td>
                         <td>{{ item.created_at }}</td>
                         <td>{{ item.updated_at }}</td>
-                        <td class="users-btn-update"><router-link :to="{name: 'admin_user_edit', params: {user: item.id}}">Update</router-link></td>
+                        <td class="users-btn-update"><router-link :to="{name: 'admin_video_edit', params: {video: item.id}}">Update</router-link></td>
                         <td class="users-btn-banned">
-                            <a @click.prevent="confirm(item, 'Удалить изображение?')">Delete</a>
+                            <a @click.prevent="confirm(item, 'Удалить видео?')">Delete</a>
                         </td>
                     </tr>
                     </tbody>
@@ -64,33 +71,29 @@
             <Confirm
                 :text="textConfirm"
                 :question="question"
-                @answer="deleteImage"
+                @answer="deleteVideo"
             ></Confirm>
-            <BigSize
-                @changeShowImage="changeShowImage"
-                :showImage="showImage"
-            ></BigSize>
         </div>
     </div>
 </template>
 
 <script>
-import MediaMenu from "@/Components/Menu/MediaMenu.vue";
 import AdminMenu from "@/Components/Menu/AdminMenu.vue";
+import MediaMenu from "@/Components/Menu/MediaMenu.vue";
+import Confirm from "@/Components/Сonfirmation/Confirm.vue";
+import router from "@/router";
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
 import errorsLogMixin from "@/mixins/logMixin";
-import router from "@/router";
+import fileMixin from "@/mixins/fileMixin";
 import myAxios from "@/myAxios";
 import {API_ROUTES} from "@/routs";
-import BigSize from "@/Media/BigSize.vue";
-import Confirm from "@/Components/Сonfirmation/Confirm.vue";
-import InputImage from "@/Components/Inputs/InputImage.vue";
-import fileMixin from "@/mixins/fileMixin";
+import InputVideo from "@/Components/Inputs/InputVideo.vue";
 import confirmMixin from "@/mixins/confirmMixin";
 import paginationMixin from "@/mixins/paginationMixin";
+
 export default {
-    name: "Photos",
-    components: {AdminMenu, MediaMenu, BigSize, Confirm, InputImage},
+    name: "Video",
+    components: {AdminMenu, MediaMenu, Confirm, InputVideo},
     mixins: [inputErrorsMixin, errorsLogMixin, fileMixin, confirmMixin, paginationMixin],
     data() {
         return {
@@ -101,7 +104,7 @@ export default {
         getItems(page) {
             this.assigningCurrentPage(page)
             router.replace({ query: {page: page} })
-            myAxios.get(`${API_ROUTES.public.photo}`, { params: {page: page} })
+            myAxios.get(`${API_ROUTES.public.video}`, { params: {page: page} })
                 .then(data => {
                     this.dataLog(data)
                     data = data.data
@@ -113,13 +116,13 @@ export default {
                     this.errorsLog(errors)
                 })
         },
-        loadImage() {
-            if (this.fileImage) {
+        loadVideo() {
+            if (this.fileVideo) {
                 this.clearErrors()
                 this.process = true
                 const formData = new FormData()
-                formData.append('image', this.fileImage)
-                myAxios.post(`${API_ROUTES.protected.admin_photo_store}`, formData, {
+                formData.append('video', this.fileVideo)
+                myAxios.post(API_ROUTES.protected.admin_video_store, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
@@ -130,22 +133,22 @@ export default {
                     .then(data => {
                         this.dataLog(data)
                         this.items.unshift(data.data.data)
-                        this.fileImage = null
+                        this.fileVideo = null
                         this.process = false
                         this.percent = 0
                     })
-                    .catch(errors => {
-                        this.errorsLog(errors)
-                        if (errors.response.status === 422) this.saveError(errors)
+                    .catch(error => {
+                        this.errorsLog(error)
+                        if (error.response.status === 422) this.saveError(error)
                         this.process = false
                         this.percent = 0
                     })
             }
         },
-        deleteImage(confirm) {
+        deleteVideo(confirm) {
             this.question = false
             if (confirm){
-                myAxios.delete(`${API_ROUTES.protected.admin_photo_delete}/${this.objQuestion.id}`)
+                myAxios.delete(`${API_ROUTES.protected.admin_video_delete}/${this.objQuestion.id}`)
                     .then(data => {
                         this.dataLog(data)
                         this.items = this.items.filter(c => c.id !== this.objQuestion.id);

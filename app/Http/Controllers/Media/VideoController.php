@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Media;
 use App\Events\LoadingVideoEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Media\Video\VideoStoreRequest;
+use App\Http\Requests\Media\Video\VideoUpdateRequest;
 use App\Http\Resources\Media\VideoResource;
 use App\Models\Video;
 use Illuminate\Http\JsonResponse;
@@ -37,16 +38,16 @@ class VideoController extends Controller
         try {
             $media = FFMpeg::open($video);
             $durationInSeconds = intdiv($media->getDurationInSeconds(), 2);
-            $frameVideoPath = 'images/video_frame/' . hash('sha256', $originalName . now()->timestamp) . '.png';
+            $frameVideoPath = config('media.images.video_frames') . '/' . hash('sha256', $originalName . now()->timestamp) . '.png';
             $frameVideo = $media->getFrameFromSeconds($durationInSeconds)
                 ->export()
                 ->toDisk('public')
-                ->save('/' . $frameVideoPath);
+                ->save($frameVideoPath);
         }catch (EncodingException $exception) {
-            return response()->json(['success' => false, 'error' => $exception->getMessage()], $exception->getCode());
+            return response()->json(['success' => false, 'message' => $exception->getMessage()], $exception->getCode());
         }
 
-        $videoPath = Storage::disk('public')->put('/video', $video);
+        $videoPath = Storage::disk('public')->put(config('media.videos.videos'), $video);
 
         if ($frameVideo && $videoPath) {
             $video = Video::create([
@@ -62,17 +63,39 @@ class VideoController extends Controller
         return response()->json(['success' => false]);
     }
 
+    public function edit(Video $video): VideoResource
+    {
+        return VideoResource::make($video);
+    }
+
+    public function update(VideoUpdateRequest $request, Video $video): VideoResource
+    {
+        $request->validated();
+
+        if ($request->input('image')) {
+
+        }
+        if ($request->input('video')) {
+
+        }
+
+        $video->update($request->all());
+        $video->refresh();
+
+        return VideoResource::make($video);
+    }
+
     public function destroy(Video $video): JsonResponse
     {
         if ($video->url) {
-            Storage::disk('public')->delete('/' . $video->url);
+            Storage::disk('public')->delete($video->url);
         }
         if ($video->frame) {
-            Storage::disk('public')->delete('/' . $video->frame);
+            Storage::disk('public')->delete($video->frame);
         }
 
-        $delete = $video->delete();
+        $video->delete();
 
-        return response()->json(['success' => $delete]);
+        return response()->json(['success' => true], 204);
     }
 }

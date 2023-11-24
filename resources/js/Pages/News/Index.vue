@@ -3,21 +3,21 @@
         <h3 class="content-title">Новости</h3>
         <div class="content content-news">
             <div class="news">
-                <div v-if="posts" v-for="post in posts">
+                <div v-if="items" v-for="item in items">
                     <h1>
-                        <router-link :to="{name: 'news_show', query: {id: post.id, page: pagination.current_page}}">
-                            {{post.title}}
+                        <router-link :to="{name: 'news_show', query: {id: item.id, page: pagination.current_page}}">
+                            {{item.title}}
                         </router-link>
                     </h1><hr>
                     <div class="image">
-                        <img class="image" :src="`/storage${post.image_url}`" alt="#">
+                        <img class="image" :src="this.path + item.image_url" alt="#">
                     </div><hr>
                     <div>
-                        <h2>{{ post.short }}</h2>
+                        <h2>{{ item.short }}</h2>
                     </div><hr>
                     <div class="news-footer">
-                        <p>Автор: {{post.user}}</p>
-                        <p>Дата публикации: {{ post.created_at }}</p>
+                        <p>Автор: {{item.user}}</p>
+                        <p>Дата публикации: {{ item.created_at }}</p>
                     </div>
                 </div>
             </div>
@@ -40,50 +40,41 @@ import Paginator from "@/Components/Paginator.vue";
 import router from "@/router";
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
 import logMixin from "@/mixins/logMixin";
+import fileMixin from "@/mixins/fileMixin";
+import paginationMixin from "@/mixins/paginationMixin";
 
 export default {
     name: "Index",
     components: {Paginator},
-    mixins: [inputErrorsMixin, logMixin],
+    mixins: [fileMixin, logMixin, paginationMixin],
     data() {
         return {
-            posts: [],
-            pagination: {
-                current_page: 1,
-                last_page: null,
-                total: null,
-            },
+            items: [],
         }
     },
     methods: {
-        getPosts(page){
-            this.pagination.current_page = page
+        getItems(page){
+            this.assigningCurrentPage(page)
+            router.replace({ query: {page: page} })
             myAxios.get(`${API_ROUTES.public.news}`, {
                 params: {
-                    page: String(this.pagination.current_page)
+                    page: this.pagination.current_page
                 },
             })
                 .then(data => {
                     this.dataLog(data)
                     data = data.data
-                    this.posts.splice(0)
-                    this.posts.push(...data.data)
-                    this.pagination.current_page = data.meta.current_page
-                    this.pagination.last_page = data.meta.last_page
-                    this.pagination.total = data.meta.total
+                    this.items.splice(0)
+                    this.items.push(...data.data)
+                    this.assigningValuesPaginator(data)
                 })
                 .catch(errors => {
                     this.errorsLog(errors)
                 })
         },
-        changePage(page) {
-            router.replace({ query: { page: page } })
-            router.currentRoute.value.query.page = page
-            this.getPosts(page)
-        },
     },
     mounted() {
-        this.getPosts(router.currentRoute.value.query.page)
+        this.getItems(this.pagination.current_page)
     }
 }
 </script>

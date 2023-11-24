@@ -7,14 +7,17 @@
     <div class="container-media">
         <h3 class="content-title">Audio</h3>
         <div class="content content-audio">
-            <div v-for="post in posts" class="audio">
-                <div>
-                    <audio
-                        :volume="volume"
-                        @input="updateVolume"
-                        controls :src="`/storage${post.url}`" preload="metadata"></audio>
-                </div>
-                <p>{{ post.name }}</p>
+            <div v-for="item in items" class="audio">
+                <AudioPlayer
+                    :src="this.path + item.url"
+                ></AudioPlayer>
+<!--                <div>-->
+<!--                    <audio-->
+<!--                        :volume="volume"-->
+<!--                        @input="audioUpdateVolume"-->
+<!--                        controls :src="this.path + item.url" preload="metadata"></audio>-->
+<!--                </div>-->
+<!--                <p>{{ item.name }}</p>-->
             </div>
         </div>
         <Paginator
@@ -37,59 +40,43 @@ import router from "@/router";
 import MediaMenu from "@/Components/Menu/MediaMenu.vue";
 import cookieService from '@/services/cookieService.js'
 import logMixin from "@/mixins/logMixin";
+import fileMixin from "@/mixins/fileMixin";
+import paginationMixin from "@/mixins/paginationMixin";
+import AudioPlayer from "@/Components/Players/AudioPlayer.vue";
 
 export default {
     name: "Audio",
-    components: {MediaMenu, BigSize, Paginator},
-    mixins: [cookieService, logMixin],
+    components: {MediaMenu, BigSize, Paginator, AudioPlayer},
+    mixins: [fileMixin, logMixin, paginationMixin],
     data() {
         return {
-            showImage: false,
-            posts: [],
-            pagination: {
-                current_page: router.currentRoute.value.query.page,
-                last_page: null,
-                total: null,
-            },
+            items: [],
             volume: cookieService.getCookie('audio-volume') ?? 1
         }
     },
     methods: {
-        getPosts(page){
-            this.pagination.current_page = page
+        getItems(page){
+            this.assigningCurrentPage(page)
             router.replace({ query: {page: page} })
             myAxios.get(`${API_ROUTES.public.audio}`, {
                 params: {
-                    page: String(this.pagination.current_page)
+                    page: this.pagination.current_page
                 },
             })
                 .then(data => {
                     this.dataLog(data)
                     data = data.data
-                    this.posts.splice(0)
-                    this.posts.push(...data.data)
-                    this.pagination.current_page = data.meta.current_page
-                    this.pagination.last_page = data.meta.last_page
-                    this.pagination.total = data.meta.total
+                    this.items.splice(0)
+                    this.items.push(...data.data)
+                    this.assigningValuesPaginator(data)
                 })
                 .catch(errors => {
                     this.errorsLog(errors)
                 })
         },
-        changePage(page) {
-            router.replace({ query: { page: page } })
-            router.currentRoute.value.query.page = page
-            this.getPosts(page)
-        },
-        audioUpdateVolume(event) {
-            let currentDate = new Date();
-            let currentYear = currentDate.getFullYear()
-            currentDate.setMonth(currentYear + 1)
-            document.cookie = `audio-volume=${event.target.volume}; expires=${currentDate.toUTCString()}`
-        }
     },
     mounted() {
-        this.getPosts(this.pagination.current_page)
+        this.getItems(this.pagination.current_page)
     }
 }
 </script>

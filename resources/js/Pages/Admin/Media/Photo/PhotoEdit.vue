@@ -1,54 +1,14 @@
 <template>
     <div class="container-admin">
         <AdminMenu></AdminMenu>
+        <MediaMenu
+            photo_route="admin_photo"
+            video_route="admin_video"
+            audio_route="admin_audio"
+        ></MediaMenu>
         <div class="content content-admin-users">
             <div class="admin-edit">
-                <div class="item">
-                    <div class="text text-user size-12">
-                        <p class="static">ID:</p>
-                        <input
-                            disabled
-                            :value="id"
-                            class="value input-unactive size-12">
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="text text-user">
-                        <p class="static">Email:</p>
-                        <input
-                            :disabled="update"
-                            v-model="email"
-                            :class="update ? 'input-unactive' : 'input-active'" class="value size-12">
-                    </div>
-                    <div class="text-user">
-                        <p v-if="this.errors.emailError" class="error-message text-left">{{ this.errors.emailError[0] }}</p>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="text text-user">
-                        <p class="static">Login:</p>
-                        <input
-                            :disabled="update"
-                            v-model="login"
-                            :class="update ? 'input-unactive' : 'input-active'" class="value size-12">
-                    </div>
-                    <div class="text-user">
-                        <p v-if="this.errors.loginError" class="error-message text-left">{{ this.errors.loginError[0] }}</p>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="text text-user">
-                        <p class="static">Role:</p>
-                        <select :disabled="update" v-model="role" :class="update ? '' : 'select-active'">
-                            <option :selected="role === 'admin'" value="admin">Admin</option>
-                            <option :selected="role === 'user'" value="user">User</option>
-                            <option :selected="role === 'moder'" value="moder">Moder</option>
-                        </select>
-                    </div>
-                    <div class="text-user">
-                        <p v-if="this.errors.roleError" class="error-message text-left">{{ this.errors.roleError[0] }}</p>
-                    </div>
-                </div>
+
                 <div class="item item-image">
                     <div class="text text-user">
                         <p class="static">Avatar:</p>
@@ -71,18 +31,45 @@
                         ></InputImage>
                     </div>
                 </div>
+
                 <div class="item">
-                    <div class="text text-user">
-                        <p class="static">Banned:</p>
-                        <input v-model="banned"
-                               :disabled="update"
-                               :value="banned"
-                               :class="update ? '' : 'checkbox-active'" class="checkbox"
-                               type="checkbox">
+                    <div class="text text-user size-12">
+                        <p class="static">ID:</p>
+                        <input
+                            disabled
+                            :value="id"
+                            class="value input-unactive size-12">
                     </div>
                 </div>
                 <div class="item">
-                    <div class="text text-user">
+                    <div class="text text-user size-12">
+                        <p class="static">URL:</p>
+                        <input
+                            disabled
+                            :value="url"
+                            class="value input-unactive size-12">
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="text text-user size-12">
+                        <p class="static">Name:</p>
+                        <input
+                            v-model="name"
+                            :disabled="update"
+                            :class="update ? 'input-unactive' : 'input-active'" class="value size-12">
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="text text-user size-12">
+                        <p class="static">Size:</p>
+                        <input
+                            disabled
+                            :value="size"
+                            class="value input-unactive size-12">
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="text text-user size-12">
                         <p class="static">Created At:</p>
                         <input
                             disabled
@@ -91,7 +78,7 @@
                     </div>
                 </div>
                 <div class="item">
-                    <div class="text text-user">
+                    <div class="text text-user size-12">
                         <p class="static">Updated At:</p>
                         <input
                             disabled
@@ -127,50 +114,48 @@
 
 <script>
 import AdminMenu from "@/Components/Menu/AdminMenu.vue";
+import InputImage from "@/Components/Inputs/InputImage.vue";
 import BigSize from "@/Media/BigSize.vue";
-import router from "@/router";
-import myAxios from "@/myAxios";
-import {API_ROUTES} from "@/routs";
 import inputErrorsMixin from "@/mixins/inputErrorsMixin";
 import logMixin from "@/mixins/logMixin";
 import fileMixin from "@/mixins/fileMixin";
-import InputImage from "@/Components/Inputs/InputImage.vue";
+import router from "@/router";
+import myAxios from "@/myAxios";
+import {API_ROUTES} from "@/routs";
+import MediaMenu from "@/Components/Menu/MediaMenu.vue";
+
 export default {
-    name: "User",
-    components: {InputImage, AdminMenu, BigSize},
+    name: "PhotoEdit",
+    components: {InputImage, AdminMenu, BigSize, MediaMenu},
     mixins: [inputErrorsMixin, logMixin, fileMixin],
     data() {
         return {
-            user_id: router.currentRoute.value.params.user,
+            photo_id: router.currentRoute.value.params.photo,
             image: null,
             update: true,
 
             id: null,
-            email: null,
-            login: null,
-            role: null,
-            avatar: null,
-            banned: null,
+            url: null,
+            name: null,
+            size: null,
             created_at: null,
             updated_at: null,
+            avatar: null,
 
-            oldEmail: '',
-            oldLogin: '',
-            oldRole: '',
+            oldName: '',
         }
     },
     methods: {
-        getUser() {
-            myAxios.get(`${API_ROUTES.protected.admin_user_edit}/${this.user_id}`)
+        getPhoto() {
+            myAxios.get(`${API_ROUTES.protected.admin_photo_edit}/${this.photo_id}`)
                 .then(data => {
                     this.dataLog(data)
                     data = data.data.data
                     this.id = data.id
-                    this.email = data.email
-                    this.login = data.login
-                    this.role = data.role
-                    this.avatar = this.path + data.avatar
-                    this.banned = Boolean(data.banned)
+                    this.url = data.url
+                    this.name = data.name
+                    this.size = data.size
+                    this.avatar = this.path + data.url
                     this.created_at = data.created_at
                     this.updated_at = data.updated_at
                 })
@@ -181,64 +166,48 @@ export default {
         save() {
             this.clearErrors()
             const formData = new FormData()
-            formData.append('id', this.id)
-            formData.append('email', this.email)
-            formData.append('login', this.login)
-            formData.append('role', this.role)
-            formData.append('banned', this.banned)
+            formData.append('name', this.name)
             if (this.fileImage) {
-                this.process = true
-                formData.append('avatar', this.fileImage)
+                formData.append('image', this.fileImage)
             }
-            myAxios.post(`${API_ROUTES.protected.admin_user_update}/${this.id}`, formData, {
+            myAxios.post(`${API_ROUTES.protected.admin_photo_update}/${this.id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-                onUploadProgress: progressEvent => {
-                    this.percent = Math.round((progressEvent.loaded * 100) / progressEvent.total)
-                }
             })
                 .then(data => {
                     this.dataLog(data)
                     data = data.data.data
                     this.id = data.id
-                    this.email = data.email
-                    this.login = data.login
-                    this.role = data.role
-                    this.avatar = this.path + data.avatar
+                    this.url = data.url
+                    this.name = data.name
+                    this.size = data.size
+                    this.avatar = this.path + data.url
                     this.created_at = data.created_at
                     this.updated_at = data.updated_at
                     this.fileImage = null
                     this.image = null
                     this.update = true
-                    this.process = false
-                    this.percent = 0
                 })
                 .catch(errors => {
                     this.errorsLog(errors)
                     if (errors.response.status === 422) this.saveError(errors)
-                    this.process = false
-                    this.percent = 0
                 })
         },
         btnUpdate() {
-            this.oldEmail = this.email
-            this.oldLogin = this.login
-            this.oldRole = this.role
+            this.oldName = this.name
             this.update = false
         },
         cancel() {
             this.clearErrors()
-            this.email = this.oldEmail
-            this.login = this.oldLogin
-            this.role = this.oldRole
+            this.name = this.oldName
             this.fileImage = null
             this.image = null
             this.update = true
         },
     },
     mounted() {
-        this.getUser()
+        this.getPhoto()
     }
 }
 </script>

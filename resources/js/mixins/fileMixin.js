@@ -30,9 +30,7 @@ export default {
         },
         changeVideo(event) {
             this.fileVideo = event.target.files[0]
-            console.log(111)
             if (this.fileVideo) {
-                console.log(222)
                 this.video = URL.createObjectURL(this.fileVideo);
             }
         },
@@ -41,6 +39,12 @@ export default {
             if (this.fileAudio) {
                 this.audio = URL.createObjectURL(this.fileAudio);
             }
+        },
+        videoUpdateVolume(event) {
+            let currentDate = new Date();
+            let currentYear = currentDate.getFullYear()
+            currentDate.setMonth(currentYear + 1)
+            document.cookie = `video-volume=${event.target.volume}; expires=${currentDate.toUTCString()}`
         },
         audioUpdateVolume(event) {
             let currentDate = new Date();

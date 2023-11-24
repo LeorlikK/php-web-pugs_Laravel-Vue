@@ -25,4 +25,12 @@ class AudioStoreRequest extends FormRequest
             'audio' => ['required', 'file', 'mimes:mp3', 'max:10240']
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'audio.mimes' => 'Файл не является одним из допустимых форматов(mp3)',
+            'audio.max' => 'Максимальный размер файла 10МБ',
+        ];
+    }
 }
