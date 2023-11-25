@@ -2,32 +2,25 @@
 
 namespace App\Notifications;
 
+use App\Models\News;
+use App\Service\BaseCodeService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
 
-class FeedbackMailNotification extends Notification implements ShouldQueue
+class NewNewsMailNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(
-        private readonly string $from ,
-        private readonly string $feedback,
-        public readonly string $logoImg)
+    public function __construct(public readonly News $news, public readonly string $logoImg)
     {
         //
     }
-
-//    public function viaQueues(): array
-//    {
-//        return [
-//            'mail' => 'mail-queue-feedback',
-//        ];
-//    }
 
     /**
      * Get the notification's delivery channels.
@@ -46,10 +39,10 @@ class FeedbackMailNotification extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->mailer('smtp')
-            ->subject('Feedback from user.')
-            ->from($this->from, $this->from)
-            ->line($this->feedback)
-            ->markdown('vendor.notifications.feedback', ['emailUser' => $this->from, 'logoImg' => $this->logoImg]);
+            ->subject($this->news->title)
+            ->line($this->news->short)
+            ->action('Watch news', url("/news/show?id={$this->news->id}"))
+            ->markdown('vendor.notifications.news', ['title' => $this->news->title, 'logoImg' => $this->logoImg]);
     }
 
     /**

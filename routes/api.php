@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\PublishNewNewsEvent;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Authorization\AuthorizationController;
 use App\Http\Controllers\Authorization\VerifyController;
@@ -11,6 +12,8 @@ use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\Nurseries\NurseriesController;
 use App\Http\Controllers\Peculiarities\PeculiaritiesController;
 use App\Http\Controllers\PersonalArea\PersonalAreaController;
+use App\Models\News;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 // leorl1k@yandex.ru

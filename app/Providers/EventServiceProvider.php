@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Events\FeedbackSendEvent;
+use App\Events\PublishNewNewsEvent;
 use App\Listeners\FeedbackSend;
 use App\Listeners\FeedbackSendListener;
+use App\Listeners\PublishNewNewsListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,7 +25,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         FeedbackSendEvent::class => [
             FeedbackSendListener::class
-        ]
+        ],
+        PublishNewNewsEvent::class => [
+            PublishNewNewsListener::class
+        ],
     ];
 
     /**

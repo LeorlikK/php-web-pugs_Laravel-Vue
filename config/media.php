@@ -16,5 +16,6 @@ return [
         'photo' => 'default/photo_default.png',
         'video' => 'default/video_default.mp4',
         'audio' => 'default/audio_default.mp4',
+        'mail_logo' => 'default/mail_logo_default.png',
     ]
 ];
