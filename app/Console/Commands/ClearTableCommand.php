@@ -13,7 +13,7 @@ class ClearTableCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'clear:table {tableName}';
+    protected $signature = 'clear:table';
 
     /**
      * The console command description.
@@ -27,16 +27,25 @@ class ClearTableCommand extends Command
      */
     public function handle()
     {
-        $tableName = $this->argument('tableName');
-        if (Schema::hasTable($tableName)) {
+        $databaseName = DB::getDatabaseName();
+        $tables = Schema::getAllTables();
+        $tablesNames = [];
+        foreach ($tables as $table) {
+            $var = 'Tables_in_' . $databaseName;
+            $tablesNames[] = $table->$var;
+        }
+
+        $answerNameTable = $this->choice('Choice table', $tablesNames);
+
+        if (Schema::hasTable($answerNameTable)) {
             try {
-                DB::table($tableName)->truncate();
-                $this->info("Table '$tableName' is cleared.");
+                DB::table($answerNameTable)->truncate();
+                $this->info("Table '$answerNameTable' is cleared.");
             }catch (\Throwable $exception) {
                 $this->info($exception->getMessage());
             }
         } else {
-            $this->info("Table '$tableName' not exist.");
+            $this->info("Table '$answerNameTable' not exist.");
         }
     }
 }
