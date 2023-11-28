@@ -178,9 +178,8 @@ export default {
 
                     comment.comments_children = [];
                     comment.loading = false
-
                     this.comments.unshift(comment)
-                    this.comments.pop();
+                    if (this.comments.length > 10) this.comments.pop()
                 })
                 .catch(errors => {
                     this.errorsLog(errors)

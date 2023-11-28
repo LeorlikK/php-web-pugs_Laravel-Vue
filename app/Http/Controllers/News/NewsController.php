@@ -124,6 +124,7 @@ class NewsController extends Controller
             Storage::disk('public')->delete($news->image_url);
         }
 
+        $news->comments()->delete();
         $news->delete();
 
         return response()->json(['success' => true], 204);
