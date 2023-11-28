@@ -58,8 +58,8 @@ export default {
     },
     methods: {
         getPost() {
-            this.news_id = router.currentRoute.value.query.id
-            myAxios.get(`${API_ROUTES.public.news_show}`, {
+            this.news_id = router.currentRoute.value.params.news
+            myAxios.get(`${API_ROUTES.public.news_show}/${this.news_id}`, {
                 params: {
                     id: this.news_id
                 },

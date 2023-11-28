@@ -20,9 +20,8 @@ class AdminController extends Controller
         $sortedType = $request->input('sorted_type') ?? 'asc';
         $search = $request->input('search');
 
-        $users = User::when($search, function ($query) use($search) {
-            $query->where('email', 'like', "%{$search}%");
-        })
+        $users = User::query()
+            ->likeFind($search)
             ->orderBy($sorted, $sortedType)
             ->paginate($perPage, '*', 'page', $page);
 

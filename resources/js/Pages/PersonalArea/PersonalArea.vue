@@ -83,7 +83,7 @@
             <div class="personal-feedback">
                 <div class="text-feedback">
                     <p class="static size-15">Feedback:</p>
-                    <textarea v-model="feedback" placeholder="Leave a review..."></textarea>
+                    <textarea v-model="feedback" class="textarea-users" placeholder="Leave a review..."></textarea>
                 </div>
                 <div class="personal-error">
                     <p v-if="this.errors.feedbackError" class="error-message" style="grid-column: 1/5">{{ this.errors.feedbackError[0] }}</p>

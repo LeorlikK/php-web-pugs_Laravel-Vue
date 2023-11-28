@@ -26,10 +26,10 @@ export default {
     },
     methods: {
         yes() {
-            this.$emit('answer', true)
+            this.$emit('answer', true, this.text)
         },
         no() {
-            this.$emit('answer', false)
+            this.$emit('answer', false, this.text)
         },
     }
 }

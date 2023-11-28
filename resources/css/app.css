@@ -753,13 +753,16 @@ nav {
 .text-feedback {
     display: grid;
 }
-.content-personal-area textarea{
+.textarea-users{
     min-height: 100px;
     overflow: hidden;
-    border: 1px solid #f08080;
+    border: 2px solid #f08080;
     background-color: transparent;
     outline: none;
     resize: vertical;
+}
+.news-textarea {
+    width: 100%;
 }
 .text p {
     display: flex;
@@ -792,7 +795,7 @@ nav {
     display: grid;
     grid-column: 1/3;
     grid-template-rows: 60% 40%;
-    height: 50px;
+    min-height: 50px;
     margin-bottom: 10px;
 }
 .personal-email, .personal-login, .personal-avatar, .personal-role, .personal-banned, .personal-feedback {
@@ -1099,6 +1102,13 @@ nav {
     display: grid;
     background-color: rgba(252,252,252,.7);
     padding: 20px;
+}
+.admin-edit-news {
+    padding: 20px;
+    background-color: rgba(252,252,252,.7);
+}
+.item-flex {
+    width: 100%;
 }
 .text-user {
     display: grid;

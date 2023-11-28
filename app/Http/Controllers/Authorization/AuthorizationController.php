@@ -28,9 +28,6 @@ class AuthorizationController extends Controller
 
         $user = User::firstOrCreate($request);
 
-//        auth()->login($user);
-        event(new Registered($user));
-
         return response()->json(['success' => true, 'user' => $user], 201);
     }
 

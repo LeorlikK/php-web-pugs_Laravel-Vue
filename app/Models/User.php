@@ -12,6 +12,14 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+
+    public function scopeLikeFind($query, $search)
+    {
+        return $query->when($search, function ($query) use($search) {
+            $query->where('email', 'like', "%{$search}%");
+        });
+    }
+
     /**
      * The attributes that are mass assignable.
      *

@@ -17,6 +17,8 @@ class Kernel extends ConsoleKernel
 
          $schedule->command(StatisticsCommand::class)
              ->dailyAt('04:00')->withoutOverlapping()->appendOutputTo($outputFilePath);
+//        $schedule->command(StatisticsCommand::class)
+//            ->cron('0 */12 * * *')->withoutOverlapping()->appendOutputTo($outputFilePath);
     }
 
     /**

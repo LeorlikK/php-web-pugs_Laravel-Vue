@@ -37,9 +37,9 @@ class Comment extends Model
 
     public function getTimeToCreateDiffAttribute(): string
     {
-        $obj = new DateService();
+        $service = new DateService();
         $diff = $this->created_at->diff(now());
 
-        return $obj->getRemainingTime($diff);
+        return $service->getRemainingTime($diff);
     }
 }

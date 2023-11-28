@@ -5,7 +5,7 @@
             <div class="news">
                 <div v-if="items" v-for="item in items">
                     <h1>
-                        <router-link :to="{name: 'news_show', query: {id: item.id, page: pagination.current_page}}">
+                        <router-link :to="{name: 'news_show', params: {news: item.id}, query: {page: pagination.current_page}}">
                             {{item.title}}
                         </router-link>
                     </h1><hr>
@@ -62,6 +62,7 @@ export default {
                 },
             })
                 .then(data => {
+                    console.log(data)
                     this.dataLog(data)
                     data = data.data
                     this.items.splice(0)

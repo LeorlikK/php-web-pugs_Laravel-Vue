@@ -13,6 +13,9 @@ export default {
                 imageError: '',
                 videoError: '',
                 audioError: '',
+                titleError: '',
+                shortError: '',
+                textError: '',
             }
         }
     },
@@ -30,6 +33,9 @@ export default {
             this.errors.imageError = arrayErrors.image ?? ''
             this.errors.videoError = arrayErrors.video ?? ''
             this.errors.audioError = arrayErrors.audio ?? ''
+            this.errors.titleError = arrayErrors.title ?? ''
+            this.errors.shortError = arrayErrors.short ?? ''
+            this.errors.textError = arrayErrors.text ?? ''
         },
         clearErrors() {
             for (let errorKey in this.errors) {

@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use DateInterval;
+
 class DateService
 {
     public function getRemainingTime($diff): string
@@ -54,5 +56,25 @@ class DateService
         } else {
             return 'часов';
         }
+    }
+
+    public static function timeSwitch(DateInterval $dateTimeObj):string
+    {
+        switch ($dateTimeObj){
+            case $dateTimeObj->y > 0:
+                return $dateTimeObj->format('%Yy %mm ago');
+            case $dateTimeObj->m > 0:
+                return $dateTimeObj->format('%mm ago');
+            case $dateTimeObj->d > 0:
+                return $dateTimeObj->format('%dd %hh ago');
+            case $dateTimeObj->h > 0:
+                return $dateTimeObj->format('%hh ago');
+            case $dateTimeObj->i > 0:
+                return $dateTimeObj->format('%im ago');
+            case $dateTimeObj->s > 0:
+                return $dateTimeObj->format('%ss ago');
+        }
+
+        return 'date-error';
     }
 }

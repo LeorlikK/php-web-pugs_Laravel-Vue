@@ -52,6 +52,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::patch('/update/{audio}', [AudioController::class, 'update']);
             Route::delete('/delete/{audio}', [AudioController::class, 'destroy']);
         });
+        Route::prefix('/news')->group(function () {
+            Route::get('/', [NewsController::class, 'adminIndex']);
+            Route::post('/update/{news}', [NewsController::class, 'update']);
+            Route::post('/publish/{news}', [NewsController::class, 'publish']);
+        });
     });
 });
 
@@ -65,10 +70,7 @@ Route::prefix('/peculiarities')->group(function (){
 Route::prefix('/nurseries')->group(function (){
     Route::get('/', [NurseriesController::class, 'index']);
 });
-Route::prefix('/news')->group(function (){
-    Route::get('/', [NewsController::class, 'index']);
-    Route::get('/show', [NewsController::class, 'show']);
-});
+Route::resource('news', NewsController::class)->except(['create', 'update']);
 Route::prefix('/comments')->group(function (){
     Route::get('/{news}/{page?}/{parent_comment?}', [CommentsController::class, 'index']);
     Route::middleware('auth:sanctum')->group(function () {

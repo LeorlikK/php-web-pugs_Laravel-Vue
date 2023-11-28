@@ -22,7 +22,7 @@ class NewsShowResource extends JsonResource
             'short' => $this->short,
             'text' => $this->text,
             'created_at' => $this->created_at->format('Y-m-d'),
-            'updated_at' => $this->updated_at,
+            'updated_at' => $this->updated_at->format('Y-m-d'),
         ];
     }
 }

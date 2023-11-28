@@ -8,7 +8,7 @@
                 <router-link :to="{name: 'nurseries'}">Nurseries</router-link>
             </li>
             <li>
-                <router-link :to="{name: 'news', query: { page: 1 }}">News</router-link>
+                <router-link :to="{name: 'admin_news', query: { page: 1 }}">News</router-link>
             </li>
             <li>
                 <router-link :to="{name: 'admin_photo'}">Media</router-link>

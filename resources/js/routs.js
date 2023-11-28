@@ -21,6 +21,12 @@ export const API_ROUTES = {
         admin_audio_edit: '/api/admin/audio/edit',
         admin_audio_update: '/api/admin/audio/update',
         admin_audio_delete: '/api/admin/audio/delete',
+        admin_news: '/api/admin/news',
+        admin_news_store: '/api/news',
+        admin_news_edit: '/api/news',
+        admin_news_update: '/api/admin/news/update',
+        admin_news_delete: '/api/news',
+        admin_news_publish: '/api/admin/news/publish',
     },
     public: {
         home: '/',
@@ -37,7 +43,7 @@ export const API_ROUTES = {
         nurseries: '/api/nurseries',
 
         news: '/api/news',
-        news_show: '/api/news/show',
+        news_show: '/api/news',
 
         comments: '/api/comments',
 

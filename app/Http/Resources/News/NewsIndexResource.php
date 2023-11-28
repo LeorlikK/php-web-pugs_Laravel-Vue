@@ -4,6 +4,7 @@ namespace App\Http\Resources\News;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 
 class NewsIndexResource extends JsonResource
 {
@@ -20,8 +21,10 @@ class NewsIndexResource extends JsonResource
             'image_url' => $this->image_url,
             'title' => $this->title,
             'short' => $this->short,
+            'text' => Str::limit($this->text,30, '...'),
+            'publish' => $this->publish,
             'created_at' => $this->created_at->format('Y-m-d'),
-            'updated_at' => $this->updated_at,
+            'updated_at' => $this->updated_at->format('Y-m-d'),
         ];
     }
 }

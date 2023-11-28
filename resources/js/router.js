@@ -124,10 +124,46 @@ const router = createRouter({
             }
         },
         {
-            path: '/news/show',
+            path: '/news/show/:news',
             name:'news_show',
             component: () => import('./Pages/News/Show.vue'),
             meta: {
+                title: 'News'
+            }
+        },
+        {
+            path: '/admin/news',
+            name:'admin_news',
+            component: () => import('./Pages/Admin/News/Index.vue'),
+            meta: {
+                middleware: [
+                    verify_email,
+                    admin
+                ],
+                title: 'News'
+            }
+        },
+        {
+            path: '/admin/news/create',
+            name:'admin_news_create',
+            component: () => import('./Pages/Admin/News/Create.vue'),
+            meta: {
+                middleware: [
+                    verify_email,
+                    admin
+                ],
+                title: 'News'
+            }
+        },
+        {
+            path: '/admin/news/:news/edit',
+            name:'admin_news_edit',
+            component: () => import('./Pages/Admin/News/Edit.vue'),
+            meta: {
+                middleware: [
+                    verify_email,
+                    admin
+                ],
                 title: 'News'
             }
         },
