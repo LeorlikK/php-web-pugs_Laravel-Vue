@@ -23,6 +23,9 @@ services:
         container_name: pugslarvue_app
         depends_on:
             - mysql
+        environment:
+            REDIS_HOST: "redis"
+            REDIS_PORT: ${REDIS_PORT}
 
     #MySQL Service
     mysql:
