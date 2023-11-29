@@ -11,6 +11,7 @@ use App\Models\News;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
@@ -23,15 +24,18 @@ class NewsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): AnonymousResourceCollection
+    public function index(Request $request)
     {
         $perPage = 5;
         $page = (int) $request->input('page') ?? 1;
 
-        $news = News::with('user:id,login')
-            ->where('publish', true)
-            ->orderByDesc('created_at')
-            ->paginate($perPage, '*', 'page', $page);
+        $key = $page;
+        $news = Cache::tags('news')->remember($key, now()->addMinutes(120), function () use($perPage, $page) {
+            return News::with('user:id,login')
+                ->where('publish', true)
+                ->orderByDesc('created_at')
+                ->paginate($perPage, '*', 'page', $page);
+        });
 
         return NewsIndexResource::collection($news);
     }
@@ -66,6 +70,7 @@ class NewsController extends Controller
         $request['user_id'] = auth()->user()->id;
 
         $news = News::create($request);
+        Cache::tags('news')->flush();
 
         return NewsShowResource::make($news);
     }
@@ -111,6 +116,7 @@ class NewsController extends Controller
 
         $news->update($request);
         $news->refresh();
+        Cache::tags('news')->flush();
 
         return NewsShowResource::make($news);
     }
