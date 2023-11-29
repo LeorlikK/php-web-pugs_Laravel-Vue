@@ -1,6 +1,7 @@
 version: '3'
 services:
 
+    #Nginx Service
     nginx:
         image: nginx:latest
         volumes:
@@ -38,6 +39,7 @@ services:
             - "8111:8111"
         command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --port=8111
 
+    #Redis Service
     redis:
         image: redis:latest
         ports:
