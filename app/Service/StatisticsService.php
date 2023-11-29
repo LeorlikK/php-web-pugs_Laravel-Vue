@@ -42,6 +42,11 @@ class StatisticsService
         $video = Video::selectRaw('COUNT(*) as video_count, SUM(size) as video_sum')->first();
         $audio = Audio::selectRaw('COUNT(*) as audio_count, SUM(size) as audio_sum')->first();
 
+        $sum = $photo->photo_sum + $video->video_sum + $audio->audio_sum;
+        $percentagePhoto = (int) round(($photo->photo_sum / $sum) * 100);
+        $percentageVideo = (int) round(($video->video_sum / $sum) * 100);
+        $percentageAudio = (int) round(($audio->audio_sum / $sum) * 100);
+
         return [
             'photoCount' => $photo->photo_count,
             'photoSizeSum' => (int) $photo->photo_sum,
@@ -49,7 +54,10 @@ class StatisticsService
             'videoSizeSum' => (int) $video->video_sum,
             'audioCount' => $audio->audio_count,
             'audioSizeSum' => (int) $audio->audio_sum,
-            'allMediaSize' => (int) ($photo->photo_sum + $video->video_sum + $audio->audio_sum)
+            'percentagePhoto' => $percentagePhoto,
+            'percentageVideo' => $percentageVideo,
+            'percentageAudio' => $percentageAudio,
+            'allMediaSize' => (int) $sum
         ];
     }
 

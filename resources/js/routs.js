@@ -5,6 +5,7 @@ export const API_ROUTES = {
         feedbackMe: '/api/account/feedback',
         comments_store: '/api/comments/store',
         comments_delete: '/api/comments/delete',
+        admin_statistics: '/api/admin/statistics',
         admin_users: '/api/admin/users',
         admin_user_edit: '/api/admin/users/edit',
         admin_user_update: '/api/admin/users/update',
