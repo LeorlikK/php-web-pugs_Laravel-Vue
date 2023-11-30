@@ -31,4 +31,4 @@ window.Echo = new Echo({
     forceTLS: false,
     enabledTransports: ['ws', 'wss'],
 });
-window.axios.defaults.headers.common['X-Socket-Id'] = window.Echo.socketId();
+// window.axios.defaults.headers.common['X-Socket-Id'] = window.Echo.socketId();

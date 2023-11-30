@@ -167,7 +167,7 @@ export default {
                 news_id: this.news_id,
                 parent_comment: parent_comment
             };
-            axios.post(API_ROUTES.protected.comments_store, data)
+            myAxios.post(API_ROUTES.protected.comments_store, data)
                 .then(data => {
                     this.dataLog(data)
                     this.inputField = null
@@ -188,7 +188,7 @@ export default {
                 news_id: this.news_id,
                 parent_comment: comment_parent.id
             };
-            axios.post(API_ROUTES.protected.comments_store, data)
+            myAxios.post(API_ROUTES.protected.comments_store, data)
                 .then(data => {
                     this.dataLog(data)
                     const comment = data.data.data

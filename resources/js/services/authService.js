@@ -16,7 +16,7 @@ export function authService() {
             user = cookieService.getCookie('user') ? JSON.parse(cookieService.getCookie('user')) : undefined
         } else if (typeAuth === 'request'){
             const result = await getRequest()
-            if (result && result.data.user) {
+            if (result && result?.data?.user) {
                 user = result.data.user
                 token = 'testToken'
             }

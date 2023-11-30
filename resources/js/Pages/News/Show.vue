@@ -28,7 +28,6 @@
             :news_id=news_id
         ></Comments>
     </div>
-
 </template>
 
 <script>

@@ -30,7 +30,6 @@
             @changePage="changePage"
         ></Paginator>
     </div>
-
 </template>
 
 <script>
@@ -38,7 +37,6 @@ import myAxios from "@/myAxios";
 import {API_ROUTES} from "@/routs";
 import Paginator from "@/Components/Paginator.vue";
 import router from "@/router";
-import inputErrorsMixin from "@/mixins/inputErrorsMixin";
 import logMixin from "@/mixins/logMixin";
 import fileMixin from "@/mixins/fileMixin";
 import paginationMixin from "@/mixins/paginationMixin";
