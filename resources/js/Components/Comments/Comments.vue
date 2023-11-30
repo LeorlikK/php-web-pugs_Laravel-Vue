@@ -253,7 +253,7 @@ export default {
             }else {
                 this.commentDelete = null
             }
-        }
+        },
     },
     created() {
         window.Echo.channel('news_comments')

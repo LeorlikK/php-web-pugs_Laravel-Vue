@@ -16,6 +16,8 @@
             <router-link class="btn btn-main" :to="{name:'login'}">Войти</router-link>
         </template>
     </div>
+    <img src="@src/img/000icon-scrollup000.png" alt="#"
+         @click.prevent="topScroll" class="top-scroll">
 </template>
 
 <script>
@@ -49,6 +51,9 @@ export default {
                 .catch(errors => {
                     this.errorsLog(errors)
                 })
+        },
+        topScroll() {
+            document.documentElement.scrollTop = 0
         }
     },
     // computed: {
