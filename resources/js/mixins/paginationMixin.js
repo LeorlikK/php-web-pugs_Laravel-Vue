@@ -4,7 +4,7 @@ export default {
     data() {
         return {
             pagination: {
-                current_page: router.currentRoute.value.query.page,
+                current_page: router.currentRoute.value.query.page ?? 1,
                 last_page: null,
                 total: null,
             },

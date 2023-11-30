@@ -19,11 +19,11 @@
                     @getCommentsChildren="getCommentsChildren"
                     @hidden="hidden"
                     @changeAnswerCommentId="changeAnswerCommentId"
-                    @confirmDelete="confirmDelete"
+                    @confirmDelete="confirm"
                 ></Comment>
 
                 <div v-if="this.getIsAuth && comment.id === this.answerCommentId" class="input-comment input-answer">
-                    <textarea v-model="answerInput" placeholder="Введите комментарий:" id="textareaId"></textarea>
+                    <textarea v-model="answerInput" placeholder="Введите комментарий:" ref="textareaId"></textarea>
                     <div>
                         <a @click.prevent="answerCancel">Отмена</a>
                         <a @click.prevent="answerInputComment(comment)">Ответить</a>
@@ -36,7 +36,7 @@
                     :key="comment_children.id">
                     <Comment class="comments-children"
                         :comment="comment_children"
-                        @confirmDelete="confirmDelete"
+                        @confirmDelete="confirm"
                     ></Comment>
                 </template>
 
@@ -65,7 +65,7 @@
          style="width: 100%; height: 50px">
     </div>
     <Confirm
-        :text="textDeleteComment"
+        text="Удалить комментарий?"
         :question="question"
         @answer="deleteComment"
     ></Confirm>
@@ -80,10 +80,12 @@ import inputErrorsMixin from "@/mixins/inputErrorsMixin";
 import logMixin from "@/mixins/logMixin";
 import Confirm from "@/Components/Сonfirmation/Confirm.vue";
 import {mapGetters} from "vuex";
+import paginationMixin from "@/mixins/paginationMixin";
+import confirmMixin from "@/mixins/confirmMixin";
 
 export default {
     name: "Comments",
-    mixins: [inputErrorsMixin, logMixin],
+    mixins: [inputErrorsMixin, logMixin, paginationMixin, confirmMixin],
     components: {Confirm, Comment, Paginator },
     props: {
         news_id: {},
@@ -91,18 +93,9 @@ export default {
     data() {
         return {
             comments: [],
-            pagination: {
-                current_page: 1,
-                last_page: null,
-                total: null,
-            },
             inputField: null,
             answerInput: null,
             answerCommentId: false,
-            question: false,
-            commentDelete: null,
-
-            textDeleteComment: 'Удалить коментарий??'
         };
     },
     computed: {
@@ -116,19 +109,14 @@ export default {
                 .then((data) => {
                     this.dataLog(data)
                     data = data.data;
-                    console.log(data)
                     data.data = data.data.map((comment) => {
                         comment.comments_children = [];
                         comment.loading = false
                         comment.answerFlag = false
                         return comment;
                     });
-
-                    // this.comments.splice(0);
                     this.comments.push(...data.data);
-                    this.pagination.current_page = data.meta.current_page;
-                    this.pagination.last_page = data.meta.last_page;
-                    this.pagination.total = data.meta.total;
+                    this.assigningValuesPaginator(data)
                 })
                 .catch((errors) => {
                     this.errorsLog(errors)
@@ -176,7 +164,6 @@ export default {
                     comment.comments_children = [];
                     comment.loading = false
                     this.comments.unshift(comment)
-                    // if (this.comments.length > 10) this.comments.pop()
                 })
                 .catch(errors => {
                     this.errorsLog(errors)
@@ -213,26 +200,18 @@ export default {
             comment.comments_children.splice(0);
             delete comment.comments_children.pagination;
         },
-        changePage(page) {
-            this.getComments(this.news_id, page);
-        },
         changeAnswerCommentId(id) {
             this.answerCommentId = id
-
-            const textarea = document.getElementById('textareaId')
+            const textarea = this.$refs.textareaId
             if (textarea) {
                 textarea.removeAttribute('autofocus');
             }
         },
-        confirmDelete(comment){
-            this.question = true
-            this.commentDelete = comment
-        },
         deleteComment(confirm) {
             this.question = false
             if (confirm){
-                const comment = this.commentDelete
-                this.commentDelete = null
+                const comment = this.objQuestion
+                this.objQuestion = null
                 myAxios.post(API_ROUTES.protected.comments_delete + `/${comment.id}`)
                     .then(data => {
                         this.dataLog(data)
@@ -251,7 +230,7 @@ export default {
                         this.errorsLog(errors)
                     });
             }else {
-                this.commentDelete = null
+                this.objQuestion = null
             }
         },
     },
