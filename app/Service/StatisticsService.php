@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\DB;
 
 class StatisticsService
 {
+    public function __construct(private readonly MediaSizeService $mediaSizeService)
+    {}
+
     public function usersStatistics(): array
     {
         $users = User::selectRaw('COUNT(*) as all_count, SUM(banned) as banned_count')->first();
@@ -43,21 +46,24 @@ class StatisticsService
         $audio = Audio::selectRaw('COUNT(*) as audio_count, SUM(size) as audio_sum')->first();
 
         $sum = $photo->photo_sum + $video->video_sum + $audio->audio_sum;
-        $percentagePhoto = (int) round(($photo->photo_sum / $sum) * 100);
-        $percentageVideo = (int) round(($video->video_sum / $sum) * 100);
-        $percentageAudio = (int) round(($audio->audio_sum / $sum) * 100);
+        $percentagePhoto = (int) $photo->photo_sum !== 0 ? round(($photo->photo_sum / $sum) * 100) : 0;
+        $percentageVideo = (int) $video->video_sum !== 0 ? round(($video->video_sum / $sum) * 100) : 0;
+        $percentageAudio = (int) $audio->audio_sum !== 0 ? round(($audio->audio_sum / $sum) * 100) : 0;
 
         return [
             'photoCount' => $photo->photo_count,
             'photoSizeSum' => (int) $photo->photo_sum,
+            'photoSizeSumTransform' => $this->mediaSizeService->translate($photo->photo_sum ?? 0),
             'videoCount' => $video->video_count,
             'videoSizeSum' => (int) $video->video_sum,
+            'videoSizeSumTransform' => $this->mediaSizeService->translate($video->video_sum ?? 0),
             'audioCount' => $audio->audio_count,
             'audioSizeSum' => (int) $audio->audio_sum,
+            'audioSizeSumTransform' => $this->mediaSizeService->translate($audio->audio_count ?? 0),
             'percentagePhoto' => $percentagePhoto,
             'percentageVideo' => $percentageVideo,
             'percentageAudio' => $percentageAudio,
-            'allMediaSize' => (int) $sum
+            'allMediaSize' => $this->mediaSizeService->translate($sum ?? 0),
         ];
     }
 
