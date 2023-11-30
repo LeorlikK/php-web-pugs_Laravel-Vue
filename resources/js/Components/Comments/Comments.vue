@@ -61,13 +61,9 @@
             </template>
         </div>
     </div>
-    <Paginator
-        v-if="pagination.last_page > 1"
-        :current_page="pagination.current_page"
-        :last_page="pagination.last_page"
-        :total="pagination.total"
-        @changePage="changePage"
-    ></Paginator>
+    <div v-observer="{news_id: news_id, current_page: pagination.current_page, method: getComments}"
+         style="width: 100%; height: 50px">
+    </div>
     <Confirm
         :text="textDeleteComment"
         :question="question"
@@ -120,6 +116,7 @@ export default {
                 .then((data) => {
                     this.dataLog(data)
                     data = data.data;
+                    console.log(data)
                     data.data = data.data.map((comment) => {
                         comment.comments_children = [];
                         comment.loading = false
@@ -127,7 +124,7 @@ export default {
                         return comment;
                     });
 
-                    this.comments.splice(0);
+                    // this.comments.splice(0);
                     this.comments.push(...data.data);
                     this.pagination.current_page = data.meta.current_page;
                     this.pagination.last_page = data.meta.last_page;
@@ -170,7 +167,7 @@ export default {
                 news_id: this.news_id,
                 parent_comment: parent_comment
             };
-            myAxios.post(API_ROUTES.protected.comments_store, data)
+            axios.post(API_ROUTES.protected.comments_store, data)
                 .then(data => {
                     this.dataLog(data)
                     this.inputField = null
@@ -179,7 +176,7 @@ export default {
                     comment.comments_children = [];
                     comment.loading = false
                     this.comments.unshift(comment)
-                    if (this.comments.length > 10) this.comments.pop()
+                    // if (this.comments.length > 10) this.comments.pop()
                 })
                 .catch(errors => {
                     this.errorsLog(errors)
@@ -191,12 +188,12 @@ export default {
                 news_id: this.news_id,
                 parent_comment: comment_parent.id
             };
-            myAxios.post(API_ROUTES.protected.comments_store, data)
+            axios.post(API_ROUTES.protected.comments_store, data)
                 .then(data => {
                     this.dataLog(data)
                     const comment = data.data.data
 
-                    comment_parent.comments_children.unshift(comment)
+                    comment_parent.comments_children.push(comment)
                     comment_parent.children_count += 1
                     this.answerCancel()
                     this.answerCommentId = null
@@ -257,6 +254,23 @@ export default {
                 this.commentDelete = null
             }
         }
+    },
+    created() {
+        window.Echo.channel('news_comments')
+            .listen('.news_comments', response => {
+                this.dataLog(response)
+                this.inputField = null
+                const comment = response.comment
+
+                if (comment.parent_comment) {
+                    const needComment = this.comments.filter(com => com.id === comment.parent_comment);
+                    needComment[0].comments_children.push(comment);
+                } else {
+                    comment.comments_children = [];
+                    comment.loading = false
+                    this.comments.unshift(comment)
+                }
+            })
     },
     mounted() {
         this.getComments(this.news_id, this.pagination.current_page);

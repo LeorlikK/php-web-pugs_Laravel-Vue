@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Comments;
 
+use App\Events\NewCommentEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Comments\CommentRequest;
 use App\Http\Resources\CommentsResource;
@@ -22,11 +23,11 @@ class CommentsController extends Controller
             ->withCount('children')
             ->where('news_id', $news)
             ->when($parent_comment, function ($query) use($parent_comment) {
-                $query->where('parent_comment', $parent_comment);
+                $query->where('parent_comment', $parent_comment)->orderBy('created_at');
             }, function ($query) {
-                $query->where('parent_comment', null);
+                $query->where('parent_comment', null)->orderByDesc('created_at');
             })
-            ->orderByDesc('created_at')
+
             ->paginate($perPage, '*', 'page', $page);
 
         return CommentsResource::collection($comments);
@@ -46,6 +47,8 @@ class CommentsController extends Controller
 
         $comment->load('user');
         $comment->loadCount('children');
+
+        broadcast(new NewCommentEvent($comment))->toOthers();
 
         return CommentsResource::make($comment);
     }
