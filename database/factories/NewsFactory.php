@@ -18,7 +18,7 @@ class NewsFactory extends Factory
     {
         return [
             'user_id' => fake(),
-            'image_url' => 'images/avatars/avatar_default.png',
+            'image_url' => 'default/news_default.png',
             'title' => fake()->title(),
             'short' => fake()->text(50),
             'text' => fake()->text(200),

@@ -22,7 +22,7 @@ class NurseriesFactory extends Factory
             'text' => fake()->text(200),
             'address' => fake()->address(),
             'phone' => fake()->phoneNumber(),
-            'image_url' => 'images/avatars/avatar_default.png',
+            'image_url' => 'default/nurseries_default.png',
         ];
     }
 }

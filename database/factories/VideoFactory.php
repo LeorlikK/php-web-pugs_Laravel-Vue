@@ -17,7 +17,7 @@ class VideoFactory extends Factory
     public function definition(): array
     {
         return [
-            'url' => 'video/video_default.mp4',
+            'url' => 'default/video_default.mp4',
             'name' => fake()->name,
             'size' => '100500',
         ];

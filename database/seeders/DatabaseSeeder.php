@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::factory(1)->create();
+        $user = User::first() ?? User::factory(1)->create();
         $news = News::factory(50)->create(['user_id' => $user->first()->id])->filter(function ($item){
             return $item->publish;
         });

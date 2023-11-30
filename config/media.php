@@ -19,5 +19,6 @@ return [
         'audio' => 'default/audio_default.mp4',
         'mail_logo' => 'default/mail_logo_default.png',
         'news' => 'default/news_default.png',
+        'nurseries' => 'default/nurseries_default.png',
     ]
 ];
