@@ -82,16 +82,20 @@ import Confirm from "@/Components/Сonfirmation/Confirm.vue";
 import {mapGetters} from "vuex";
 import paginationMixin from "@/mixins/paginationMixin";
 import confirmMixin from "@/mixins/confirmMixin";
+import echoMixin from "@/mixins/echoMixin";
 
 export default {
     name: "Comments",
-    mixins: [inputErrorsMixin, logMixin, paginationMixin, confirmMixin],
+    mixins: [inputErrorsMixin, logMixin, paginationMixin, confirmMixin, echoMixin],
     components: {Confirm, Comment, Paginator },
     props: {
         news_id: {},
     },
     data() {
         return {
+            pagination: {
+                current_page: 1
+            },
             comments: [],
             inputField: null,
             answerInput: null,
@@ -233,26 +237,31 @@ export default {
                 this.objQuestion = null
             }
         },
+        echoHandlerComment(response) {
+            this.dataLog(response)
+            this.inputField = null
+            const comment = response.comment
+
+            if (comment.parent_comment) {
+                const needComment = this.comments.filter(com => com.id === comment.parent_comment);
+                needComment[0].comments_children.push(comment);
+            } else {
+                comment.comments_children = [];
+                comment.loading = false
+                this.comments.unshift(comment)
+            }
+        }
     },
     created() {
-        window.Echo.channel('news_comments')
-            .listen('.news_comments', response => {
-                this.dataLog(response)
-                this.inputField = null
-                const comment = response.comment
-
-                if (comment.parent_comment) {
-                    const needComment = this.comments.filter(com => com.id === comment.parent_comment);
-                    needComment[0].comments_children.push(comment);
-                } else {
-                    comment.comments_children = [];
-                    comment.loading = false
-                    this.comments.unshift(comment)
-                }
-            })
+        const echo = this.$store.getters['echoModule/Echo']
+        this.connectEcho(echo, 'news_comments', '.news_comments', this.echoHandlerComment)
     },
+
     mounted() {
         this.getComments(this.news_id, this.pagination.current_page);
+    },
+    beforeUnmount() {
+        this.disconnectEcho()
     },
 };
 </script>

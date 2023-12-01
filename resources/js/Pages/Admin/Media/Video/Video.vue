@@ -73,6 +73,10 @@
                 :question="question"
                 @answer="deleteVideo"
             ></Confirm>
+            <BigSize
+                @changeShowImage="changeShowImage"
+                :showImage="showImage"
+            ></BigSize>
         </div>
     </div>
 </template>
@@ -90,10 +94,12 @@ import {API_ROUTES} from "@/routs";
 import InputVideo from "@/Components/Inputs/InputVideo.vue";
 import confirmMixin from "@/mixins/confirmMixin";
 import paginationMixin from "@/mixins/paginationMixin";
+import BigSize from "@/Media/BigSize.vue";
+import Paginator from "@/Components/Paginator.vue";
 
 export default {
     name: "Video",
-    components: {AdminMenu, MediaMenu, Confirm, InputVideo},
+    components: {BigSize, AdminMenu, MediaMenu, Confirm, InputVideo, Paginator},
     mixins: [inputErrorsMixin, errorsLogMixin, fileMixin, confirmMixin, paginationMixin],
     data() {
         return {

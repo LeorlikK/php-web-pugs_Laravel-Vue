@@ -1,10 +1,11 @@
 import axios from "axios";
 import router from "@/router";
-
+import store from "@/store";
 const myAxios = axios.create()
 
 myAxios.interceptors.request.use(config => {
-    config.headers['X-Socket-Id'] = window.Echo ? window.Echo.socketId() : null;
+    config.headers['X-Socket-Id'] = store.getters['echoModule/Echo'].socketId();
+    // config.headers['X-Socket-Id'] = window.Echo ? window.Echo.socketId() : null;
     return config;
 })
 myAxios.interceptors.response.use(response => {

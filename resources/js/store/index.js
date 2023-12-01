@@ -1,5 +1,6 @@
 import {createStore} from "vuex";
 import {authModule} from "@/store/authModule";
+import {echoModule} from "@/store/echoModule";
 
 export default createStore({
     state: () => ({
@@ -9,6 +10,7 @@ export default createStore({
         getTypeAuth: state => state.typeAuth,
     },
     modules: {
-        authModule: authModule
+        authModule: authModule,
+        echoModule: echoModule
     }
 })

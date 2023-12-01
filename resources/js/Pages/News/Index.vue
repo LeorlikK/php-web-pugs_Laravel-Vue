@@ -60,7 +60,6 @@ export default {
                 },
             })
                 .then(data => {
-                    console.log(data)
                     this.dataLog(data)
                     data = data.data
                     this.items.splice(0)
