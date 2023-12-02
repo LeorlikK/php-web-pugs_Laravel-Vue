@@ -286,6 +286,14 @@ const router = createRouter({
                 ],
                 title: 'Admin-Audio'
             }
+        },
+        {
+            path: '/:catchAll(.*)',
+            name: '404',
+            meta: {
+                title: 'Admin-Audio'
+            },
+            component:() => import('./Components/Error/404.vue')
         }
     ]
 })
