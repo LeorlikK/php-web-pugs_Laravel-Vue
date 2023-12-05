@@ -45,7 +45,7 @@ class NewsController extends Controller
         $perPage = 10;
         $page = (int) $request->input('page') ?? 1;
 
-        $news = News::with('user:id,login')
+        $news = News::withTrashed()->with('user:id,login')
             ->orderByDesc('created_at')
             ->paginate($perPage, '*', 'page', $page);
 
@@ -126,8 +126,11 @@ class NewsController extends Controller
      */
     public function destroy(News $news): JsonResponse
     {
-        if ($news->image_url !== config('media.images.news')) {
-            Storage::disk('public')->delete($news->image_url);
+        if ($news->trashed()) {
+            if ($news->image_url !== config('media.images.news')) {
+                Storage::disk('public')->delete($news->image_url);
+            }
+            $news->forceDelete();
         }
 
         $news->comments()->delete();
@@ -136,7 +139,14 @@ class NewsController extends Controller
         return response()->json(['success' => true], 204);
     }
 
-    public function publish(News $news)
+    public function restore(News $news): NewsShowResource
+    {
+        $news->restore();
+
+        return NewsShowResource::make($news);
+    }
+
+    public function publish(News $news): JsonResponse
     {
         $news->publish = !$news->publish;
         $news->save();
