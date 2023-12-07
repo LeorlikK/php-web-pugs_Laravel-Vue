@@ -133,7 +133,6 @@ class NewsController extends Controller
             $news->forceDelete();
         }
 
-        $news->comments()->delete();
         $news->delete();
 
         return response()->json(['success' => true], 204);
@@ -152,6 +151,6 @@ class NewsController extends Controller
         $news->save();
         $news->refresh();
 
-        return response()->json(['lala' => $news->id, 'stat' => $news->publish]);
+        return response()->json(['publish' => $news->publish]);
     }
 }
