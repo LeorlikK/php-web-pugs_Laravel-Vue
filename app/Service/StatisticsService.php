@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Contracts\StatisticsContract;
 use App\Models\Audio;
 use App\Models\News;
 use App\Models\Photo;
@@ -9,7 +10,7 @@ use App\Models\User;
 use App\Models\Video;
 use Illuminate\Support\Facades\DB;
 
-class StatisticsService
+class StatisticsService implements StatisticsContract
 {
     public function __construct(private readonly MediaSizeService $mediaSizeService)
     {}
@@ -77,9 +78,9 @@ class StatisticsService
             ->toArray();
     }
 
-    public function commentsStatistics()
+    public function commentsStatistics(): array
     {
-
+        return [];
     }
 
     public function fullStatistics(): array
