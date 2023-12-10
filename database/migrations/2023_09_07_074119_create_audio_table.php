@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('audio', function (Blueprint $table) {
             $table->id();
-            $table->string('url');
+            $table->string('url', 500);
             $table->string('name');
             $table->unsignedBigInteger('size');
             $table->timestamps();

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('role');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('avatar');
+            $table->string('avatar', 500);
             $table->boolean('banned');
             $table->rememberToken();
             $table->timestamps();

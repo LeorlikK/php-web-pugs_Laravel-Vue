@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('news', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users', 'id')->nullOnDelete();
-            $table->string('image_url');
+            $table->string('image_url', 500);
             $table->string('title');
             $table->text('short')->nullable();
             $table->text('text');
