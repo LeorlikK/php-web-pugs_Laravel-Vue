@@ -77,6 +77,8 @@ return [
         'redis' => [
             'driver' => 'redis',
             'connection' => 'cache',
+            'queue' => '{default}',
+            'retry_after' => 90,
             'lock_connection' => 'default',
         ],
 

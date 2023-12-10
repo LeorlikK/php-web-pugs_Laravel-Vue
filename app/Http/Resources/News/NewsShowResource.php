@@ -16,7 +16,7 @@ class NewsShowResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => $this->user->login,
+            'user' => $this->user?->login,
             'image_url' => $this->image_url,
             'title' => $this->title,
             'short' => $this->short,
