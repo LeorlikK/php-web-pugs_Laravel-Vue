@@ -7,10 +7,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class StatisticsNotification extends Notification
+class StatisticsNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    public int $tries = 3;
+    public int $backoff = (60 * 30);
     /**
      * Create a new notification instance.
      */

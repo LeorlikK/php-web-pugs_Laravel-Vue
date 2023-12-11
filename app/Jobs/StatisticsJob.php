@@ -16,10 +16,14 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
+use Throwable;
 
 class StatisticsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public int $tries = 3;
+    public int $backoff = 30;
 
     /**
      * Create a new job instance.
@@ -29,6 +33,10 @@ class StatisticsJob implements ShouldQueue
         //
     }
 
+    public function failed(Throwable $exception): void
+    {
+        Log::channel('myLog')->error($exception->getMessage());
+    }
     /**
      * Execute the job.
      */

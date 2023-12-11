@@ -11,6 +11,8 @@ class FeedbackMailNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    public int $tries = 3;
+    public int $backoff = (60 * 10);
     /**
      * Create a new notification instance.
      */
