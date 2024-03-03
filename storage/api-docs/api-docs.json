@@ -1,0 +1,201 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Pugs API",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/": {},
+        "/api/admin/users": {
+            "get": {
+                "tags": [
+                    "AdminUsers"
+                ],
+                "summary": "Index",
+                "operationId": "7979b4ee6a66aa26f775e25740f20a1f",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "email@ya.ru"
+                                                },
+                                                "login": {
+                                                    "type": "string",
+                                                    "example": "login"
+                                                },
+                                                "role": {
+                                                    "type": "string",
+                                                    "example": "admin"
+                                                },
+                                                "avatar": {
+                                                    "type": "string",
+                                                    "example": "default/avatar_default.png"
+                                                },
+                                                "banned": {
+                                                    "type": "boolean",
+                                                    "example": "0"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/media/photo/{page?}": {
+            "get": {
+                "tags": [
+                    "Photo"
+                ],
+                "summary": "Index",
+                "operationId": "56b7a10f0076234955d11f26c7f0d95f",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "description": "Page Number",
+                        "required": false,
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "url": {
+                                                        "type": "string",
+                                                        "example": "default/photo_default.png"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Photo Name"
+                                                    },
+                                                    "size": {
+                                                        "type": "integer",
+                                                        "example": 32023
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2023-06-12 18:54:32"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2023-06-12 18:54:32"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/admin/photo/store": {
+            "post": {
+                "tags": [
+                    "Photo"
+                ],
+                "summary": "Store",
+                "operationId": "c26600ef873bbda6ca122ff0676a6390",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Photo Name"
+                                            },
+                                            "image": {
+                                                "type": "file",
+                                                "example": "Image File"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "url": {
+                                                    "type": "string",
+                                                    "example": "default/photo_default.png"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Photo Name"
+                                                },
+                                                "size": {
+                                                    "type": "integer",
+                                                    "example": 32023
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2023-06-12 18:54:32"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2023-06-12 18:54:32"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

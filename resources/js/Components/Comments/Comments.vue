@@ -252,17 +252,17 @@ export default {
             }
         }
     },
-    created() {
-        const echo = this.$store.getters['echoModule/Echo']
-        this.connectEcho(echo, 'news_comments', '.news_comments', this.echoHandlerComment)
-    },
-
-    mounted() {
-        this.getComments(this.news_id, this.pagination.current_page);
-    },
-    beforeUnmount() {
-        this.disconnectEcho()
-    },
+    // created() {
+    //     const echo = this.$store.getters['echoModule/Echo']
+    //     this.connectEcho(echo, 'news_comments', '.news_comments', this.echoHandlerComment)
+    // },
+    //
+    // mounted() {
+    //     this.getComments(this.news_id, this.pagination.current_page);
+    // },
+    // beforeUnmount() {
+    //     this.disconnectEcho()
+    // },
 };
 </script>
 

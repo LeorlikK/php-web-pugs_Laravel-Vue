@@ -12,8 +12,24 @@ use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\Nurseries\NurseriesController;
 use App\Http\Controllers\Peculiarities\PeculiaritiesController;
 use App\Http\Controllers\PersonalArea\PersonalAreaController;
+use App\Http\Requests\Media\Photo\PhotoStoreRequest;
 use Illuminate\Support\Facades\Route;
 
+Route::post('/photos', function (PhotoStoreRequest $request) {
+    return response()->json(['one' => 111]);
+});
+Route::get('/test', function () {
+    $result = DB::table('apartments')->limit(5)->get();
+
+    return response()->stream(function () use ($result){
+        $result->each(function ($item) {
+            echo $item->id . "-------------------";
+            ob_flush();
+            flush();
+            sleep(3);
+        });
+    }, 200, ['Content-Type' => 'text/event-stream', 'Cache-Control' => 'no-cache', 'Connection' => 'keep-alive']);
+});
 Route::get('/account/verify', [VerifyController::class, 'verify'])->name('verification.verify');
 Route::post('/account/registration', [AuthorizationController::class, 'registration']);
 Route::post('/account/login', [AuthorizationController::class, 'login']);

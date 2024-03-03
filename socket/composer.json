@@ -1,0 +1,6 @@
+{
+    "require": {
+        "cboden/ratchet": "^0.4.4",
+        "walkor/workerman": "v4.1.15"
+    }
+}
