@@ -1,5 +1,6 @@
 <?php
 
+use App\Common\UserRole;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Authorization\AuthorizationController;
@@ -102,8 +103,19 @@ Route::prefix('/media')->group(function (){
     Route::get('/{news}/{parent_comment?}/{page?}', [CommentsController::class, 'index']);
 });
 
-Route::middleware('auth:sanctum')->group(function (){
-    Route::get('/protected', function (){
-        return response()->json(['protected' => 'true']);
+Route::middleware('encrypt')->group(function (): void {
+    Route::middleware('auth:sanctum')->group(function (): void {
+        Route::middleware("ability:role:" . UserRole::USER . ",role:" . UserRole::MODER . ",role:" . UserRole::ADMIN)
+            ->group(function (): void {
+
+                Route::middleware("ability:role:" . UserRole::MODER . ",role:" . UserRole::ADMIN)
+                    ->group(function (): void {
+
+                        Route::middleware("ability:role:" . UserRole::ADMIN)
+                            ->group(function (): void {
+
+                            });
+                    });
+            });
     });
 });

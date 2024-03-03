@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Services;
+namespace App\Service;
 
-use App\Services\Contracts\EncryptContract;
+use App\Service\Contracts\EncryptContract;
 use Maize\Encryptable\Encryption;
 
 class EncryptLibService implements EncryptContract

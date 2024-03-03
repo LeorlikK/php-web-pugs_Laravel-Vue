@@ -3,7 +3,11 @@
 namespace App\Http;
 
 use App\Http\Middleware\AdminRole;
+use App\Http\Middleware\EditingEntity;
+use App\Http\Middleware\Encrypt;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Laravel\Sanctum\Http\Middleware\CheckAbilities;
+use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
 
 class Kernel extends HttpKernel
 {
@@ -65,6 +69,10 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'admin' => AdminRole::class
+        'admin' => AdminRole::class,
+        'abilities' => CheckAbilities::class,
+        'ability' => CheckForAnyAbility::class,
+        'entity' => EditingEntity::class,
+        'encrypt' => Encrypt::class
     ];
 }

@@ -25,5 +25,9 @@ class DatabaseSeeder extends Seeder
             'user_id' => $user->first()->id,
         ]);
         Peculiarities::factory(5)->create();
+
+//        $this->call(
+//            [RoleSeeder::class, AdminSeeder::class, ProjectSeeder::class, RemoteSeeder::class, PageSeeder::class]
+//        );
     }
 }

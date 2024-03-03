@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Token;
+namespace App\Service\Token;
 
 use App\Models\User;
 use Carbon\Carbon;

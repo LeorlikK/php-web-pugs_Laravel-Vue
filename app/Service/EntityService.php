@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Services;
+namespace App\Service;
 
 use App\Helpers\Arr;
 use App\Models\DbKeyMapper;
 use App\Models\RemoteTable;
-use App\Services\Contracts\DbalContract;
+use App\Service\Contracts\DbalContract;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
