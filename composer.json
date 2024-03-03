@@ -17,7 +17,8 @@
         "psr/http-message": "^1.0",
         "pusher/pusher-php-server": "^7.2",
         "cboden/ratchet": "^0.4.4",
-        "walkor/workerman": "v4.1.15"
+        "walkor/workerman": "v4.1.15",
+        "spatie/laravel-data": "^3.10"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.13",
